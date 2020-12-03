@@ -1,34 +1,9 @@
 {
-  "name": "my-app",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@material-ui/core": "5.0.0-alpha.18",
-    "@material-ui/icons": "4.11.2",
-    "@material-ui/styles": "4.11.2",
-    "@testing-library/jest-dom": "5.11.6",
-    "@testing-library/react": "11.2.2",
-    "@testing-library/user-event": "12.5.0",
-    "prop-types": "15.7.2",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
-    "react-router-dom": "5.2.0",
-    "react-scripts": "4.0.1",
-    "web-vitals": "1.0.1"
-  },
-  "devDependencies": {
-    "eslint": "7.14.0",
-    "eslint-config-airbnb": "18.2.1",
-    "eslint-config-prettier": "6.15.0",
-    "eslint-plugin-import": "2.22.1",
-    "eslint-plugin-jsx-a11y": "6.4.1",
-    "eslint-plugin-prettier": "3.2.0",
-    "eslint-plugin-react": "7.21.5",
-    "eslint-plugin-react-hooks": "4.2.0",
-    "husky": "^4.3.0",
-    "lint-staged": "^10.5.2",
-    "prettier": "2.2.1"
-  },
+  "name": "react-material-dashboard",
+  "author": "DeviasIO",
+  "licence": "MIT",
+  "version": "1.0.0",
+  "private": false,
   "scripts": {
     "start": "BROWSER='google-chrome-stable' react-scripts start",
     "build": "react-scripts build",
@@ -36,10 +11,7 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [
@@ -53,12 +25,40 @@
       "last 1 safari version"
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "@material-ui/styles": "^4.10.0",
+    "chart.js": "^2.9.3",
+    "clsx": "^1.1.1",
+    "formik": "^2.1.5",
+    "history": "^5.0.0",
+    "lodash": "^4.17.19",
+    "moment": "^2.27.0",
+    "nprogress": "^0.2.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-chartjs-2": "^2.10.0",
+    "react-dom": "^16.13.1",
+    "react-feather": "^2.0.8",
+    "react-helmet": "^6.1.0",
+    "react-perfect-scrollbar": "^1.5.8",
+    "react-router": "^6.0.0-beta.0",
+    "react-router-dom": "^6.0.0-beta.0",
+    "react-scripts": "^3.4.1",
+    "uuid": "^8.3.0",
+    "yup": "^0.29.3"
   },
-  "lint-staged": {
-    "*.js": "eslint --cache --fix"
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^2.5.1",
+    "prettier": "^1.19.1"
   }
 }
