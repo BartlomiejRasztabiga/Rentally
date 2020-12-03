@@ -5,8 +5,6 @@
     "browser": true
   },
   "extends": [
-    "airbnb",
-    "airbnb/hooks",
     "eslint:recommended"
   ],
   "settings": {
@@ -33,7 +31,6 @@
     "no-console": "off",
     "no-param-reassign": "off",
     "no-plusplus": "off",
-    "react-hooks/exhaustive-deps": "off",
     "react/forbid-prop-types": "off",
     "react/jsx-filename-extension": "off",
     "react/jsx-props-no-spreading": "off",
