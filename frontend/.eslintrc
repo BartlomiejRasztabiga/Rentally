@@ -4,21 +4,12 @@
     "es6": true,
     "browser": true
   },
-  "extends": [
-    "airbnb",
-    "airbnb/hooks",
-    "eslint:recommended"
-  ],
+  "extends": ["airbnb", "airbnb/hooks", "eslint:recommended"],
   "settings": {
     "import/resolver": {
       "node": {
-        "paths": [
-          "src"
-        ],
-        "extensions": [
-          ".js",
-          ".jsx"
-        ]
+        "paths": ["src"],
+        "extensions": [".js", ".jsx"]
       }
     }
   },
