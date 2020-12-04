@@ -2,7 +2,7 @@ name: Frontend
 
 defaults:
   run:
-    working-directory: backend
+    working-directory: frontend
 
 on:
   push:
