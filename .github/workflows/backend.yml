@@ -67,4 +67,5 @@ jobs:
           poetry install -v
       - name: Test
         run: |
+          poetry run ./prestart.sh
           poetry run ./tests-start.sh
