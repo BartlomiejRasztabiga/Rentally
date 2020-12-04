@@ -1,5 +1,8 @@
-
 name: Backend
+
+defaults:
+  run:
+    working-directory: backend
 
 on:
   push:
