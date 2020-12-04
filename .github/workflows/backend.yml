@@ -67,4 +67,4 @@ jobs:
           poetry install -v
       - name: Test
         run: |
-          poetry run ./scripts/test.sh
+          poetry run ./tests-start.sh
