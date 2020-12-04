@@ -1,5 +1,7 @@
-#! /usr/bin/env sh
-set -e
+#!/usr/bin/env bash
+
+# Print commands and their arguments as they are executed.
+set -x
 
 if [ -f /app/app/main.py ]; then
     DEFAULT_MODULE_NAME=app.main
