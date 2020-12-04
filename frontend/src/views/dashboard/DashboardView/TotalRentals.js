@@ -36,29 +36,15 @@ const TotalRentals = ({ className, ...rest }) => {
   const classes = useStyles();
 
   return (
-    <Card
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
+    <Card className={clsx(classes.root, className)} {...rest}>
       <CardContent>
-        <Grid
-          container
-          justify="space-between"
-          spacing={3}
-        >
+        <Grid container justify="space-between" spacing={3}>
           <Grid item>
-            <Typography
-              color="textSecondary"
-              gutterBottom
-              variant="h6"
-            >
-              BUDGET
+            <Typography color="textSecondary" gutterBottom variant="h6">
+              TOTAL RENTALS
             </Typography>
-            <Typography
-              color="textPrimary"
-              variant="h3"
-            >
-              $24,000
+            <Typography color="textPrimary" variant="h3">
+              120
             </Typography>
           </Grid>
           <Grid item>
@@ -67,22 +53,12 @@ const TotalRentals = ({ className, ...rest }) => {
             </Avatar>
           </Grid>
         </Grid>
-        <Box
-          mt={2}
-          display="flex"
-          alignItems="center"
-        >
+        <Box mt={2} display="flex" alignItems="center">
           <ArrowDownwardIcon className={classes.differenceIcon} />
-          <Typography
-            className={classes.differenceValue}
-            variant="body2"
-          >
+          <Typography className={classes.differenceValue} variant="body2">
             12%
           </Typography>
-          <Typography
-            color="textSecondary"
-            variant="caption"
-          >
+          <Typography color="textSecondary" variant="caption">
             Since last month
           </Typography>
         </Box>

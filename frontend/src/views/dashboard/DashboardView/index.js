@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Grid, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
 import TotalRentals from './TotalRentals';
-import LatestOrders from './LatestOrders';
+import NewestReservations from './NewestReservations';
 import TasksProgress from './TasksProgress';
 import TotalCustomers from './TotalCustomers';
 import TotalProfit from './TotalProfit';
@@ -36,7 +36,7 @@ const Dashboard = () => {
             <TotalProfit />
           </Grid>
           <Grid item lg={12} md={12} xl={12} xs={12}>
-            <LatestOrders />
+            <NewestReservations />
           </Grid>
         </Grid>
       </Container>
