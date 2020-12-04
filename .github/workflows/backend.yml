@@ -30,7 +30,7 @@ jobs:
           poetry install -v
       - name: Lint
         run: |
-          sh ./scripts/lint.sh
+          poetry run ./scripts/lint.sh
 
   test:
     runs-on: ubuntu-latest
@@ -51,4 +51,4 @@ jobs:
           poetry install -v
       - name: Test
         run: |
-          sh ./scripts/test.sh
+          poetry run ./scripts/test.sh
