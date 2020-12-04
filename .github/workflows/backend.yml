@@ -38,6 +38,22 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7, 3.8, 3.9]
+        postgres-version: [12.0, 13.0]
+
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres-version }}
+        env:
+          POSTGRES_USER: rentally
+          POSTGRES_PASSWORD: rentally
+          POSTGRES_DB: rentally
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
 
     steps:
       - uses: actions/checkout@v2
