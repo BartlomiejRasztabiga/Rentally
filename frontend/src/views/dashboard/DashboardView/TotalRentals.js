@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Budget = ({ className, ...rest }) => {
+const TotalRentals = ({ className, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -91,8 +91,8 @@ const Budget = ({ className, ...rest }) => {
   );
 };
 
-Budget.propTypes = {
+TotalRentals.propTypes = {
   className: PropTypes.string
 };
 
-export default Budget;
+export default TotalRentals;

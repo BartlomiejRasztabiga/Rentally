@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Grid, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
-import Budget from './Budget';
+import TotalRentals from './TotalRentals';
 import LatestOrders from './LatestOrders';
 import TasksProgress from './TasksProgress';
 import TotalCustomers from './TotalCustomers';
@@ -24,7 +24,7 @@ const Dashboard = () => {
       <Container maxWidth={false}>
         <Grid container spacing={3}>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <Budget />
+            <TotalRentals />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
             <TotalCustomers />
