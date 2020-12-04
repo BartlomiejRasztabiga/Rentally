@@ -48,7 +48,7 @@ const Toolbar = ({ className, ...rest }) => {
                     </InputAdornment>
                   )
                 }}
-                placeholder="Search product"
+                placeholder="Search car"
                 variant="outlined"
               />
             </Box>

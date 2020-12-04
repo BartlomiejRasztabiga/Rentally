@@ -13,38 +13,17 @@ import {
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  importButton: {
-    marginRight: theme.spacing(1)
-  },
-  exportButton: {
-    marginRight: theme.spacing(1)
-  }
+const useStyles = makeStyles(() => ({
+  root: {}
 }));
 
 const Toolbar = ({ className, ...rest }) => {
   const classes = useStyles();
 
   return (
-    <div
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-      >
-        <Button className={classes.importButton}>
-          Import
-        </Button>
-        <Button className={classes.exportButton}>
-          Export
-        </Button>
-        <Button
-          color="primary"
-          variant="contained"
-        >
+    <div className={clsx(classes.root, className)} {...rest}>
+      <Box display="flex" justifyContent="flex-end">
+        <Button color="primary" variant="contained">
           Add customer
         </Button>
       </Box>
@@ -57,10 +36,7 @@ const Toolbar = ({ className, ...rest }) => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SvgIcon
-                        fontSize="small"
-                        color="action"
-                      >
+                      <SvgIcon fontSize="small" color="action">
                         <SearchIcon />
                       </SvgIcon>
                     </InputAdornment>
