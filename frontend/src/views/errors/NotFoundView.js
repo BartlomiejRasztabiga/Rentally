@@ -36,13 +36,6 @@ const NotFoundView = () => {
             You either tried some shady route or you came here by mistake.
             Whichever it is, try using the navigation
           </Typography>
-          <Box textAlign="center">
-            <img
-              alt="Under development"
-              className={classes.image}
-              src="/static/images/undraw_page_not_found_su7k.svg"
-            />
-          </Box>
         </Container>
       </Box>
     </Page>
