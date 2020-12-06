@@ -4,9 +4,9 @@ import clsx from "clsx";
 import { Box, Card, CardContent, Divider, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import LocalGasStationIcon from "@material-ui/icons/LocalGasStation";
 import SettingsIcon from "@material-ui/icons/Settings";
-import PersonIcon from '@material-ui/icons/Person';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import AcUnitIcon from '@material-ui/icons/AcUnit';
+import PersonIcon from "@material-ui/icons/Person";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import AcUnitIcon from "@material-ui/icons/AcUnit";
 
 const useStyles = makeStyles((theme) => ({
   root: {
