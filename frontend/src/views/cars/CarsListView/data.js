@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-export default [
+const cars = [
   {
     id: uuid(),
     modelName: "FIAT 500",
@@ -68,3 +68,5 @@ export default [
     depositAmount: 1000.00
   }
 ];
+
+export default cars;
