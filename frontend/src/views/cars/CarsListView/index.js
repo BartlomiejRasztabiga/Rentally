@@ -29,7 +29,7 @@ const CarsList = () => {
           <Grid container spacing={3}>
             {cars.map((car) => (
               <Grid item key={car.id} lg={4} md={4} xs={12}>
-                <CarCard className={classes.carCard} product={car} />
+                <CarCard className={classes.carCard} car={car} />
               </Grid>
             ))}
           </Grid>

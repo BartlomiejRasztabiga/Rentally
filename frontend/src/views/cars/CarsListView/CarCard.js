@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CarCard = ({ className, product, ...rest }) => {
+const CarCard = ({ className, car, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -34,14 +34,14 @@ const CarCard = ({ className, product, ...rest }) => {
       <CardContent>
         <Box display="flex" justifyContent="center" mb={3}>
           <Paper variant="outlined">
-            <img src={product.media} alt={product.modelName} width="500px" height="250px" />
+            <img src={car.media} alt={car.modelName} width="500px" height="250px" />
           </Paper>
         </Box>
         <Typography align="left" color="textPrimary" gutterBottom variant="h4">
-          {product.modelName}
+          {car.modelName}
         </Typography>
         <Typography align="center" color="textPrimary" variant="body1">
-          {product.description}
+          {car.description}
         </Typography>
       </CardContent>
       <Box flexGrow={1} />
@@ -50,29 +50,29 @@ const CarCard = ({ className, product, ...rest }) => {
         <Grid container justify="space-between" spacing={2}>
           <Grid className={classes.statsItem} item lg={3} md={3}>
             <LocalGasStationIcon />
-            <Typography color="textPrimary" variant="h7">{product.fuelType}</Typography>
+            <Typography color="textPrimary" variant="h7">{car.fuelType}</Typography>
           </Grid>
           <Grid className={classes.statsItem} item lg={3} md={3}>
             <SettingsIcon />
-            <Typography color="textPrimary" variant="h7">{product.gearboxType}</Typography>
+            <Typography color="textPrimary" variant="h7">{car.gearboxType}</Typography>
           </Grid>
           <Grid className={classes.statsItem} item lg={4} md={4}>
             <AttachMoneyIcon />
-            <Typography color="textPrimary" variant="h5">{product.pricePerDay} zł / dzień</Typography>
+            <Typography color="textPrimary" variant="h5">{car.pricePerDay} zł / dzień</Typography>
           </Grid>
         </Grid>
         <Grid container justify="space-between" spacing={2}>
           <Grid className={classes.statsItem} item lg={3} md={3}>
             <AcUnitIcon />
-            <Typography color="textPrimary" variant="h7">{product.acType}</Typography>
+            <Typography color="textPrimary" variant="h7">{car.acType}</Typography>
           </Grid>
           <Grid className={classes.statsItem} item lg={3} md={3}>
             <PersonIcon />
-            <Typography color="textPrimary" variant="h7">{product.numberOfPassengers}</Typography>
+            <Typography color="textPrimary" variant="h7">{car.numberOfPassengers}</Typography>
           </Grid>
           <Grid className={classes.statsItem} item lg={4} md={4}>
             <AttachMoneyIcon />
-            <Typography color="textPrimary" variant="h6">{product.depositAmount} zł kaucji</Typography>
+            <Typography color="textPrimary" variant="h6">{car.depositAmount} zł kaucji</Typography>
           </Grid>
         </Grid>
       </Box>
@@ -82,7 +82,7 @@ const CarCard = ({ className, product, ...rest }) => {
 
 CarCard.propTypes = {
   className: PropTypes.string,
-  product: PropTypes.object.isRequired
+  car: PropTypes.object.isRequired
 };
 
 export default CarCard;

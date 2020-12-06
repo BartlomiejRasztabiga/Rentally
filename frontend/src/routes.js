@@ -7,7 +7,7 @@ import CustomerListView from "src/views/customer/CustomerListView";
 import DashboardView from "src/views/dashboard/DashboardView";
 import LoginView from "src/views/auth/LoginView";
 import NotFoundView from "src/views/errors/NotFoundView";
-import ProductListView from "src/views/cars/CarsListView";
+import CarsListView from "src/views/cars/CarsListView";
 import RegisterView from "src/views/auth/RegisterView";
 import SettingsView from "src/views/settings/SettingsView";
 
@@ -18,7 +18,7 @@ const routes = [
     children: [
       { path: "customers", element: <CustomerListView /> },
       { path: "dashboard", element: <DashboardView /> },
-      { path: "cars", element: <ProductListView /> },
+      { path: "cars", element: <CarsListView /> },
       { path: "settings", element: <SettingsView /> },
       { path: "*", element: <Navigate to="/404" /> }
     ]
