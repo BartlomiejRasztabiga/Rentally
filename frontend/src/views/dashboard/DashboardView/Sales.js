@@ -1,20 +1,10 @@
-import React from 'react';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import { Bar } from 'react-chartjs-2';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  useTheme,
-  makeStyles,
-  colors
-} from '@material-ui/core';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import React from "react";
+import clsx from "clsx";
+import PropTypes from "prop-types";
+import { Bar } from "react-chartjs-2";
+import { Box, Button, Card, CardContent, CardHeader, colors, Divider, makeStyles, useTheme } from "@material-ui/core";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -29,15 +19,15 @@ const Sales = ({ className, ...rest }) => {
       {
         backgroundColor: colors.indigo[500],
         data: [18, 5, 19, 27, 29, 19, 20],
-        label: 'This year'
+        label: "This year"
       },
       {
         backgroundColor: colors.grey[200],
         data: [11, 20, 12, 29, 30, 25, 13],
-        label: 'Last year'
+        label: "Last year"
       }
     ],
-    labels: ['1 Aug', '2 Aug', '3 Aug', '4 Aug', '5 Aug', '6 Aug']
+    labels: ["1 Aug", "2 Aug", "3 Aug", "4 Aug", "5 Aug", "6 Aug"]
   };
 
   const options = {
@@ -90,7 +80,7 @@ const Sales = ({ className, ...rest }) => {
       enabled: true,
       footerFontColor: theme.palette.text.secondary,
       intersect: false,
-      mode: 'index',
+      mode: "index",
       titleFontColor: theme.palette.text.primary
     }
   };

@@ -1,43 +1,30 @@
-import React, { useEffect } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import {
-  Avatar,
-  Box,
-  Divider,
-  Drawer,
-  Hidden,
-  List,
-  Typography,
-  makeStyles
-} from '@material-ui/core';
-import {
-  BarChart as BarChartIcon,
-  ShoppingBag as ShoppingBagIcon,
-  Users as UsersIcon
-} from 'react-feather';
-import NavItem from './NavItem';
+import React, { useEffect } from "react";
+import { Link as RouterLink, useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
+import { Avatar, Box, Divider, Drawer, Hidden, List, makeStyles, Typography } from "@material-ui/core";
+import { BarChart as BarChartIcon, ShoppingBag as ShoppingBagIcon, Users as UsersIcon } from "react-feather";
+import NavItem from "./NavItem";
 
 const user = {
-  avatar: '/static/images/avatars/avatar_1.jpeg',
-  name: 'Test Employee'
+  avatar: "/static/images/avatars/avatar_1.jpeg",
+  name: "Test Employee"
 };
 
 const items = [
   {
-    href: '/app/dashboard',
+    href: "/app/dashboard",
     icon: BarChartIcon,
-    title: 'Dashboard'
+    title: "Dashboard"
   },
   {
-    href: '/app/customers',
+    href: "/app/customers",
     icon: UsersIcon,
-    title: 'Customers'
+    title: "Customers"
   },
   {
-    href: '/app/cars',
+    href: "/app/cars",
     icon: ShoppingBagIcon,
-    title: 'Cars'
+    title: "Cars"
   }
 ];
 
@@ -48,10 +35,10 @@ const useStyles = makeStyles(() => ({
   desktopDrawer: {
     width: 256,
     top: 64,
-    height: 'calc(100% - 64px)'
+    height: "calc(100% - 64px)"
   },
   avatar: {
-    cursor: 'pointer',
+    cursor: "pointer",
     width: 64,
     height: 64
   }
@@ -130,7 +117,8 @@ NavBar.propTypes = {
 };
 
 NavBar.defaultProps = {
-  onMobileClose: () => {},
+  onMobileClose: () => {
+  },
   openMobile: false
 };
 

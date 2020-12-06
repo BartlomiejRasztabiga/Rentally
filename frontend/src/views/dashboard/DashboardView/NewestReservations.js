@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import clsx from 'clsx';
-import moment from 'moment';
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import clsx from "clsx";
+import moment from "moment";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import PropTypes from "prop-types";
 import {
   Box,
   Button,
@@ -10,72 +10,72 @@ import {
   CardHeader,
   Chip,
   Divider,
+  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TableRow,
-  makeStyles
-} from '@material-ui/core';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+  TableRow
+} from "@material-ui/core";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 
 const data = [
   {
     id: 1,
     customer: {
-      name: 'Ekaterina Tankova'
+      name: "Ekaterina Tankova"
     },
     createdAt: 1555016400000,
-    status: 'pending'
+    status: "pending"
   },
   {
     id: 2,
     customer: {
-      name: 'Cao Yu'
+      name: "Cao Yu"
     },
     createdAt: 1555016400000,
-    status: 'cancelled'
+    status: "cancelled"
   },
   {
     id: 3,
     customer: {
-      name: 'Alexa Richardson'
+      name: "Alexa Richardson"
     },
     createdAt: 1554930000000,
-    status: 'completed'
+    status: "completed"
   },
   {
     id: 4,
     customer: {
-      name: 'Anje Keizer'
+      name: "Anje Keizer"
     },
     createdAt: 1554757200000,
-    status: 'pending'
+    status: "pending"
   },
   {
     id: 5,
     amount: 32.54,
     customer: {
-      name: 'Clarke Gillebert'
+      name: "Clarke Gillebert"
     },
     createdAt: 1554670800000,
-    status: 'pending'
+    status: "pending"
   },
   {
     id: 6,
     amount: 16.76,
     customer: {
-      name: 'Adam Denisov'
+      name: "Adam Denisov"
     },
     createdAt: 1554670800000,
-    status: 'pending'
+    status: "pending"
   }
 ];
 
 const useStyles = makeStyles(() => ({
   root: {},
   actions: {
-    justifyContent: 'flex-end'
+    justifyContent: "flex-end"
   }
 }));
 
@@ -113,12 +113,12 @@ const NewestReservations = ({ className, ...rest }) => {
                     <TableCell>{order.id}</TableCell>
                     <TableCell>{order.customer.name}</TableCell>
                     <TableCell>
-                      {moment(order.createdAt).format('DD/MM/YYYY')}
+                      {moment(order.createdAt).format("DD/MM/YYYY")}
                     </TableCell>
                     <TableCell>
                       {moment(order.createdAt)
-                        .add(1, 'day')
-                        .format('DD/MM/YYYY')}
+                        .add(1, "day")
+                        .format("DD/MM/YYYY")}
                     </TableCell>
                     <TableCell>
                       <Chip color="primary" label={order.status} size="small" />

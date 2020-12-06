@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
+import React from "react";
+import PropTypes from "prop-types";
+import clsx from "clsx";
 import {
   Box,
   Button,
@@ -11,15 +11,15 @@ import {
   Divider,
   FormControlLabel,
   Grid,
-  Typography,
-  makeStyles
-} from '@material-ui/core';
+  makeStyles,
+  Typography
+} from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {},
   item: {
-    display: 'flex',
-    flexDirection: 'column'
+    display: "flex",
+    flexDirection: "column"
   }
 });
 

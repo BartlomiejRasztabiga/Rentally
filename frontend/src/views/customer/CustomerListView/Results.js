@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import moment from 'moment';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import React, { useState } from "react";
+import clsx from "clsx";
+import PropTypes from "prop-types";
+import moment from "moment";
+import PerfectScrollbar from "react-perfect-scrollbar";
 import {
   Avatar,
   Box,
   Card,
+  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
-  Typography,
-  makeStyles
-} from '@material-ui/core';
-import getInitials from 'src/utils/getInitials';
+  Typography
+} from "@material-ui/core";
+import getInitials from "src/utils/getInitials";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -71,7 +71,7 @@ const Results = ({ className, customers, ...rest }) => {
                   </TableCell>
                   <TableCell>{customer.phone}</TableCell>
                   <TableCell>
-                    {moment(customer.createdAt).format('DD/MM/YYYY')}
+                    {moment(customer.createdAt).format("DD/MM/YYYY")}
                   </TableCell>
                 </TableRow>
               ))}

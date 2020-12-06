@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
+import React from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import * as Yup from "yup";
+import { Formik } from "formik";
 import {
   Box,
   Button,
@@ -9,16 +9,16 @@ import {
   Container,
   FormHelperText,
   Link,
+  makeStyles,
   TextField,
-  Typography,
-  makeStyles
-} from '@material-ui/core';
-import Page from 'src/components/Page';
+  Typography
+} from "@material-ui/core";
+import Page from "src/components/Page";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
-    height: '100%',
+    height: "100%",
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
   }
@@ -39,37 +39,37 @@ const RegisterView = () => {
         <Container maxWidth="sm">
           <Formik
             initialValues={{
-              email: '',
-              firstName: '',
-              lastName: '',
-              password: '',
+              email: "",
+              firstName: "",
+              lastName: "",
+              password: "",
               policy: false
             }}
             validationSchema={Yup.object().shape({
               email: Yup.string()
-                .email('Must be a valid email')
+                .email("Must be a valid email")
                 .max(255)
-                .required('Email is required'),
+                .required("Email is required"),
               firstName: Yup.string()
                 .max(255)
-                .required('First name is required'),
-              lastName: Yup.string().max(255).required('Last name is required'),
-              password: Yup.string().max(255).required('password is required'),
-              policy: Yup.boolean().oneOf([true], 'This field must be checked')
+                .required("First name is required"),
+              lastName: Yup.string().max(255).required("Last name is required"),
+              password: Yup.string().max(255).required("password is required"),
+              policy: Yup.boolean().oneOf([true], "This field must be checked")
             })}
             onSubmit={() => {
-              navigate('/app/dashboard', { replace: true });
+              navigate("/app/dashboard", { replace: true });
             }}
           >
             {({
-              errors,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-              isSubmitting,
-              touched,
-              values
-            }) => (
+                errors,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                isSubmitting,
+                touched,
+                values
+              }) => (
               <form onSubmit={handleSubmit}>
                 <Box mb={3}>
                   <Typography color="textPrimary" variant="h2">
@@ -140,7 +140,7 @@ const RegisterView = () => {
                     onChange={handleChange}
                   />
                   <Typography color="textSecondary" variant="body1">
-                    I have read the{' '}
+                    I have read the{" "}
                     <Link
                       color="primary"
                       component={RouterLink}
@@ -168,7 +168,7 @@ const RegisterView = () => {
                   </Button>
                 </Box>
                 <Typography color="textSecondary" variant="body1">
-                  Have an account?{' '}
+                  Have an account?{" "}
                   <Link component={RouterLink} to="/login" variant="h6">
                     Sign in
                   </Link>
