@@ -1,2 +1,2 @@
-from .item import Item
+from .car import Car
 from .user import User
