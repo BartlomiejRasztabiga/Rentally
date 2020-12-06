@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Results = ({ className, customers, ...rest }) => {
+const CustomersList = ({ className, customers, ...rest }) => {
   const classes = useStyles();
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
@@ -36,6 +36,7 @@ const Results = ({ className, customers, ...rest }) => {
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
+    console.log(newPage * limit)
   };
 
   return (
@@ -53,7 +54,7 @@ const Results = ({ className, customers, ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {customers.slice(0, limit).map((customer) => (
+              {customers.slice((page * limit), (page * limit) + limit).map((customer) => (
                 <TableRow hover key={customer.id}>
                   <TableCell>
                     <Box alignItems="center" display="flex">
@@ -92,9 +93,9 @@ const Results = ({ className, customers, ...rest }) => {
   );
 };
 
-Results.propTypes = {
+CustomersList.propTypes = {
   className: PropTypes.string,
   customers: PropTypes.array.isRequired
 };
 
-export default Results;
+export default CustomersList;
