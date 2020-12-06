@@ -1,28 +1,17 @@
 import React, { forwardRef } from 'react';
-import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 
-const Page = forwardRef(({
-  children,
-  title = '',
-  ...rest
-}, ref) => {
+// eslint-disable-next-line react/display-name
+const Page = forwardRef(({ children, ...rest }, ref) => {
   return (
-    <div
-      ref={ref}
-      {...rest}
-    >
-      <Helmet>
-        <title>{title}</title>
-      </Helmet>
+    <div ref={ref} {...rest}>
       {children}
     </div>
   );
 });
 
 Page.propTypes = {
-  children: PropTypes.node.isRequired,
-  title: PropTypes.string
+  children: PropTypes.node.isRequired
 };
 
 export default Page;

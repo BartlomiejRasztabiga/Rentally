@@ -12,24 +12,24 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
   },
-  productCard: {
+  carCard: {
     height: '100%'
   }
 }));
 
 const CarsList = () => {
   const classes = useStyles();
-  const [products] = useState(data);
+  const [cars] = useState(data);
 
   return (
-    <Page className={classes.root} title="Products">
+    <Page className={classes.root}>
       <Container maxWidth={false}>
         <Toolbar />
         <Box mt={3}>
           <Grid container spacing={3}>
-            {products.map((product) => (
-              <Grid item key={product.id} lg={6} md={6} xs={12}>
-                <CarCard className={classes.productCard} product={product} />
+            {cars.map((car) => (
+              <Grid item key={car.id} lg={4} md={4} xs={12}>
+                <CarCard className={classes.carCard} product={car} />
               </Grid>
             ))}
           </Grid>

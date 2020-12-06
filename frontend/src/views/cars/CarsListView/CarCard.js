@@ -2,17 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
-  Avatar,
   Box,
   Card,
   CardContent,
   Divider,
   Grid,
-  Typography,
-  makeStyles
+  makeStyles,
+  Typography
 } from '@material-ui/core';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import Image from 'material-ui-image';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
   },
   statsIcon: {
     marginRight: theme.spacing(1)
+  },
+  large: {
+    width: theme.spacing(20),
+    height: theme.spacing(20)
   }
 }));
 
@@ -35,15 +37,10 @@ const CarCard = ({ className, product, ...rest }) => {
     <Card className={clsx(classes.root, className)} {...rest}>
       <CardContent>
         <Box display="flex" justifyContent="center" mb={3}>
-          <Avatar alt="Product" src={product.media} variant="square" />
+          <Image src={product.media} />
         </Box>
-        <Typography
-          align="center"
-          color="textPrimary"
-          gutterBottom
-          variant="h4"
-        >
-          {product.title}
+        <Typography align="left" color="textPrimary" gutterBottom variant="h4">
+          {product.modelName}
         </Typography>
         <Typography align="center" color="textPrimary" variant="body1">
           {product.description}
@@ -54,16 +51,7 @@ const CarCard = ({ className, product, ...rest }) => {
       <Box p={2}>
         <Grid container justify="space-between" spacing={2}>
           <Grid className={classes.statsItem} item>
-            <AccessTimeIcon className={classes.statsIcon} color="action" />
-            <Typography color="textSecondary" display="inline" variant="body2">
-              Updated 2hr ago
-            </Typography>
-          </Grid>
-          <Grid className={classes.statsItem} item>
-            <GetAppIcon className={classes.statsIcon} color="action" />
-            <Typography color="textSecondary" display="inline" variant="body2">
-              {product.totalDownloads} Downloads
-            </Typography>
+            test
           </Grid>
         </Grid>
       </Box>

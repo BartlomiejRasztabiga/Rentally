@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Container,
-  makeStyles
-} from '@material-ui/core';
+import { Box, Container, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
 import Results from './Results';
 import Toolbar from './Toolbar';
@@ -23,10 +19,7 @@ const CustomerListView = () => {
   const [customers] = useState(data);
 
   return (
-    <Page
-      className={classes.root}
-      title="Customers"
-    >
+    <Page className={classes.root}>
       <Container maxWidth={false}>
         <Toolbar />
         <Box mt={3}>
