@@ -36,7 +36,6 @@ const CustomersList = ({ className, customers, ...rest }) => {
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
-    console.log(newPage * limit)
   };
 
   return (
