@@ -14,16 +14,12 @@ jobs:
   lint:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        python-version: [3.9]
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.9
       - name: Set up Poetry
         run: |
           pip install poetry
@@ -35,14 +31,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        python-version: [3.7, 3.8, 3.9]
-        postgres-version: [12.0, 13.0]
-
     services:
       postgres:
-        image: postgres:${{ matrix.postgres-version }}
+        image: postgres:13.0
         env:
           POSTGRES_USER: rentally
           POSTGRES_PASSWORD: rentally
@@ -60,7 +51,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.9
       - name: Set up Poetry
         run: |
           pip install poetry
