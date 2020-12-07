@@ -1,4 +1,5 @@
 import enum
+
 from sqlalchemy import Column, Integer, String, Enum, Float
 from sqlalchemy.dialects import postgresql
 
