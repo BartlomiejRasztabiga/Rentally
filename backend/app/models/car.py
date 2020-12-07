@@ -56,4 +56,4 @@ class Car(Base):
     mileage_limit = Column(Float, nullable=True)
     image_base64 = Column(String, nullable=True)
 
-    __mapper_args__ = {"polymorphic_identity": "car", "polymorphic_on": type}
+    __mapper_args__ = {"polymorphic_identity": "CAR", "polymorphic_on": type}
