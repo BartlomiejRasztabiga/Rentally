@@ -1,8 +1,8 @@
 """Car and User schema
 
-Revision ID: 6ae5debddd29
+Revision ID: 901c5b90e55f
 Revises: 
-Create Date: 2020-12-07 20:59:24.078013
+Create Date: 2020-12-07 21:08:23.279615
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '6ae5debddd29'
+revision = '901c5b90e55f'
 down_revision = None
 branch_labels = None
 depends_on = None

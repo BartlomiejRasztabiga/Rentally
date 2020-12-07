@@ -50,3 +50,8 @@ class Car(Base):
     deposit_amount = Column(postgresql.MONEY, nullable=True)
     mileage_limit = Column(Float, nullable=True)
     image_base64 = Column(String, nullable=True)
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'car',
+        'polymorphic_on': type
+    }
