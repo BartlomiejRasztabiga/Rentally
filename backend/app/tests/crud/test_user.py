@@ -33,28 +33,28 @@ def test_not_authenticate_user(db: Session) -> None:
     assert user is None
 
 
-def test_check_if_user_is_superuser(db: Session) -> None:
+def test_check_if_user_is_admin(db: Session) -> None:
     email = random_email()
     password = random_lower_string()
-    user_in = UserCreateDto(email=email, password=password, is_superuser=True)
+    user_in = UserCreateDto(email=email, password=password, is_admin=True)
     user = crud.user.create(db, obj_in=user_in)
-    is_superuser = crud.user.is_admin(user)
-    assert is_superuser is True
+    is_admin = crud.user.is_admin(user)
+    assert is_admin is True
 
 
-def test_check_if_user_is_superuser_normal_user(db: Session) -> None:
+def test_check_if_user_is_admin_normal_user(db: Session) -> None:
     username = random_email()
     password = random_lower_string()
     user_in = UserCreateDto(email=username, password=password)
     user = crud.user.create(db, obj_in=user_in)
-    is_superuser = crud.user.is_admin(user)
-    assert is_superuser is False
+    is_admin = crud.user.is_admin(user)
+    assert is_admin is False
 
 
 def test_get_user(db: Session) -> None:
     password = random_lower_string()
     username = random_email()
-    user_in = UserCreateDto(email=username, password=password, is_superuser=True)
+    user_in = UserCreateDto(email=username, password=password, is_admin=True)
     user = crud.user.create(db, obj_in=user_in)
     user_2 = crud.user.get(db, id=user.id)
     assert user_2
@@ -65,10 +65,10 @@ def test_get_user(db: Session) -> None:
 def test_update_user(db: Session) -> None:
     password = random_lower_string()
     email = random_email()
-    user_in = UserCreateDto(email=email, password=password, is_superuser=True)
+    user_in = UserCreateDto(email=email, password=password, is_admin=True)
     user = crud.user.create(db, obj_in=user_in)
     new_password = random_lower_string()
-    user_in_update = UserUpdateDto(password=new_password, is_superuser=True)
+    user_in_update = UserUpdateDto(password=new_password, is_admin=True)
     crud.user.update(db, db_obj=user, obj_in=user_in_update)
     user_2 = crud.user.get(db, id=user.id)
     assert user_2
