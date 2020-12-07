@@ -5,8 +5,8 @@ Revises: a142a8446da6
 Create Date: 2020-12-07 21:25:02.173022
 
 """
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = '5c4427d0d2f7'
@@ -25,7 +25,8 @@ def upgrade():
                     sa.ForeignKeyConstraint(['id'], ['car.id'], ),
                     sa.PrimaryKeyConstraint('id')
                     )
-    op.create_index(op.f('ix_sportscar_horsepower'), 'sportscar', ['horsepower'], unique=False)
+    op.create_index(op.f('ix_sportscar_horsepower'),
+                    'sportscar', ['horsepower'], unique=False)
     op.create_index(op.f('ix_sportscar_id'), 'sportscar', ['id'], unique=False)
     # ### end Alembic commands ###
 

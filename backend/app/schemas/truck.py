@@ -9,6 +9,7 @@ class TruckBase(BaseModel):
     is_admin: bool = False
     full_name: Optional[str] = None
 
+
 # # Properties to receive via API on creation
 # class UserCreateDto(UserBase):
 #     email: EmailStr

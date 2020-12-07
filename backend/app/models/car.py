@@ -1,38 +1,38 @@
 import enum
 
-from sqlalchemy import Column, Integer, String, Enum, Float
+from sqlalchemy import Column, Enum, Float, Integer, String
 from sqlalchemy.dialects import postgresql
 
 from app.db.base_class import Base
 
 
 class CarType(enum.Enum):
-    CAR = 'CAR',
-    TRUCK = 'TRUCK',
-    SPORT = 'SPORT'
+    CAR = ("CAR",)
+    TRUCK = ("TRUCK",)
+    SPORT = "SPORT"
 
 
 class FuelType(enum.Enum):
-    PETROL = 'PETROL',
-    DIESEL = 'DIESEL',
-    HYBRID = 'HYBRID',
-    EV = 'EV'
+    PETROL = ("PETROL",)
+    DIESEL = ("DIESEL",)
+    HYBRID = ("HYBRID",)
+    EV = "EV"
 
 
 class GearboxType(enum.Enum):
-    AUTO = 'AUTO',
-    MANUAL = 'MANUAL'
+    AUTO = ("AUTO",)
+    MANUAL = "MANUAL"
 
 
 class AcType(enum.Enum):
-    AUTO = 'AUTO',
-    MANUAL = 'MANUAL'
+    AUTO = ("AUTO",)
+    MANUAL = "MANUAL"
 
 
 class DriveType(enum.Enum):
-    FRONT = 'FRONT',
-    REAR = 'REAR',
-    ALL_WHEELS = 'ALL_WHEELS'
+    FRONT = ("FRONT",)
+    REAR = ("REAR",)
+    ALL_WHEELS = "ALL_WHEELS"
 
 
 class Car(Base):
@@ -52,7 +52,4 @@ class Car(Base):
     mileage_limit = Column(Float, nullable=True)
     image_base64 = Column(String, nullable=True)
 
-    __mapper_args__ = {
-        'polymorphic_identity': 'car',
-        'polymorphic_on': type
-    }
+    __mapper_args__ = {"polymorphic_identity": "car", "polymorphic_on": type}

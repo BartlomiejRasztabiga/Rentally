@@ -27,7 +27,8 @@ def upgrade():
                     sa.PrimaryKeyConstraint('id')
                     )
     op.create_index(op.f('ix_truck_id'), 'truck', ['id'], unique=False)
-    op.create_index(op.f('ix_truck_loading_capacity'), 'truck', ['loading_capacity'], unique=False)
+    op.create_index(op.f('ix_truck_loading_capacity'), 'truck',
+                    ['loading_capacity'], unique=False)
     # ### end Alembic commands ###
 
 

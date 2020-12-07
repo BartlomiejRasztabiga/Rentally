@@ -25,7 +25,7 @@ class CRUDUser(CRUDBase[User, UserCreateDto, UserUpdateDto]):
         return db_obj
 
     def update(
-            self, db: Session, *, db_obj: User, obj_in: Union[UserUpdateDto, Dict[str, Any]]
+        self, db: Session, *, db_obj: User, obj_in: Union[UserUpdateDto, Dict[str, Any]]
     ) -> User:
         if isinstance(obj_in, dict):
             update_data = obj_in

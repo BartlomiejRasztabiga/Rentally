@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 # Shared properties
-from app.models.car import CarType, FuelType, GearboxType, AcType, DriveType
+from app.models.car import AcType, CarType, DriveType, FuelType, GearboxType
 
 
 class CarBase(BaseModel):

@@ -3,7 +3,7 @@ from typing import Any, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app import crud, schemas, models
+from app import crud, models, schemas
 from app.api import deps
 
 router = APIRouter()
@@ -11,10 +11,10 @@ router = APIRouter()
 
 @router.get("/", response_model=List[schemas.Car])
 def get_cars(
-        db: Session = Depends(deps.get_db),
-        skip: int = 0,
-        limit: int = 100,
-        current_user: models.User = Depends(deps.get_current_user)
+    db: Session = Depends(deps.get_db),
+    skip: int = 0,
+    limit: int = 100,
+    current_user: models.User = Depends(deps.get_current_user),
 ) -> Any:
     """
     Retrieve cars.
@@ -25,10 +25,10 @@ def get_cars(
 
 @router.post("/", response_model=schemas.Car)
 def create_car(
-        *,
-        db: Session = Depends(deps.get_db),
-        car_create_dto: schemas.CarCreateDto,
-        current_user: models.User = Depends(deps.get_current_user)
+    *,
+    db: Session = Depends(deps.get_db),
+    car_create_dto: schemas.CarCreateDto,
+    current_user: models.User = Depends(deps.get_current_user)
 ) -> Any:
     """
     Create new car.
