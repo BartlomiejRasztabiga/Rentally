@@ -56,4 +56,13 @@ class Car(Base):
     mileage_limit = Column(Float, nullable=True)
     image_base64 = Column(String, nullable=True)
 
-    __mapper_args__ = {"polymorphic_identity": "CAR", "polymorphic_on": type}
+    # TRUCK RELATED
+    loading_capacity = Column(Float, nullable=True, index=True)
+    boot_width = Column(Float, nullable=True)
+    boot_height = Column(Float, nullable=True)
+    boot_length = Column(Float, nullable=True)
+
+    # SPORTSCAR RELATED
+    horsepower = Column(Integer, nullable=True, index=True)
+    zero_to_hundred_time = Column(Float, nullable=True)
+    engine_capacity = Column(Float, nullable=True)

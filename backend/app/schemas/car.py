@@ -22,6 +22,17 @@ class CarBase(BaseModel):
     mileage_limit: Optional[float]
     image_base64: Optional[str]
 
+    # TRUCK RELATED
+    loading_capacity: Optional[float]
+    boot_width: Optional[float]
+    boot_height: Optional[float]
+    boot_length: Optional[float]
+
+    # SPORTSCAR RELATED
+    horsepower: Optional[int]
+    zero_to_hundred_time: Optional[float]
+    engine_capacity: Optional[float]
+
 
 # Properties to receive via API on creation
 class CarCreateDto(CarBase):

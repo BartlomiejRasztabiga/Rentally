@@ -1,6 +1,5 @@
 from .crud_car import car
 from .crud_user import user
-from .crud_truck import truck
 
 # For a new basic set of CRUD operations you could just do
 
