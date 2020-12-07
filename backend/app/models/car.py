@@ -6,6 +6,7 @@ from sqlalchemy.dialects import postgresql
 from app.db.base_class import Base
 
 
+# fmt: off
 class CarType(enum.Enum):
     CAR = "CAR"
     TRUCK = "TRUCK"
@@ -33,6 +34,9 @@ class DriveType(enum.Enum):
     FRONT = "FRONT"
     REAR = "REAR"
     ALL_WHEELS = "ALL_WHEELS"
+
+
+# fmt: on
 
 
 class Car(Base):
