@@ -9,13 +9,12 @@ from app.schemas.user import UserCreateDto
 from app.tests.utils.utils import random_email, random_lower_string
 
 
-def test_get_users_superuser_me(
+def test_get_users_admin_me(
     client: TestClient, superuser_token_headers: Dict[str, str]
 ) -> None:
     r = client.get(f"{settings.API_V1_STR}/users/me", headers=superuser_token_headers)
     current_user = r.json()
     assert current_user
-    assert current_user["is_active"] is True
     assert current_user["is_admin"]
     assert current_user["email"] == settings.FIRST_SUPERUSER
 
@@ -26,7 +25,6 @@ def test_get_users_normal_user_me(
     r = client.get(f"{settings.API_V1_STR}/users/me", headers=normal_user_token_headers)
     current_user = r.json()
     assert current_user
-    assert current_user["is_active"] is True
     assert current_user["is_admin"] is False
     assert current_user["email"] == settings.EMAIL_TEST_USER
 
