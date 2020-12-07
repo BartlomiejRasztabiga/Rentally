@@ -7,32 +7,32 @@ from app.db.base_class import Base
 
 
 class CarType(enum.Enum):
-    CAR = 1
-    TRUCK = 2
-    SPORT = 3
+    CAR = "CAR"
+    TRUCK = "TRUCK"
+    SPORT = "SPORT"
 
 
-class FuelType(Enum):
-    PETROL = 1
-    DIESEL = 2
-    HYBRID = 3
-    EV = 4
+class FuelType(enum.Enum):
+    PETROL = "PETROL"
+    DIESEL = "DIESEL"
+    HYBRID = "HYBRID"
+    EV = "EV"
 
 
 class GearboxType(enum.Enum):
-    AUTO = 1
-    MANUAL = 2
+    AUTO = "AUTO"
+    MANUAL = "MANUAL"
 
 
 class AcType(enum.Enum):
-    AUTO = 1
-    MANUAL = 2
+    AUTO = "AUTO"
+    MANUAL = "MANUAL"
 
 
 class DriveType(enum.Enum):
-    FRONT = 1
-    REAR = 2
-    ALL_WHEELS = 3
+    FRONT = "FRONT"
+    REAR = "REAR"
+    ALL_WHEELS = "ALL_WHEELS"
 
 
 class Car(Base):
