@@ -42,7 +42,7 @@ const DashboardLayout = () => {
   const { accessToken } = useAuth();
 
   useEffect(() => {
-    if (!accessToken) navigate("/login", { replace: true });
+    if (accessToken !== undefined && accessToken != null) navigate("/login", { replace: true });
   }, [navigate, accessToken]);
 
   return (
