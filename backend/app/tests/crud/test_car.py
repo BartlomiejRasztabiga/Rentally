@@ -3,11 +3,11 @@ from decimal import Decimal
 from sqlalchemy.orm import Session
 
 from app import crud
-from app.tests.utils.car import _get_test_car_create_dto
+from app.tests.utils.car import get_test_car_create_dto
 
 
 def test_create_car(db: Session) -> None:
-    car_create_dto = _get_test_car_create_dto()
+    car_create_dto = get_test_car_create_dto()
     car = crud.car.create(db=db, obj_in=car_create_dto)
 
     assert car.type == car_create_dto.type
@@ -17,7 +17,7 @@ def test_create_car(db: Session) -> None:
 
 
 def test_get_car(db: Session) -> None:
-    car_create_dto = _get_test_car_create_dto()
+    car_create_dto = get_test_car_create_dto()
     car = crud.car.create(db=db, obj_in=car_create_dto)
 
     stored_car = crud.car.get(db=db, _id=car.id)
@@ -30,7 +30,7 @@ def test_get_car(db: Session) -> None:
 
 
 def test_update_car(db: Session) -> None:
-    car_create_dto = _get_test_car_create_dto()
+    car_create_dto = get_test_car_create_dto()
     car = crud.car.create(db=db, obj_in=car_create_dto)
 
     car_update_dto = {"deposit_amount": Decimal("10000")}
@@ -43,7 +43,7 @@ def test_update_car(db: Session) -> None:
 
 
 def test_delete_car(db: Session) -> None:
-    car_create_dto = _get_test_car_create_dto()
+    car_create_dto = get_test_car_create_dto()
     car = crud.car.create(db=db, obj_in=car_create_dto)
 
     deleted_car = crud.car.remove(db=db, _id=car.id)

@@ -7,7 +7,7 @@ from app.models.car import AcType, CarType, DriveType, FuelType, GearboxType
 from app.schemas.car import CarCreateDto
 
 
-def _get_test_car_create_dto():
+def get_test_car_create_dto():
     car_create_dto = CarCreateDto(
         model_name="test",
         type=CarType.CAR,
@@ -23,5 +23,5 @@ def _get_test_car_create_dto():
 
 
 def create_random_car(db: Session) -> models.Car:
-    car_create_dto = _get_test_car_create_dto()
+    car_create_dto = get_test_car_create_dto()
     return crud.car.create(db=db, obj_in=car_create_dto)
