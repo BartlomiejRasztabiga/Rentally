@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
-import NavBar from "./NavBar";
+import { useAuth } from "../../context/auth";
 import TopBar from "./TopBar";
+import NavBar from "./NavBar";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,24 +37,33 @@ const useStyles = makeStyles((theme) => ({
 
 const DashboardLayout = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
+  const isAuthenticated = useAuth();
+
+  useEffect(() => {
+    if (!isAuthenticated) navigate("/login", { replace: true });
+  }, [navigate, isAuthenticated]);
 
   return (
-    <div className={classes.root}>
-      <TopBar onMobileNavOpen={() => setMobileNavOpen(true)} />
-      <NavBar
-        onMobileClose={() => setMobileNavOpen(false)}
-        openMobile={isMobileNavOpen}
-      />
-      <div className={classes.wrapper}>
-        <div className={classes.contentContainer}>
-          <div className={classes.content}>
-            <Outlet />
+    <div>
+      <div className={classes.root}>
+        <TopBar onMobileNavOpen={() => setMobileNavOpen(true)} />
+        <NavBar
+          onMobileClose={() => setMobileNavOpen(false)}
+          openMobile={isMobileNavOpen}
+        />
+        <div className={classes.wrapper}>
+          <div className={classes.contentContainer}>
+            <div className={classes.content}>
+              <Outlet />
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
+
 };
 
 export default DashboardLayout;
