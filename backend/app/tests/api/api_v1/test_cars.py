@@ -41,5 +41,5 @@ def test_get_car_by_id(
     content = response.json()
     assert content["id"] == car.id
     assert content["model_name"] == car.model_name
-    assert content["type"] == car.type.value
+    assert content["type"] == "CAR"
     assert content["number_of_passengers"] == car.number_of_passengers

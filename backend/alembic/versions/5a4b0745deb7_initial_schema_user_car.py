@@ -1,7 +1,7 @@
 """Initial schema (User, Car)
 
 Revision ID: 5a4b0745deb7
-Revises: 
+Revises:
 Create Date: 2020-12-11 19:02:52.900219
 
 """
