@@ -3,6 +3,7 @@ from decimal import Decimal
 from sqlalchemy.orm import Session
 
 from app import crud
+from app.schemas import CarUpdateDto
 from app.tests.utils.car import get_test_car_create_dto
 
 
@@ -33,13 +34,13 @@ def test_update_car(db: Session) -> None:
     car_create_dto = get_test_car_create_dto()
     car = crud.car.create(db=db, obj_in=car_create_dto)
 
-    car_update_dto = {"deposit_amount": Decimal("10000")}
+    car_update_dto = CarUpdateDto(deposit_amount=Decimal("10000"))
     updated_car = crud.car.update(db=db, db_obj=car, obj_in=car_update_dto)
 
     assert car.id == updated_car.id
     assert car.type == updated_car.type
     assert updated_car.deposit_amount is not None
-    assert updated_car.deposit_amount == car_update_dto["deposit_amount"]
+    assert updated_car.deposit_amount == car_update_dto.deposit_amount
 
 
 def test_delete_car(db: Session) -> None:

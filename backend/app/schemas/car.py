@@ -34,6 +34,16 @@ class CarBase(BaseModel):
     zero_to_hundred_time: Optional[float]
     engine_capacity: Optional[float]
 
+    def __init_subclass__(cls, optional_fields=None, **kwargs):
+        """
+        allow some fields of subclass turn into optional
+        """
+        super().__init_subclass__(**kwargs)
+        if optional_fields:
+            for field in optional_fields:
+                cls.__fields__[field].outer_type_ = Optional
+                cls.__fields__[field].required = False
+
 
 # Properties to receive via API on creation
 class CarCreateDto(CarBase):
@@ -41,7 +51,10 @@ class CarCreateDto(CarBase):
 
 
 # Properties to receive via API on update
-class CarUpdateDto(CarBase):
+_update_optional_fields = CarBase.__fields__.keys()
+
+
+class CarUpdateDto(CarBase, optional_fields=_update_optional_fields):
     pass
 
 

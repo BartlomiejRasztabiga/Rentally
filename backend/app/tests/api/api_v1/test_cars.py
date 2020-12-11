@@ -6,7 +6,7 @@ from app.tests.utils.car import create_random_car
 
 
 def test_create_car(
-    client: TestClient, superuser_token_headers: dict, db: Session
+        client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     data = {
         "model_name": "Foo",
@@ -31,7 +31,7 @@ def test_create_car(
 
 
 def test_get_car_by_id(
-    client: TestClient, superuser_token_headers: dict, db: Session
+        client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     car = create_random_car(db)
     response = client.get(
@@ -43,3 +43,22 @@ def test_get_car_by_id(
     assert content["model_name"] == car.model_name
     assert content["type"] == "CAR"
     assert content["number_of_passengers"] == car.number_of_passengers
+
+
+def test_update_car(
+        client: TestClient, superuser_token_headers: dict, db: Session
+) -> None:
+    car = create_random_car(db)
+
+    data = {
+        "number_of_passengers": 8,
+    }
+    response = client.put(
+        f"{settings.API_V1_STR}/cars/{car.id}", headers=superuser_token_headers, json=data
+    )
+    assert response.status_code == 200
+    content = response.json()
+    assert content["id"] == car.id
+    assert content["model_name"] == car.model_name
+    assert content["type"] == "CAR"
+    assert content["number_of_passengers"] == data["number_of_passengers"]
