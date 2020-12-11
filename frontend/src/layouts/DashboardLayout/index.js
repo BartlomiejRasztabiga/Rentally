@@ -39,11 +39,11 @@ const DashboardLayout = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
-  const isAuthenticated = useAuth();
+  const { accessToken } = useAuth();
 
   useEffect(() => {
-    if (!isAuthenticated) navigate("/login", { replace: true });
-  }, [navigate, isAuthenticated]);
+    if (!accessToken) navigate("/login", { replace: true });
+  }, [navigate, accessToken]);
 
   return (
     <div>

@@ -1,5 +1,5 @@
 import "react-perfect-scrollbar/dist/css/styles.css";
-import React from "react";
+import React, { useState } from "react";
 import { useRoutes } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core";
 import GlobalStyles from "./components/GlobalStyles";
@@ -9,9 +9,15 @@ import { AuthContext } from "./context/auth";
 
 const App = () => {
   const routing = useRoutes(routes);
+  const [accessToken, setAuthTokens] = useState(localStorage.getItem("access_token"));
+
+  const setAccessToken = (data) => {
+    localStorage.setItem("access_token", JSON.stringify(data));
+    setAuthTokens(data);
+  };
 
   return (
-    <AuthContext.Provider value={false}>
+    <AuthContext.Provider value={{ accessToken, setAccessToken }}>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
         {routing}

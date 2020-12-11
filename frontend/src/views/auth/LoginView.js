@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import axios from "axios";
 import { Formik } from "formik";
 import { Box, Button, Container, Link, makeStyles, TextField, Typography } from "@material-ui/core";
 import Page from "src/components/Page";
+import { ACCESS_TOKEN_URL } from "../../config";
+import { useAuth } from "../../context/auth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -11,12 +14,55 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
+  },
+
+  errorMessage: {
+    color: "red"
   }
 }));
 
 const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [error, setError] = useState(null);
+  const { setAccessToken } = useAuth();
+
+
+  const postLogin = (values, actions) => {
+    const username = values.email;
+    const password = values.password;
+
+    const bodyFormData = new FormData();
+    bodyFormData.append("username", username);
+    bodyFormData.append("password", password);
+
+    axios({
+      method: "post",
+      url: ACCESS_TOKEN_URL,
+      data: bodyFormData,
+      headers: { "Content-Type": "multipart/form-data" }
+    })
+      .then(function(response) {
+        actions.setSubmitting(false);
+        actions.resetForm();
+
+        setError(null);
+
+        setAccessToken(response.data.access_token)
+        setLoggedIn(true)
+      })
+      .catch(function(error) {
+        const errorMsg = error.response.data.detail;
+
+        actions.setSubmitting(false);
+        setError(errorMsg);
+      });
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) navigate("/app/dashboard", { replace: true });
+  }, [navigate, isLoggedIn])
 
   return (
     <Page className={classes.root}>
@@ -39,8 +85,8 @@ const LoginView = () => {
                 .required("Email is required"),
               password: Yup.string().max(255).required("Password is required")
             })}
-            onSubmit={() => {
-              navigate("/app/dashboard", { replace: true });
+            onSubmit={(values, actions) => {
+              postLogin(values, actions);
             }}
           >
             {({
@@ -84,6 +130,7 @@ const LoginView = () => {
                   value={values.password}
                   variant="outlined"
                 />
+                {error ? <div className={classes.errorMessage}>{error}</div> : null}
                 <Box my={2}>
                   <Button
                     color="primary"
