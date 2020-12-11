@@ -1,3 +1,4 @@
+from decimal import Decimal
 from typing import Optional
 
 from pydantic import BaseModel
@@ -17,8 +18,8 @@ class CarBase(BaseModel):
     average_consumption: Optional[float]
     number_of_airbags: int
     boot_capacity: Optional[float]
-    price_per_day: str
-    deposit_amount: Optional[str]
+    price_per_day: Decimal
+    deposit_amount: Optional[Decimal]
     mileage_limit: Optional[float]
     image_base64: Optional[str]
 

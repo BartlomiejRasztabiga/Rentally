@@ -11,24 +11,22 @@ router = APIRouter()
 
 @router.get("/", response_model=List[schemas.Car])
 def get_cars(
-        db: Session = Depends(deps.get_db),
-        skip: int = 0,
-        limit: int = 100,
-        current_user: models.User = Depends(deps.get_current_user),
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_user),
 ) -> Any:
     """
     Retrieve cars.
     """
-    cars = crud.car.get_multi(db, skip=skip, limit=limit)
+    cars = crud.car.get_all(db)
     return cars
 
 
 @router.post("/", response_model=schemas.Car)
 def create_car(
-        *,
-        db: Session = Depends(deps.get_db),
-        car_create_dto: schemas.CarCreateDto,
-        current_user: models.User = Depends(deps.get_current_user)
+    *,
+    db: Session = Depends(deps.get_db),
+    car_create_dto: schemas.CarCreateDto,
+    current_user: models.User = Depends(deps.get_current_user)
 ) -> Any:
     """
     Create new car.

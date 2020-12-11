@@ -1,7 +1,6 @@
 import enum
 
-from sqlalchemy import Column, Enum, Float, Integer, String
-from sqlalchemy.dialects import postgresql
+from sqlalchemy import Column, Enum, Float, Integer, Numeric, String
 
 from app.db.base_class import Base
 
@@ -51,8 +50,8 @@ class Car(Base):
     average_consumption = Column(Float, nullable=True)
     number_of_airbags = Column(Integer, nullable=False)
     boot_capacity = Column(Float, nullable=True)
-    price_per_day = Column(postgresql.MONEY, index=True, nullable=False)
-    deposit_amount = Column(postgresql.MONEY, nullable=True)
+    price_per_day = Column(Numeric(10, 2), index=True, nullable=False)
+    deposit_amount = Column(Numeric(10, 2), nullable=True)
     mileage_limit = Column(Float, nullable=True)
     image_base64 = Column(String, nullable=True)
 
