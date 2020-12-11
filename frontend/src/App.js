@@ -9,11 +9,16 @@ import { AuthContext } from "./context/auth";
 
 const App = () => {
   const routing = useRoutes(routes);
-  const [accessToken, setAuthTokens] = useState(localStorage.getItem("access_token"));
+  const [accessToken, setAccessTokenState] = useState(localStorage.getItem("access_token"));
 
   const setAccessToken = (data) => {
-    localStorage.setItem("access_token", JSON.stringify(data));
-    setAuthTokens(data);
+    if (!data) {
+      localStorage.removeItem("access_token");
+      setAccessTokenState(null);
+    } else {
+      localStorage.setItem("access_token", JSON.stringify(data));
+      setAccessTokenState(data);
+    }
   };
 
   return (
