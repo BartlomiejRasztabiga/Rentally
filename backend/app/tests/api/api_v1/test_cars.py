@@ -54,7 +54,9 @@ def test_update_car(
         "number_of_passengers": 8,
     }
     response = client.put(
-        f"{settings.API_V1_STR}/cars/{car.id}", headers=superuser_token_headers, json=data
+        f"{settings.API_V1_STR}/cars/{car.id}",
+        headers=superuser_token_headers,
+        json=data,
     )
     assert response.status_code == 200
     content = response.json()
@@ -62,3 +64,20 @@ def test_update_car(
     assert content["model_name"] == car.model_name
     assert content["type"] == "CAR"
     assert content["number_of_passengers"] == data["number_of_passengers"]
+
+
+def test_delete_car(
+        client: TestClient, superuser_token_headers: dict, db: Session
+) -> None:
+    car = create_random_car(db)
+
+    response = client.delete(
+        f"{settings.API_V1_STR}/cars/{car.id}",
+        headers=superuser_token_headers,
+    )
+    assert response.status_code == 200
+
+    response = client.get(
+        f"{settings.API_V1_STR}/cars/{car.id}", headers=superuser_token_headers,
+    )
+    assert response.status_code == 404
