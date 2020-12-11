@@ -42,15 +42,7 @@ class CarCreateDto(CarBase):
 
 # Properties to receive via API on update
 class CarUpdateDto(CarBase):
-    model_name: Optional[str]
-    type: Optional[CarType]
-    fuel_type: Optional[FuelType]
-    gearbox_type: Optional[GearboxType]
-    ac_type: Optional[AcType]
-    number_of_passengers: Optional[int]
-    drive_type: Optional[DriveType]
-    number_of_airbags: Optional[int]
-    price_per_day: Optional[Decimal]
+    pass
 
 
 class CarInDBBase(CarBase):
