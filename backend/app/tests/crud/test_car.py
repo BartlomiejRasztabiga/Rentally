@@ -3,23 +3,8 @@ from decimal import Decimal
 from sqlalchemy.orm import Session
 
 from app import crud
-from app.models.car import AcType, CarType, DriveType, FuelType, GearboxType
-from app.schemas.car import CarCreateDto, CarUpdateDto
-
-
-def _get_test_car_create_dto():
-    car_create_dto = CarCreateDto(
-        model_name="test",
-        type=CarType.CAR,
-        fuel_type=FuelType.DIESEL,
-        gearbox_type=GearboxType.AUTO,
-        ac_type=AcType.AUTO,
-        number_of_passengers=4,
-        drive_type=DriveType.FRONT,
-        number_of_airbags=8,
-        price_per_day=Decimal("99.99"),
-    )
-    return car_create_dto
+from app.schemas.car import CarUpdateDto
+from app.tests.utils.car import _get_test_car_create_dto
 
 
 def test_create_car(db: Session) -> None:

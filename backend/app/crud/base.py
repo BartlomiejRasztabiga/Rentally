@@ -24,7 +24,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self.model = model
 
     def get(self, db: Session, _id: Any) -> Optional[ModelType]:
-        return db.query(self.model).filter(self.model.id == _id).first()
+        return db.query(self.model).get(_id)
 
     def get_all(self, db: Session) -> List[ModelType]:
         return db.query(self.model).all()

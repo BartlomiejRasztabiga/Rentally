@@ -21,12 +21,28 @@ def get_cars(
     return cars
 
 
+@router.get("/{id}", response_model=schemas.Car)
+def get_car(
+    id: int,
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_user),
+) -> Any:
+    """
+    Get car by ID.
+    """
+    car = crud.car.get(db=db, _id=id)
+    if not car:
+        raise HTTPException(status_code=404, detail="Car not found")
+
+    return car
+
+
 @router.post("/", response_model=schemas.Car)
 def create_car(
     *,
     db: Session = Depends(deps.get_db),
     car_create_dto: schemas.CarCreateDto,
-    current_user: models.User = Depends(deps.get_current_user)
+    current_user: models.User = Depends(deps.get_current_active_admin)
 ) -> Any:
     """
     Create new car.
