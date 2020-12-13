@@ -294,7 +294,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Average fuel consumption"
+                      label="Average fuel consumption (l/100km)"
                       name="average_consumption"
                       type="number"
                       onChange={handleChange}
@@ -318,7 +318,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Boot capacity"
+                      label="Boot capacity (l)"
                       name="boot_capacity"
                       type="number"
                       onChange={handleChange}
@@ -329,7 +329,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Price per day"
+                      label="Price per day (PLN)"
                       name="price_per_day"
                       type="number"
                       onChange={handleChange}
@@ -342,7 +342,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Deposit amount"
+                      label="Deposit amount (PLN)"
                       name="deposit_amount"
                       type="number"
                       onChange={handleChange}
@@ -353,7 +353,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Mileage limit per day"
+                      label="Mileage limit per day (km)"
                       name="mileage_limit"
                       type="number"
                       onChange={handleChange}
@@ -366,7 +366,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Loading capacity"
+                      label="Loading capacity (m^3)"
                       name="loading_capacity"
                       type="number"
                       onChange={handleChange}
@@ -378,7 +378,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Boot width"
+                      label="Boot width (cm)"
                       name="boot_width"
                       type="number"
                       onChange={handleChange}
@@ -390,7 +390,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Boot height"
+                      label="Boot height (cm)"
                       name="boot_height"
                       type="number"
                       onChange={handleChange}
@@ -402,7 +402,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Boot length"
+                      label="Boot length (cm)"
                       name="boot_length"
                       type="number"
                       onChange={handleChange}
@@ -427,7 +427,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="0-100 time"
+                      label="0-100 time (s)"
                       name="zero_to_hundred_time"
                       type="number"
                       onChange={handleChange}
@@ -439,7 +439,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Engine capacity"
+                      label="Engine capacity (l)"
                       name="engine_capacity"
                       type="number"
                       onChange={handleChange}
