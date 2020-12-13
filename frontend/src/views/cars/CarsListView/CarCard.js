@@ -7,6 +7,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import PersonIcon from "@material-ui/icons/Person";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import AcUnitIcon from "@material-ui/icons/AcUnit";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
   large: {
     width: theme.spacing(20),
     height: theme.spacing(20)
+  },
+  link: {
+    color: "inherit",
+    textDecoration: "none"
   }
 }));
 
@@ -42,7 +47,7 @@ const CarCard = ({ className, car, ...rest }) => {
             {car.model_name}
           </Typography>
           <Button variant="contained" color="primary">
-            DETAILS
+            <Link className={classes.link} to={`/app/cars/${car.id}`}>DETAILS</Link>
           </Button>
         </Grid>
       </CardContent>

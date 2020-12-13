@@ -10,6 +10,7 @@ import NotFoundView from "src/views/errors/NotFoundView";
 import CarsListView from "src/views/cars/CarsListView";
 import RegisterView from "src/views/auth/RegisterView";
 import SettingsView from "src/views/settings/SettingsView";
+import CarDetailsView from "src/views/cars/CarDetailsView"
 
 const routes = [
   {
@@ -19,6 +20,7 @@ const routes = [
       { path: "customers", element: <CustomerListView /> },
       { path: "dashboard", element: <DashboardView /> },
       { path: "cars", element: <CarsListView /> },
+      { path: "cars/:carId", element: <CarDetailsView /> },
       { path: "settings", element: <SettingsView /> },
       { path: "*", element: <Navigate to="/404" /> }
     ]

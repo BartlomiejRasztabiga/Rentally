@@ -5,4 +5,8 @@ const getCars = async () => {
   return await axios.get(GET_ALL_CARS).then(response => response.data);
 };
 
-export { getCars };
+const getCarById = async (carId) => {
+  return await axios.get(`${GET_ALL_CARS}/${carId}`).then(response => response.data);
+};
+
+export { getCars, getCarById };
