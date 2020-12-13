@@ -99,7 +99,7 @@ const CarDetails = () => {
                   type="file"
                   onChange={handleFileRead}
                 />
-                <label>
+                <label htmlFor="raised-button-file">
                   <Button variant="contained" component="span" color="primary">
                     Upload
                   </Button>
@@ -384,11 +384,9 @@ const CarDetails = () => {
         justify="center"
         style={{ minHeight: "100vh" }}
       >
-
         <Grid item xs={3}>
           <Typography variant="h2">Loading...</Typography>
         </Grid>
-
       </Grid>)}
     </React.Fragment>
   );
