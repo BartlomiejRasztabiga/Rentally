@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Box, Button, Container, makeStyles } from "@material-ui/core";
-import { useParams } from "react-router";
 import history from "history/browser";
 import CreateUpdateCarForm from "../../../components/CreateUpdateCarForm";
 
@@ -27,12 +26,10 @@ const useStyles = makeStyles((theme) => ({
 
 const CarDetails = () => {
   const classes = useStyles();
-  let { carId } = useParams();
 
   const handleGoBack = () => {
     history.back();
   };
-
 
   return (
     <React.Fragment>
@@ -44,7 +41,7 @@ const CarDetails = () => {
         </Box>
       </Container>
       <Container className={classes.carDetails}>
-        <CreateUpdateCarForm carId={carId} />
+        <CreateUpdateCarForm />
       </Container>
     </React.Fragment>
 

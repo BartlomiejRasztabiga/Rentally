@@ -14,7 +14,8 @@ import {
 import Page from "src/components/Page";
 import CarCard from "./CarCard";
 import { getCars } from "../../../service/carsService";
-import { Search as SearchIcon } from "react-feather";
+import { useNavigate } from "react-router";
+import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CarsList = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
   const [cars, setCars] = useState([]);
   const [searchPhrase, setSearchPhrase] = useState("");
 
@@ -39,12 +41,16 @@ const CarsList = () => {
     });
   }, []);
 
+  const handleAddCar = () => {
+    navigate("/app/cars/new")
+  }
+
   return (
     <Page className={classes.root}>
       <Container maxWidth={false}>
         {/*TODO can extract this earch box to another component and share state? redux or react context?*/}
         <Box display="flex" justifyContent="flex-end">
-          <Button color="primary" variant="contained">
+          <Button color="primary" variant="contained" onClick={handleAddCar}>
             Add car
           </Button>
         </Box>
