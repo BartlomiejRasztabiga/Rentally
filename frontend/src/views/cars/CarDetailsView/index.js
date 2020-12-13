@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Box, Button, Card, CardContent, Container, Grid, makeStyles, Paper, TextField } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Grid,
+  makeStyles,
+  Paper,
+  TextField,
+  Typography,
+  CardActions,
+  InputLabel,
+  MenuItem,
+  Select,
+  FormControl
+} from "@material-ui/core";
 import { useParams } from "react-router";
-import Page from "../../../components/Page";
 import clsx from "clsx";
 import { getCarById } from "../../../service/carsService";
 import convertToBase64 from "../../../utils/convertToBase64";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +33,8 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none"
   },
   carDetails: {
-    marginTop: theme.spacing(5)
+    marginTop: theme.spacing(5),
+    marginBottom: theme.spacing(5)
   }
 }));
 
@@ -37,6 +49,10 @@ const CarDetails = () => {
       setCar(car);
     });
   }, [carId]);
+
+  const emptyIfNull = value => {
+    return value || "";
+  };
 
 
   const handleFileRead = async (event) => {
@@ -65,8 +81,8 @@ const CarDetails = () => {
   };
 
   return (
-    <Page className={classes.root}>
-      {car && (
+    <React.Fragment>
+      {car ? (
         <Container className={classes.carDetails}>
           <Card className={clsx(classes.root)}>
             <CardContent>
@@ -83,7 +99,7 @@ const CarDetails = () => {
                   type="file"
                   onChange={handleFileRead}
                 />
-                <label htmlFor="raised-button-file">
+                <label>
                   <Button variant="contained" component="span" color="primary">
                     Upload
                   </Button>
@@ -100,7 +116,7 @@ const CarDetails = () => {
                       name="model_name"
                       onChange={handleChange}
                       required
-                      value={car.model_name}
+                      value={emptyIfNull(car.model_name)}
                       variant="outlined"
                     />
                   </Grid>
@@ -108,7 +124,7 @@ const CarDetails = () => {
                     <FormControl variant="outlined" fullWidth>
                       <InputLabel>Type</InputLabel>
                       <Select
-                        value={car.type}
+                        value={emptyIfNull(car.type)}
                         onChange={handleChange}
                         label="Type"
                         name="type"
@@ -124,7 +140,7 @@ const CarDetails = () => {
                     <FormControl variant="outlined" fullWidth>
                       <InputLabel>Fuel type</InputLabel>
                       <Select
-                        value={car.fuel_type}
+                        value={emptyIfNull(car.fuel_type)}
                         onChange={handleChange}
                         label="Fuel type"
                         name="fuel_type"
@@ -141,7 +157,7 @@ const CarDetails = () => {
                     <FormControl variant="outlined" fullWidth>
                       <InputLabel>Gearbox type</InputLabel>
                       <Select
-                        value={car.gearbox_type}
+                        value={emptyIfNull(car.gearbox_type)}
                         onChange={handleChange}
                         label="Gearbox type"
                         name="gearbox_type"
@@ -156,7 +172,7 @@ const CarDetails = () => {
                     <FormControl variant="outlined" fullWidth>
                       <InputLabel>AC type</InputLabel>
                       <Select
-                        value={car.ac_type}
+                        value={emptyIfNull(car.ac_type)}
                         onChange={handleChange}
                         label="AC type"
                         name="ac_type"
@@ -175,7 +191,7 @@ const CarDetails = () => {
                       type="number"
                       onChange={handleChange}
                       required
-                      value={car.number_of_passengers}
+                      value={emptyIfNull(car.number_of_passengers)}
                       variant="outlined"
                     />
                   </Grid>
@@ -183,7 +199,7 @@ const CarDetails = () => {
                     <FormControl variant="outlined" fullWidth>
                       <InputLabel>Drive type</InputLabel>
                       <Select
-                        value={car.drive_type}
+                        value={emptyIfNull(car.drive_type)}
                         onChange={handleChange}
                         label="Drive type"
                         name="drive_type"
@@ -202,7 +218,7 @@ const CarDetails = () => {
                       name="average_consumption"
                       type="number"
                       onChange={handleChange}
-                      value={car.average_consumption}
+                      value={emptyIfNull(car.average_consumption)}
                       variant="outlined"
                     />
                   </Grid>
@@ -214,7 +230,7 @@ const CarDetails = () => {
                       type="number"
                       onChange={handleChange}
                       required
-                      value={car.number_of_airbags}
+                      value={emptyIfNull(car.number_of_airbags)}
                       variant="outlined"
                     />
                   </Grid>
@@ -225,7 +241,7 @@ const CarDetails = () => {
                       name="boot_capacity"
                       type="number"
                       onChange={handleChange}
-                      value={car.boot_capacity}
+                      value={emptyIfNull(car.boot_capacity)}
                       variant="outlined"
                     />
                   </Grid>
@@ -237,7 +253,7 @@ const CarDetails = () => {
                       type="number"
                       onChange={handleChange}
                       required
-                      value={car.price_per_day}
+                      value={emptyIfNull(car.price_per_day)}
                       variant="outlined"
                     />
                   </Grid>
@@ -248,7 +264,7 @@ const CarDetails = () => {
                       name="deposit_amount"
                       type="number"
                       onChange={handleChange}
-                      value={car.deposit_amount}
+                      value={emptyIfNull(car.deposit_amount)}
                       variant="outlined"
                     />
                   </Grid>
@@ -259,7 +275,7 @@ const CarDetails = () => {
                       name="mileage_limit"
                       type="number"
                       onChange={handleChange}
-                      value={car.mileage_limit}
+                      value={emptyIfNull(car.mileage_limit)}
                       variant="outlined"
                     />
                   </Grid>
@@ -272,7 +288,7 @@ const CarDetails = () => {
                       name="loading_capacity"
                       type="number"
                       onChange={handleChange}
-                      value={car.loading_capacity}
+                      value={emptyIfNull(car.loading_capacity)}
                       variant="outlined"
                       disabled={!isTruck()}
                     />
@@ -284,7 +300,7 @@ const CarDetails = () => {
                       name="boot_width"
                       type="number"
                       onChange={handleChange}
-                      value={car.boot_width}
+                      value={emptyIfNull(car.boot_width)}
                       variant="outlined"
                       disabled={!isTruck()}
                     />
@@ -296,7 +312,7 @@ const CarDetails = () => {
                       name="boot_height"
                       type="number"
                       onChange={handleChange}
-                      value={car.boot_height}
+                      value={emptyIfNull(car.boot_height)}
                       variant="outlined"
                       disabled={!isTruck()}
                     />
@@ -308,7 +324,7 @@ const CarDetails = () => {
                       name="boot_length"
                       type="number"
                       onChange={handleChange}
-                      value={car.boot_length}
+                      value={emptyIfNull(car.boot_length)}
                       variant="outlined"
                       disabled={!isTruck()}
                     />
@@ -321,7 +337,7 @@ const CarDetails = () => {
                       name="horsepower"
                       type="number"
                       onChange={handleChange}
-                      value={car.horsepower}
+                      value={emptyIfNull(car.horsepower)}
                       variant="outlined"
                       disabled={!isSportsCar()}
                     />
@@ -333,7 +349,7 @@ const CarDetails = () => {
                       name="zero_to_hundred_time"
                       type="number"
                       onChange={handleChange}
-                      value={car.zero_to_hundred_time}
+                      value={emptyIfNull(car.zero_to_hundred_time)}
                       variant="outlined"
                       disabled={!isSportsCar()}
                     />
@@ -345,7 +361,7 @@ const CarDetails = () => {
                       name="engine_capacity"
                       type="number"
                       onChange={handleChange}
-                      value={car.engine_capacity}
+                      value={emptyIfNull(car.engine_capacity)}
                       variant="outlined"
                       disabled={!isSportsCar()}
                     />
@@ -353,10 +369,28 @@ const CarDetails = () => {
                 </Grid>
               </form>
             </CardContent>
+            <CardActions disableSpacing>
+              <Button variant="contained" component="span" color="primary">
+                Update
+              </Button>
+            </CardActions>
           </Card>
         </Container>
-      )}
-    </Page>
+      ) : (<Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="center"
+        style={{ minHeight: "100vh" }}
+      >
+
+        <Grid item xs={3}>
+          <Typography variant="h2">Loading...</Typography>
+        </Grid>
+
+      </Grid>)}
+    </React.Fragment>
   );
 };
 
