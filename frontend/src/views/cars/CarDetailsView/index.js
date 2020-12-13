@@ -36,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
   carDetails: {
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(5)
+  },
+  uploadImageBox: {
+    alignItems: "center",
+    justifyContent: "center"
   }
 }));
 
@@ -111,7 +115,7 @@ const CarDetails = () => {
       <Grid item xs={3}>
         <Typography variant="h2">{error}</Typography>
       </Grid>
-    </Grid>)
+    </Grid>);
   }
 
   return (
@@ -120,7 +124,8 @@ const CarDetails = () => {
         <Container className={classes.carDetails}>
           <Card className={clsx(classes.root)}>
             <CardContent>
-              <Box display="flex" justifyContent="center" mb={3}>
+              <Box display="flex" justifyContent="center" mb={3} flexDirection="column"
+                   className={classes.uploadImageBox}>
                 <Paper variant="outlined">
                   <img src={car.image_base64} alt={car.model_name} width="500px" height="250px" />
                 </Paper>
@@ -135,7 +140,7 @@ const CarDetails = () => {
                 />
                 <label htmlFor="raised-button-file">
                   <Button variant="contained" component="span" color="primary">
-                    Upload
+                    Choose image
                   </Button>
                 </label>
               </Box>
