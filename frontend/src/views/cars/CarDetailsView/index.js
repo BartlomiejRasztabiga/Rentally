@@ -45,10 +45,16 @@ const CarDetails = () => {
   const navigate = useNavigate();
 
   const [car, setCar] = useState();
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     getCarById(carId).then(car => {
       setCar(car);
+      setError(null);
+    }).catch(error => {
+      if (error.response.status === 404) {
+        setError("Car with given id not found");
+      }
     });
   }, [carId]);
 
@@ -89,9 +95,24 @@ const CarDetails = () => {
 
   const handleDeleteCar = () => {
     deleteCar(carId).then(() => {
-      navigate("/app/cars")
+      navigate("/app/cars");
     });
   };
+
+  if (error) {
+    return (<Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justify="center"
+      style={{ minHeight: "100vh" }}
+    >
+      <Grid item xs={3}>
+        <Typography variant="h2">{error}</Typography>
+      </Grid>
+    </Grid>)
+  }
 
   return (
     <React.Fragment>
