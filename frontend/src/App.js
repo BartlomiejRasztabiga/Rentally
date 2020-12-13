@@ -1,11 +1,12 @@
 import "react-perfect-scrollbar/dist/css/styles.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRoutes } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core";
 import GlobalStyles from "./components/GlobalStyles";
 import theme from "./theme";
 import routes from "./routes";
 import { AuthContext } from "./context/auth";
+import { getMe } from "./service/userService";
 
 const App = () => {
   const routing = useRoutes(routes);
@@ -16,10 +17,23 @@ const App = () => {
       localStorage.removeItem("access_token");
       setAccessTokenState(null);
     } else {
-      localStorage.setItem("access_token", JSON.stringify(data));
+      localStorage.setItem("access_token", data);
       setAccessTokenState(data);
     }
   };
+
+  useEffect(() => {
+    // check if JWT is correct and not expired
+    (async () => {
+      if (accessToken) {
+        try {
+          await getMe(accessToken);
+        } catch (e) {
+          setAccessToken(null);
+        }
+      }
+    })();
+  }, [accessToken]);
 
   return (
     <AuthContext.Provider value={{ accessToken, setAccessToken }}>

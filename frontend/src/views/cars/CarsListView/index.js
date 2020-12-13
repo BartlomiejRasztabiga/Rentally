@@ -3,7 +3,6 @@ import { Box, Container, Grid, makeStyles } from "@material-ui/core";
 import Page from "src/components/Page";
 import Toolbar from "./Toolbar";
 import CarCard from "./CarCard";
-import data from "./data";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CarsList = () => {
   const classes = useStyles();
-  const [cars] = useState(data);
+  // const [cars] = useState(data);
 
   return (
     <Page className={classes.root}>
@@ -27,11 +26,11 @@ const CarsList = () => {
         <Toolbar />
         <Box mt={3}>
           <Grid container spacing={3}>
-            {cars.map((car) => (
-              <Grid item key={car.id} lg={4} md={4} xs={12}>
-                <CarCard className={classes.carCard} car={car} />
-              </Grid>
-            ))}
+            {/*{cars.map((car) => (*/}
+            {/*  <Grid item key={car.id} lg={4} md={4} xs={12}>*/}
+            {/*    <CarCard className={classes.carCard} car={car} />*/}
+            {/*  </Grid>*/}
+            {/*))}*/}
           </Grid>
         </Box>
       </Container>
