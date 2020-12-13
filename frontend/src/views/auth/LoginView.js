@@ -49,20 +49,21 @@ const LoginView = () => {
 
         setError(null);
 
-        setAccessToken(response.data.access_token)
-        setLoggedIn(true)
+        setAccessToken(response.data.access_token);
+        setLoggedIn(true);
       })
       .catch(function(error) {
-        const errorMsg = error.response.data.detail;
-
+        if (error.response) {
+          const errorMsg = error.response.data.detail;
+          setError(errorMsg);
+        }
         actions.setSubmitting(false);
-        setError(errorMsg);
       });
   };
 
   useEffect(() => {
     if (isLoggedIn) navigate("/app/dashboard", { replace: true });
-  }, [navigate, isLoggedIn])
+  }, [navigate, isLoggedIn]);
 
   return (
     <Page className={classes.root}>

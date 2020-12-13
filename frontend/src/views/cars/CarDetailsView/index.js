@@ -22,6 +22,7 @@ import clsx from "clsx";
 import { deleteCar, getCarById, updateCar } from "../../../service/carsService";
 import convertToBase64 from "../../../utils/convertToBase64";
 import { useNavigate } from "react-router-dom";
+import history from "history/browser";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -103,6 +104,10 @@ const CarDetails = () => {
     });
   };
 
+  const handleGoBack = () => {
+    history.back();
+  };
+
   if (error) {
     return (<Grid
       container
@@ -120,6 +125,13 @@ const CarDetails = () => {
 
   return (
     <React.Fragment>
+      <Container maxWidth={false} className={classes.carDetails}>
+        <Box display="flex" justifyContent="flex-start">
+          <Button color="primary" variant="contained" onClick={handleGoBack}>
+            Go back
+          </Button>
+        </Box>
+      </Container>
       {car ? (
         <Container className={classes.carDetails}>
           <Card className={clsx(classes.root)}>
@@ -416,9 +428,11 @@ const CarDetails = () => {
                   </Button>
                 </Grid>
                 <Grid item md={6}>
-                  <Button variant="contained" component="span" color="secondary" onClick={handleDeleteCar}>
-                    Delete
-                  </Button>
+                  <Grid container justify="flex-end">
+                    <Button variant="contained" component="span" color="secondary" onClick={handleDeleteCar}>
+                      Delete
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
             </CardActions>
