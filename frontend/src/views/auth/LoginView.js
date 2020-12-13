@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import axios from "axios";
+import axios from "../../service/axios";
 import { Formik } from "formik";
 import { Box, Button, Container, Link, makeStyles, TextField, Typography } from "@material-ui/core";
 import Page from "src/components/Page";

@@ -6,7 +6,7 @@ import GlobalStyles from "./components/GlobalStyles";
 import theme from "./theme";
 import routes from "./routes";
 import { AuthContext } from "./context/auth";
-import { getMe } from "./service/userService";
+import { getMe } from "./service/usersService";
 
 const App = () => {
   const routing = useRoutes(routes);
