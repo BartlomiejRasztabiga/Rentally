@@ -9,6 +9,8 @@ import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import AcUnitIcon from "@material-ui/icons/AcUnit";
 import { Link } from "react-router-dom";
 
+const EMPTY_IMG_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -39,7 +41,7 @@ const CarCard = ({ className, car, ...rest }) => {
       <CardContent>
         <Box display="flex" justifyContent="center" mb={3}>
           <Paper variant="outlined">
-            <img src={car.image_base64} alt={car.model_name} width="500px" height="250px" />
+            <img src={car.image_base64 || EMPTY_IMG_BASE64} alt={car.model_name} width="500px" height="250px" />
           </Paper>
         </Box>
         <Grid container justify="space-between">
@@ -47,6 +49,12 @@ const CarCard = ({ className, car, ...rest }) => {
             {car.model_name}
           </Typography>
           <Button variant="contained" color="primary">
+            <Link className={classes.link} to={`/app/cars/`}>RENT</Link>
+          </Button>
+          <Button variant="contained" color="secondary">
+            <Link className={classes.link} to={`/app/cars/`}>RESERVE</Link>
+          </Button>
+          <Button variant="contained">
             <Link className={classes.link} to={`/app/cars/${car.id}`}>DETAILS</Link>
           </Button>
         </Grid>

@@ -19,8 +19,10 @@ import {
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { deleteCar, getCarById, updateCar } from "../service/carsService";
+import { createCar, deleteCar, getCarById, updateCar } from "../service/carsService";
 import convertToBase64 from "../utils/convertToBase64";
+import Loading from "./Loading";
+import ReactJson from "react-json-view";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
   uploadImageBox: {
     alignItems: "center",
     justifyContent: "center"
+  },
+  errorBox: {
+    margin: theme.spacing(5)
   }
 }));
 
@@ -47,26 +52,27 @@ const CreateUpdateCarForm = ({ carId }) => {
   const navigate = useNavigate();
 
   const [car, setCar] = useState({});
-  const [error, setError] = useState(null);
+  const [loaded, setLoaded] = useState(false);
+  const [loadingError, setLoadingError] = useState(null);
+  const [postError, setPostError] = useState(null);
 
   const isInCreateMode = !carId;
   const isInEditMode = !isInCreateMode;
-
-  const showDeleteButton = () => {
-    return isInEditMode;
-  };
 
   useEffect(() => {
     if (isInEditMode) {
       getCarById(carId).then(car => {
         setCar(car);
-        setError(null);
+        setLoadingError(null);
+        setLoaded(true);
       }).catch(error => {
+        setLoaded(true);
         if (error.response.status === 404) {
-          setError("Car with given id not found");
+          setLoadingError("Car with given id not found");
         }
       });
     }
+
   }, [isInEditMode, carId]);
 
   const emptyIfNull = value => {
@@ -100,10 +106,27 @@ const CreateUpdateCarForm = ({ carId }) => {
 
   const handleCreateUpdateCar = () => {
     if (carId) {
-      updateCar(car).then(car => {
-        setCar(car);
-      });
+      handleUpdateCar(car);
+    } else {
+      handleCreateCar(car);
     }
+  };
+
+  const handleUpdateCar = car => {
+    updateCar(car).then(car => {
+      setCar(car);
+      setPostError(null);
+    }).catch(error => {
+      setPostError(JSON.stringify(error.response.data));
+    });
+  };
+
+  const handleCreateCar = car => {
+    createCar(car).then(car => {
+      navigate(`/app/cars/${car.id}`, { replace: true });
+    }).catch(error => {
+      setPostError(JSON.stringify(error.response.data));
+    });
   };
 
   const handleDeleteCar = () => {
@@ -112,7 +135,7 @@ const CreateUpdateCarForm = ({ carId }) => {
     });
   };
 
-  if (error) {
+  if (loadingError) {
     return (<Grid
       container
       spacing={0}
@@ -122,7 +145,7 @@ const CreateUpdateCarForm = ({ carId }) => {
       style={{ minHeight: "100vh" }}
     >
       <Grid item xs={3}>
-        <Typography variant="h2">{error}</Typography>
+        <Typography variant="h2">{loadingError}</Typography>
       </Grid>
     </Grid>);
   }
@@ -130,14 +153,15 @@ const CreateUpdateCarForm = ({ carId }) => {
 
   return (
     <React.Fragment>
-      {(car || isInCreateMode) ? (
+      {loaded ? (
         <Container className={classes.carDetails}>
           <Card className={clsx(classes.root)}>
             <CardContent>
               <Box display="flex" justifyContent="center" mb={3} flexDirection="column"
                    className={classes.uploadImageBox}>
                 <Paper variant="outlined">
-                  <img src={emptyIfNull(car.image_base64)} alt={car.model_name} width="500px" height="250px" />
+                  {car.image_base64 && (
+                    <img src={emptyIfNull(car.image_base64)} alt={car.model_name} width="500px" height="250px" />)}
                 </Paper>
                 <input
                   accept="image/*"
@@ -154,9 +178,9 @@ const CreateUpdateCarForm = ({ carId }) => {
                   </Button>
                 </label>
               </Box>
+              {postError && <div color="error" className={classes.errorBox}><ReactJson src={JSON.parse(postError)} theme="ocean"/></div>}
               <form
-                autoComplete="off"
-                noValidate>
+                autoComplete="off">
                 <Grid container spacing={3}>
                   <Grid item md={6} xs={12}>
                     <TextField
@@ -165,6 +189,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                       name="model_name"
                       onChange={handleChange}
                       required
+                      error={!car.model_name}
                       value={emptyIfNull(car.model_name)}
                       variant="outlined"
                     />
@@ -178,6 +203,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                         label="Type"
                         name="type"
                         required
+                        error={!car.type}
                       >
                         <MenuItem value="CAR">CAR</MenuItem>
                         <MenuItem value="TRUCK">TRUCK</MenuItem>
@@ -194,6 +220,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                         label="Fuel type"
                         name="fuel_type"
                         required
+                        error={!car.fuel_type}
                       >
                         <MenuItem value="PETROL">PETROL</MenuItem>
                         <MenuItem value="DIESEL">DIESEL</MenuItem>
@@ -211,6 +238,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                         label="Gearbox type"
                         name="gearbox_type"
                         required
+                        error={!car.gearbox_type}
                       >
                         <MenuItem value="AUTO">AUTO</MenuItem>
                         <MenuItem value="MANUAL">MANUAL</MenuItem>
@@ -226,6 +254,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                         label="AC type"
                         name="ac_type"
                         required
+                        error={!car.ac_type}
                       >
                         <MenuItem value="AUTO">AUTO</MenuItem>
                         <MenuItem value="MANUAL">MANUAL</MenuItem>
@@ -240,6 +269,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                       type="number"
                       onChange={handleChange}
                       required
+                      error={!car.number_of_passengers}
                       value={emptyIfNull(car.number_of_passengers)}
                       variant="outlined"
                     />
@@ -253,6 +283,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                         label="Drive type"
                         name="drive_type"
                         required
+                        error={!car.drive_type}
                       >
                         <MenuItem value="FRONT">FRONT</MenuItem>
                         <MenuItem value="REAR">REAR</MenuItem>
@@ -279,6 +310,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                       type="number"
                       onChange={handleChange}
                       required
+                      error={!car.number_of_airbags}
                       value={emptyIfNull(car.number_of_airbags)}
                       variant="outlined"
                     />
@@ -302,6 +334,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                       type="number"
                       onChange={handleChange}
                       required
+                      error={!car.price_per_day}
                       value={emptyIfNull(car.price_per_day)}
                       variant="outlined"
                     />
@@ -320,7 +353,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Mileage limit"
+                      label="Mileage limit per day"
                       name="mileage_limit"
                       type="number"
                       onChange={handleChange}
@@ -422,10 +455,10 @@ const CreateUpdateCarForm = ({ carId }) => {
               <Grid container>
                 <Grid item md={6}>
                   <Button variant="contained" component="span" color="primary" onClick={handleCreateUpdateCar}>
-                    Update
+                    Save
                   </Button>
                 </Grid>
-                {showDeleteButton && (
+                {isInEditMode && (
                   <Grid item md={6}>
                     <Grid container justify="flex-end">
                       <Button variant="contained" component="span" color="secondary" onClick={handleDeleteCar}>
@@ -438,18 +471,7 @@ const CreateUpdateCarForm = ({ carId }) => {
             </CardActions>
           </Card>
         </Container>
-      ) : (<Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: "100vh" }}
-      >
-        <Grid item xs={3}>
-          <Typography variant="h2">Loading...</Typography>
-        </Grid>
-      </Grid>)}
+      ) : <Loading />}
     </React.Fragment>
   );
 };
