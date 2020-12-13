@@ -4,23 +4,24 @@ import {
   Box,
   Button,
   Card,
+  CardActions,
   CardContent,
   Container,
+  FormControl,
   Grid,
-  makeStyles,
-  Paper,
-  TextField,
-  Typography,
-  CardActions,
   InputLabel,
+  makeStyles,
   MenuItem,
+  Paper,
   Select,
-  FormControl
+  TextField,
+  Typography
 } from "@material-ui/core";
 import { useParams } from "react-router";
 import clsx from "clsx";
-import { getCarById } from "../../../service/carsService";
+import { deleteCar, getCarById, updateCar } from "../../../service/carsService";
 import convertToBase64 from "../../../utils/convertToBase64";
+import { useNavigate } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 const CarDetails = () => {
   const classes = useStyles();
   let { carId } = useParams();
+  const navigate = useNavigate();
 
   const [car, setCar] = useState();
 
@@ -53,7 +55,6 @@ const CarDetails = () => {
   const emptyIfNull = value => {
     return value || "";
   };
-
 
   const handleFileRead = async (event) => {
     const file = event.target.files[0];
@@ -78,6 +79,18 @@ const CarDetails = () => {
 
   const isTruck = () => {
     return car && car.type === "TRUCK";
+  };
+
+  const handleUpdateCar = () => {
+    updateCar(car).then(car => {
+      setCar(car);
+    });
+  };
+
+  const handleDeleteCar = () => {
+    deleteCar(carId).then(() => {
+      navigate("/app/cars")
+    });
   };
 
   return (
@@ -370,9 +383,18 @@ const CarDetails = () => {
               </form>
             </CardContent>
             <CardActions disableSpacing>
-              <Button variant="contained" component="span" color="primary">
-                Update
-              </Button>
+              <Grid container>
+                <Grid item md={6}>
+                  <Button variant="contained" component="span" color="primary" onClick={handleUpdateCar}>
+                    Update
+                  </Button>
+                </Grid>
+                <Grid item md={6}>
+                  <Button variant="contained" component="span" color="secondary" onClick={handleDeleteCar}>
+                    Delete
+                  </Button>
+                </Grid>
+              </Grid>
             </CardActions>
           </Card>
         </Container>
