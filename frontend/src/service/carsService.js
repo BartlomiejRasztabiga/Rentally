@@ -3,13 +3,13 @@ import { CARS_URL } from "../config";
 
 const cleanupCarFields = car => {
   // if field is falsy (empty string, null, undefined), set it to null
-  // Object.entries(car).forEach((entry) => {
-  //   let key, value;
-  //   [key, value] = entry;
-  //   if (!value) {
-  //     car[key] = null;
-  //   }
-  // });
+  Object.entries(car).forEach((entry) => {
+    let key, value;
+    [key, value] = entry;
+    if (!value) {
+      car[key] = null;
+    }
+  });
   return car;
 };
 
