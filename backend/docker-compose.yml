@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:13.1
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/pgdata
+    env_file:
+      - .env
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+
+  backend:
+    image: "backend:latest"
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_SERVER=db:5432
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+volumes:
+  postgres-data:
