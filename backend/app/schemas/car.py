@@ -1,11 +1,12 @@
 from decimal import Decimal
-from typing import Optional
+from typing import List, Optional
 
-# Shared properties
 from app.models.car import AcType, CarType, DriveType, FuelType, GearboxType
 from app.schemas.base import BaseModelWithOptionals
+from app.schemas.reservation import Reservation
 
 
+# Shared properties
 class CarBase(BaseModelWithOptionals):
     model_name: str
     type: CarType
@@ -21,6 +22,7 @@ class CarBase(BaseModelWithOptionals):
     deposit_amount: Optional[Decimal]
     mileage_limit: Optional[float]
     image_base64: Optional[str]
+    reservations: Optional[List[Reservation]]
 
     # TRUCK RELATED
     loading_capacity: Optional[float]

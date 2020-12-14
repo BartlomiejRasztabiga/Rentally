@@ -1,6 +1,8 @@
 import enum
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer
+from sqlalchemy.orm import relationship
 
 from app.db.base_class import Base
 
@@ -14,11 +16,19 @@ class ReservationStatus(enum.Enum):
 
 # fmt: on
 
+# to properly initialise relationships
+
+if TYPE_CHECKING:
+    from .car import Car  # noqa: F401
+    from .customer import Customer  # noqa: F401
+
 
 class Reservation(Base):
     id = Column(Integer, primary_key=True, index=True)
     car_id = Column(Integer, ForeignKey("car.id"), nullable=False)
+    car = relationship("Car", back_populates="reservations")
     customer_id = Column(Integer, ForeignKey("customer.id"), nullable=False)
+    customer = relationship("Customer", back_populates="reservations")
     start_date = Column(DateTime, nullable=False)
     end_date = Column(DateTime, nullable=False)
     status = Column(Enum(ReservationStatus), nullable=False)

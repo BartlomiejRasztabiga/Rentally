@@ -1,8 +1,15 @@
 import enum
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Column, Enum, Float, Integer, Numeric, String
+from sqlalchemy.orm import relationship
 
 from app.db.base_class import Base
+
+# to properly initialise relationships
+
+if TYPE_CHECKING:
+    from .reservation import Reservation  # noqa: F401
 
 
 # fmt: off
@@ -54,6 +61,7 @@ class Car(Base):
     deposit_amount = Column(Numeric(10, 2), nullable=True)
     mileage_limit = Column(Float, nullable=True)
     image_base64 = Column(String, nullable=True)
+    reservations = relationship("Reservation")
 
     # TRUCK RELATED
     loading_capacity = Column(Float, nullable=True, index=True)
