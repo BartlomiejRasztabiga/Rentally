@@ -7,6 +7,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/NotificationsOutlined";
 import InputIcon from "@material-ui/icons/Input";
 import Logo from "src/components/Logo";
+import { useAuth } from "../../context/auth";
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -23,6 +24,11 @@ const TopBar = ({
                 }) => {
   const classes = useStyles();
   const [notifications] = useState([]);
+  const { setAccessToken } = useAuth();
+
+  const logout = () => {
+    setAccessToken(null);
+  };
 
   return (
     <AppBar
@@ -45,7 +51,10 @@ const TopBar = ({
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <IconButton color="inherit">
+          <IconButton
+            color="inherit"
+            onClick={logout}
+          >
             <InputIcon />
           </IconButton>
         </Hidden>

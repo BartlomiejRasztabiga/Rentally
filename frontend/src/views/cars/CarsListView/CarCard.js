@@ -1,12 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { Box, Card, CardContent, Divider, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
+import { Box, Button, Card, CardContent, Divider, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import LocalGasStationIcon from "@material-ui/icons/LocalGasStation";
 import SettingsIcon from "@material-ui/icons/Settings";
 import PersonIcon from "@material-ui/icons/Person";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import AcUnitIcon from "@material-ui/icons/AcUnit";
+import { Link } from "react-router-dom";
+
+const EMPTY_IMG_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,6 +26,10 @@ const useStyles = makeStyles((theme) => ({
   large: {
     width: theme.spacing(20),
     height: theme.spacing(20)
+  },
+  link: {
+    color: "inherit",
+    textDecoration: "none"
   }
 }));
 
@@ -34,15 +41,23 @@ const CarCard = ({ className, car, ...rest }) => {
       <CardContent>
         <Box display="flex" justifyContent="center" mb={3}>
           <Paper variant="outlined">
-            <img src={car.media} alt={car.modelName} width="500px" height="250px" />
+            <img src={car.image_base64 || EMPTY_IMG_BASE64} alt={car.model_name} width="500px" height="250px" />
           </Paper>
         </Box>
-        <Typography align="left" color="textPrimary" gutterBottom variant="h4">
-          {car.modelName}
-        </Typography>
-        <Typography align="center" color="textPrimary" variant="body1">
-          {car.description}
-        </Typography>
+        <Grid container justify="space-between">
+          <Typography align="left" color="textPrimary" gutterBottom variant="h4">
+            {car.model_name}
+          </Typography>
+          <Button variant="contained" color="primary">
+            <Link className={classes.link} to={`/app/cars/`}>RENT</Link>
+          </Button>
+          <Button variant="contained" color="secondary">
+            <Link className={classes.link} to={`/app/cars/`}>RESERVE</Link>
+          </Button>
+          <Button variant="contained">
+            <Link className={classes.link} to={`/app/cars/${car.id}`}>DETAILS</Link>
+          </Button>
+        </Grid>
       </CardContent>
       <Box flexGrow={1} />
       <Divider />
@@ -50,29 +65,29 @@ const CarCard = ({ className, car, ...rest }) => {
         <Grid container justify="space-between" spacing={2}>
           <Grid className={classes.statsItem} item lg={3} md={3}>
             <LocalGasStationIcon />
-            <Typography color="textPrimary" variant="h7">{car.fuelType}</Typography>
+            <Typography color="textPrimary" variant="h6">{car.fuel_type}</Typography>
           </Grid>
           <Grid className={classes.statsItem} item lg={3} md={3}>
             <SettingsIcon />
-            <Typography color="textPrimary" variant="h7">{car.gearboxType}</Typography>
+            <Typography color="textPrimary" variant="h6">{car.gearbox_type}</Typography>
           </Grid>
           <Grid className={classes.statsItem} item lg={4} md={4}>
             <AttachMoneyIcon />
-            <Typography color="textPrimary" variant="h5">{car.pricePerDay} zł / dzień</Typography>
+            <Typography color="textPrimary" variant="h5">{car.price_per_day} PLN / day</Typography>
           </Grid>
         </Grid>
         <Grid container justify="space-between" spacing={2}>
           <Grid className={classes.statsItem} item lg={3} md={3}>
             <AcUnitIcon />
-            <Typography color="textPrimary" variant="h7">{car.acType}</Typography>
+            <Typography color="textPrimary" variant="h6">{car.ac_type}</Typography>
           </Grid>
           <Grid className={classes.statsItem} item lg={3} md={3}>
             <PersonIcon />
-            <Typography color="textPrimary" variant="h7">{car.numberOfPassengers}</Typography>
+            <Typography color="textPrimary" variant="h6">{car.number_of_passengers}</Typography>
           </Grid>
           <Grid className={classes.statsItem} item lg={4} md={4}>
             <AttachMoneyIcon />
-            <Typography color="textPrimary" variant="h6">{car.depositAmount} zł kaucji</Typography>
+            <Typography color="textPrimary" variant="h6">{car.deposit_amount} PLN deposit</Typography>
           </Grid>
         </Grid>
       </Box>

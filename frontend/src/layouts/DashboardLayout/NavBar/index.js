@@ -2,7 +2,10 @@ import React, { useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Avatar, Box, Divider, Drawer, Hidden, List, makeStyles, Typography } from "@material-ui/core";
-import { BarChart as BarChartIcon, ShoppingBag as ShoppingBagIcon, Users as UsersIcon } from "react-feather";
+import DriveEtaIcon from '@material-ui/icons/DriveEta';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+
 import NavItem from "./NavItem";
 
 const user = {
@@ -13,17 +16,17 @@ const user = {
 const items = [
   {
     href: "/app/dashboard",
-    icon: BarChartIcon,
+    icon: DashboardIcon,
     title: "Dashboard"
   },
   {
     href: "/app/customers",
-    icon: UsersIcon,
+    icon: SupervisorAccountIcon,
     title: "Customers"
   },
   {
     href: "/app/cars",
-    icon: ShoppingBagIcon,
+    icon: DriveEtaIcon,
     title: "Cars"
   }
 ];

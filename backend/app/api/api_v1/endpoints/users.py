@@ -14,24 +14,22 @@ router = APIRouter()
 
 @router.get("/", response_model=List[schemas.User])
 def read_users(
-        db: Session = Depends(deps.get_db),
-        skip: int = 0,
-        limit: int = 100,
-        current_user: models.User = Depends(deps.get_current_active_admin),
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_active_admin),
 ) -> Any:
     """
     Retrieve users.
     """
-    users = crud.user.get_multi(db, skip=skip, limit=limit)
+    users = crud.user.get_all(db)
     return users
 
 
 @router.post("/", response_model=schemas.User)
 def create_user(
-        *,
-        db: Session = Depends(deps.get_db),
-        user_in: schemas.UserCreateDto,
-        current_user: models.User = Depends(deps.get_current_active_admin),
+    *,
+    db: Session = Depends(deps.get_db),
+    user_in: schemas.UserCreateDto,
+    current_user: models.User = Depends(deps.get_current_active_admin),
 ) -> Any:
     """
     Create new user.
@@ -49,12 +47,12 @@ def create_user(
 
 @router.put("/me", response_model=schemas.User)
 def update_user_me(
-        *,
-        db: Session = Depends(deps.get_db),
-        password: str = Body(None),
-        full_name: str = Body(None),
-        email: EmailStr = Body(None),
-        current_user: models.User = Depends(deps.get_current_user),
+    *,
+    db: Session = Depends(deps.get_db),
+    password: str = Body(None),
+    full_name: str = Body(None),
+    email: EmailStr = Body(None),
+    current_user: models.User = Depends(deps.get_current_user),
 ) -> Any:
     """
     Update own user.
@@ -73,8 +71,8 @@ def update_user_me(
 
 @router.get("/me", response_model=schemas.User)
 def read_user_me(
-        db: Session = Depends(deps.get_db),
-        current_user: models.User = Depends(deps.get_current_user),
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_user),
 ) -> Any:
     """
     Get current user.
@@ -84,11 +82,11 @@ def read_user_me(
 
 @router.post("/open", response_model=schemas.User)
 def create_user_open(
-        *,
-        db: Session = Depends(deps.get_db),
-        password: str = Body(...),
-        email: EmailStr = Body(...),
-        full_name: str = Body(None),
+    *,
+    db: Session = Depends(deps.get_db),
+    password: str = Body(...),
+    email: EmailStr = Body(...),
+    full_name: str = Body(None),
 ) -> Any:
     """
     Create new user without the need to be logged in.
@@ -111,14 +109,14 @@ def create_user_open(
 
 @router.get("/{user_id}", response_model=schemas.User)
 def read_user_by_id(
-        user_id: int,
-        current_user: models.User = Depends(deps.get_current_user),
-        db: Session = Depends(deps.get_db),
+    user_id: int,
+    current_user: models.User = Depends(deps.get_current_user),
+    db: Session = Depends(deps.get_db),
 ) -> Any:
     """
     Get a specific user by id.
     """
-    user = crud.user.get(db, id=user_id)
+    user = crud.user.get(db, _id=user_id)
     if user == current_user:
         return user
     if not crud.user.is_admin(current_user):
@@ -130,16 +128,16 @@ def read_user_by_id(
 
 @router.put("/{user_id}", response_model=schemas.User)
 def update_user(
-        *,
-        db: Session = Depends(deps.get_db),
-        user_id: int,
-        user_in: schemas.UserUpdateDto,
-        current_user: models.User = Depends(deps.get_current_active_admin),
+    *,
+    db: Session = Depends(deps.get_db),
+    user_id: int,
+    user_in: schemas.UserUpdateDto,
+    current_user: models.User = Depends(deps.get_current_active_admin),
 ) -> Any:
     """
     Update a user.
     """
-    user = crud.user.get(db, id=user_id)
+    user = crud.user.get(db, _id=user_id)
     if not user:
         raise HTTPException(
             status_code=404,

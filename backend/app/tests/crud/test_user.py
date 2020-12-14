@@ -56,7 +56,7 @@ def test_get_user(db: Session) -> None:
     username = random_email()
     user_in = UserCreateDto(email=username, password=password, is_admin=True)
     user = crud.user.create(db, obj_in=user_in)
-    user_2 = crud.user.get(db, id=user.id)
+    user_2 = crud.user.get(db, _id=user.id)
     assert user_2
     assert user.email == user_2.email
     assert jsonable_encoder(user) == jsonable_encoder(user_2)
@@ -70,7 +70,7 @@ def test_update_user(db: Session) -> None:
     new_password = random_lower_string()
     user_in_update = UserUpdateDto(password=new_password, is_admin=True)
     crud.user.update(db, db_obj=user, obj_in=user_in_update)
-    user_2 = crud.user.get(db, id=user.id)
+    user_2 = crud.user.get(db, _id=user.id)
     assert user_2
     assert user.email == user_2.email
     assert verify_password(new_password, user_2.hashed_password)

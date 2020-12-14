@@ -59,7 +59,7 @@ jobs:
       - name: Test
         run: |
           poetry run ./prestart.sh
-          poetry run python3 ./app/tests_pre_start.py
+          poetry run python3 ./app/pre_start.py
           poetry run pytest --cov=app --cov-report=xml app/tests "${@}"
       - uses: codecov/codecov-action@v1
         with:
