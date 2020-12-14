@@ -6,7 +6,7 @@ from app.tests.utils.customer import create_random_customer
 
 
 def test_create_customer(
-        client: TestClient, superuser_token_headers: dict, db: Session
+    client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     data = {
         "full_name": "Foo",
@@ -25,11 +25,12 @@ def test_create_customer(
 
 
 def test_get_customer_by_id(
-        client: TestClient, superuser_token_headers: dict, db: Session
+    client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     customer = create_random_customer(db)
     response = client.get(
-        f"{settings.API_V1_STR}/customers/{customer.id}", headers=superuser_token_headers,
+        f"{settings.API_V1_STR}/customers/{customer.id}",
+        headers=superuser_token_headers,
     )
     assert response.status_code == 200
     content = response.json()
@@ -40,7 +41,7 @@ def test_get_customer_by_id(
 
 
 def test_update_customer(
-        client: TestClient, superuser_token_headers: dict, db: Session
+    client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     customer = create_random_customer(db)
 
@@ -61,16 +62,18 @@ def test_update_customer(
 
 
 def test_delete_customer(
-        client: TestClient, superuser_token_headers: dict, db: Session
+    client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     customer = create_random_customer(db)
 
     response = client.delete(
-        f"{settings.API_V1_STR}/customers/{customer.id}", headers=superuser_token_headers,
+        f"{settings.API_V1_STR}/customers/{customer.id}",
+        headers=superuser_token_headers,
     )
     assert response.status_code == 200
 
     response = client.get(
-        f"{settings.API_V1_STR}/customers/{customer.id}", headers=superuser_token_headers,
+        f"{settings.API_V1_STR}/customers/{customer.id}",
+        headers=superuser_token_headers,
     )
     assert response.status_code == 404

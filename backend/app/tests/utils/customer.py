@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from app import models, crud
+from app import crud, models
 from app.schemas.customer import CustomerCreateDto
 
 
