@@ -1,10 +1,10 @@
 from typing import Optional
 
-from pydantic import BaseModel
-
-
 # Shared properties
-class CustomerBase(BaseModel):
+from app.schemas.base import BaseModelWithOptionals
+
+
+class CustomerBase(BaseModelWithOptionals):
     full_name: str
     address: Optional[str]
     phone_number: Optional[str]
