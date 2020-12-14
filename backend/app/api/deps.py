@@ -48,6 +48,6 @@ def get_current_active_admin(
 ) -> models.User:
     if not crud.user.is_admin(current_user):
         raise HTTPException(
-            status_code=400, detail="The user doesn't have enough privileges"
+            status_code=401, detail="The user doesn't have enough privileges"
         )
     return current_user
