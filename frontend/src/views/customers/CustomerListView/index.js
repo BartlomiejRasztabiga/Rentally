@@ -5,17 +5,16 @@ import {
   Card,
   CardContent,
   Container,
-  Grid,
   InputAdornment,
   makeStyles,
   SvgIcon,
   TextField
 } from "@material-ui/core";
 import Page from "src/components/Page";
-import CarCard from "./CarCard";
-import { getCars } from "../../../service/carsService";
+import CustomersList from "./CustomersList";
+import SearchIcon from "@material-ui/icons/Search";
+import { getCustomers } from "../../../service/customersService";
 import { useNavigate } from "react-router";
-import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,35 +22,37 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "100%",
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
-  },
-  carCard: {
-    height: "100%"
   }
 }));
 
-const CarsList = () => {
+const CustomerListView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const [cars, setCars] = useState([]);
+  const [customers, setCustomers] = useState([]);
   const [searchPhrase, setSearchPhrase] = useState("");
 
   useEffect(() => {
-    getCars().then(cars => {
-      setCars(cars);
+    getCustomers().then(customers => {
+      setCustomers(customers);
     });
   }, []);
 
-  const handleAddCar = () => {
-    navigate("/app/cars/new")
-  }
+  const handleAddCustomer = () => {
+    navigate("/app/customers/new");
+  };
+
+  const filterCustomersBasedOnSearchPhrase = () => {
+    return customers.filter(customer => customer.full_name.toLowerCase().includes(searchPhrase.toLowerCase()));
+  };
 
   return (
     <Page className={classes.root}>
       <Container maxWidth={false}>
         {/*TODO can extract this search box to another component and share state? redux or react context?*/}
+        {/*Should share it with CarsListView*/}
         <Box display="flex" justifyContent="flex-end">
-          <Button color="primary" variant="contained" onClick={handleAddCar}>
-            Add car
+          <Button color="primary" variant="contained" onClick={handleAddCustomer}>
+            Add customer
           </Button>
         </Box>
         <Box mt={3}>
@@ -71,7 +72,7 @@ const CarsList = () => {
                       </InputAdornment>
                     )
                   }}
-                  placeholder="Search car"
+                  placeholder="Search customer"
                   variant="outlined"
                 />
               </Box>
@@ -79,17 +80,12 @@ const CarsList = () => {
           </Card>
         </Box>
         <Box mt={3}>
-          <Grid container spacing={3}>
-            {cars.filter(car => car.model_name.toLowerCase().includes(searchPhrase.toLowerCase())).map((car) => (
-              <Grid item key={car.id} lg={4} md={4} xs={12}>
-                <CarCard className={classes.carCard} car={car} />
-              </Grid>
-            ))}
-          </Grid>
+          <CustomersList
+            customers={filterCustomersBasedOnSearchPhrase()} />
         </Box>
       </Container>
     </Page>
   );
 };
 
-export default CarsList;
+export default CustomerListView;

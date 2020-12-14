@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Box, Button, Container, makeStyles } from "@material-ui/core";
 import history from "history/browser";
-import CreateUpdateCarForm from "../../../components/CreateUpdateCarForm";
+import CreateUpdateCustomerForm from "../../../components/CreateUpdateCustomerForm";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CreateCarView = () => {
+const CreateCustomerView = () => {
   const classes = useStyles();
 
   const handleGoBack = () => {
@@ -33,14 +33,15 @@ const CreateCarView = () => {
         </Box>
       </Container>
       <Container className={classes.carDetails}>
-        <CreateUpdateCarForm />
+        <CreateUpdateCustomerForm />
       </Container>
     </React.Fragment>
+
   );
 };
 
-CreateCarView.propTypes = {
+CreateCustomerView.propTypes = {
   className: PropTypes.string
 };
 
-export default CreateCarView;
+export default CreateCustomerView;

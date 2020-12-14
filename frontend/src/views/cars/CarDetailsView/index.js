@@ -47,7 +47,6 @@ const CarDetails = () => {
         <CreateUpdateCarForm carId={carId} />
       </Container>
     </React.Fragment>
-
   );
 };
 
