@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -34,11 +34,11 @@ class CarBase(BaseModel):
     zero_to_hundred_time: Optional[float]
     engine_capacity: Optional[float]
 
-    def __init_subclass__(cls, optional_fields=None, **kwargs):
+    def __init_subclass__(cls, optional_fields: List[str] = None) -> None:
         """
         allow some fields of subclass turn into optional
         """
-        super().__init_subclass__(**kwargs)
+        super().__init_subclass__()
         if optional_fields:
             for field in optional_fields:
                 cls.__fields__[field].outer_type_ = Optional
