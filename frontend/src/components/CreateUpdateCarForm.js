@@ -153,7 +153,7 @@ const CreateUpdateCarForm = ({ carId }) => {
 
   return (
     <React.Fragment>
-      {loaded ? (
+      {(loaded || isInCreateMode) ? (
         <Container className={classes.carDetails}>
           <Card className={clsx(classes.root)}>
             <CardContent>
@@ -178,7 +178,9 @@ const CreateUpdateCarForm = ({ carId }) => {
                   </Button>
                 </label>
               </Box>
-              {postError && <div color="error" className={classes.errorBox}><ReactJson src={JSON.parse(postError)} theme="ocean"/></div>}
+              {postError &&
+              <div color="error" className={classes.errorBox}><ReactJson src={JSON.parse(postError)} theme="ocean" />
+              </div>}
               <form
                 autoComplete="off">
                 <Grid container spacing={3}>
