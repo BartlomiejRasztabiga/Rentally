@@ -8,7 +8,7 @@ from app.db.base_class import Base
 # fmt: off
 class ReservationStatus(enum.Enum):
     NEW = "NEW"
-    COMPLETED = "COMPLETED"
+    COLLECTED = "COLLECTED"
     CANCELLED = "CANCELLED"
 
 
