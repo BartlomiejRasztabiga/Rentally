@@ -1,10 +1,12 @@
 from typing import Any, List
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app import crud, models, schemas
 from app.api import deps
+from app.exceptions.instance_not_found import CarNotFoundException
+from app.exceptions.not_enough_permissions import NotEnoughPermissionsException
 
 router = APIRouter()
 
@@ -32,7 +34,7 @@ def get_car(
     """
     car = crud.car.get(db=db, _id=id)
     if not car:
-        raise HTTPException(status_code=404, detail="Car not found")
+        raise CarNotFoundException()
 
     return car
 
@@ -50,9 +52,9 @@ def delete_car(
     car = crud.car.get(db=db, _id=id)
 
     if not car:
-        raise HTTPException(status_code=404, detail="Car not found")
+        raise CarNotFoundException()
     if not crud.user.is_admin(current_user):
-        raise HTTPException(status_code=400, detail="Not enough permissions")
+        raise NotEnoughPermissionsException()
 
     car = crud.car.remove(db=db, _id=id)
     return car
@@ -69,7 +71,7 @@ def create_car(
     Create new car.
     """
     if not crud.user.is_admin(current_user):
-        raise HTTPException(status_code=400, detail="Not enough permissions")
+        raise NotEnoughPermissionsException()
 
     car = crud.car.create(db=db, obj_in=car_create_dto)
     return car
@@ -89,9 +91,9 @@ def update_car(
     car = crud.car.get(db=db, _id=id)
 
     if not car:
-        raise HTTPException(status_code=404, detail="Car not found")
+        raise CarNotFoundException()
     if not crud.user.is_admin(current_user):
-        raise HTTPException(status_code=400, detail="Not enough permissions")
+        raise NotEnoughPermissionsException()
 
     car = crud.car.update(db=db, db_obj=car, obj_in=car_update_dto)
     return car

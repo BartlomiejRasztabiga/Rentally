@@ -34,7 +34,7 @@ def test_update_car(db: Session) -> None:
     car_create_dto = get_test_car_create_dto()
     car = crud.car.create(db=db, obj_in=car_create_dto)
 
-    car_update_dto = CarUpdateDto(deposit_amount=Decimal("10000"))
+    car_update_dto = CarUpdateDto(deposit_amount=Decimal("10000"))  # type: ignore
     updated_car = crud.car.update(db=db, db_obj=car, obj_in=car_update_dto)
 
     assert car.id == updated_car.id

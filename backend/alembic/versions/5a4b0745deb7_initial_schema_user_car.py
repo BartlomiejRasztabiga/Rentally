@@ -20,18 +20,25 @@ def upgrade():
     op.create_table('car',
                     sa.Column('id', sa.Integer(), nullable=False),
                     sa.Column('model_name', sa.String(), nullable=False),
-                    sa.Column('type', sa.Enum('CAR', 'TRUCK', 'SPORT', name='cartype'), nullable=False),
-                    sa.Column('fuel_type', sa.Enum('PETROL', 'DIESEL', 'HYBRID', 'EV', name='fueltype'),
+                    sa.Column('type', sa.Enum('CAR', 'TRUCK', 'SPORT', name='cartype'),
                               nullable=False),
-                    sa.Column('gearbox_type', sa.Enum('AUTO', 'MANUAL', name='gearboxtype'), nullable=False),
-                    sa.Column('ac_type', sa.Enum('AUTO', 'MANUAL', name='actype'), nullable=False),
+                    sa.Column('fuel_type', sa.Enum('PETROL', 'DIESEL', 'HYBRID', 'EV',
+                                                   name='fueltype'), nullable=False),
+                    sa.Column('gearbox_type',
+                              sa.Enum('AUTO', 'MANUAL', name='gearboxtype'),
+                              nullable=False),
+                    sa.Column('ac_type', sa.Enum('AUTO', 'MANUAL', name='actype'),
+                              nullable=False),
                     sa.Column('number_of_passengers', sa.Integer(), nullable=False),
-                    sa.Column('drive_type', sa.Enum('FRONT', 'REAR', 'ALL_WHEELS', name='drivetype'), nullable=False),
+                    sa.Column('drive_type', sa.Enum('FRONT', 'REAR', 'ALL_WHEELS',
+                                                    name='drivetype'), nullable=False),
                     sa.Column('average_consumption', sa.Float(), nullable=True),
                     sa.Column('number_of_airbags', sa.Integer(), nullable=False),
                     sa.Column('boot_capacity', sa.Float(), nullable=True),
-                    sa.Column('price_per_day', sa.Numeric(precision=10, scale=2), nullable=False),
-                    sa.Column('deposit_amount', sa.Numeric(precision=10, scale=2), nullable=True),
+                    sa.Column('price_per_day', sa.Numeric(precision=10, scale=2),
+                              nullable=False),
+                    sa.Column('deposit_amount', sa.Numeric(precision=10, scale=2),
+                              nullable=True),
                     sa.Column('mileage_limit', sa.Float(), nullable=True),
                     sa.Column('image_base64', sa.String(), nullable=True),
                     sa.Column('loading_capacity', sa.Float(), nullable=True),
@@ -49,9 +56,12 @@ def upgrade():
     op.create_index(op.f('ix_car_gearbox_type'), 'car', ['gearbox_type'], unique=False)
     op.create_index(op.f('ix_car_horsepower'), 'car', ['horsepower'], unique=False)
     op.create_index(op.f('ix_car_id'), 'car', ['id'], unique=False)
-    op.create_index(op.f('ix_car_loading_capacity'), 'car', ['loading_capacity'], unique=False)
-    op.create_index(op.f('ix_car_model_name'), 'car', ['model_name'], unique=False)
-    op.create_index(op.f('ix_car_price_per_day'), 'car', ['price_per_day'], unique=False)
+    op.create_index(op.f('ix_car_loading_capacity'), 'car', ['loading_capacity'],
+                    unique=False)
+    op.create_index(op.f('ix_car_model_name'), 'car', ['model_name'],
+                    unique=False)
+    op.create_index(op.f('ix_car_price_per_day'), 'car', ['price_per_day'],
+                    unique=False)
     op.create_index(op.f('ix_car_type'), 'car', ['type'], unique=False)
     op.create_table('user',
                     sa.Column('id', sa.Integer(), nullable=False),

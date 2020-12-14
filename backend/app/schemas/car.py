@@ -1,13 +1,12 @@
 from decimal import Decimal
 from typing import Optional
 
-from pydantic import BaseModel
-
 # Shared properties
 from app.models.car import AcType, CarType, DriveType, FuelType, GearboxType
+from app.schemas.base import BaseModelWithOptionals
 
 
-class CarBase(BaseModel):
+class CarBase(BaseModelWithOptionals):
     model_name: str
     type: CarType
     fuel_type: FuelType
@@ -33,16 +32,6 @@ class CarBase(BaseModel):
     horsepower: Optional[int]
     zero_to_hundred_time: Optional[float]
     engine_capacity: Optional[float]
-
-    def __init_subclass__(cls, optional_fields=None, **kwargs):
-        """
-        allow some fields of subclass turn into optional
-        """
-        super().__init_subclass__(**kwargs)
-        if optional_fields:
-            for field in optional_fields:
-                cls.__fields__[field].outer_type_ = Optional
-                cls.__fields__[field].required = False
 
 
 # Properties to receive via API on creation
