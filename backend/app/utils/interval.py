@@ -23,6 +23,11 @@ class Interval:
         self._end = end
 
     def is_intersecting(self, other) -> bool:
-        if self.start.date() == other.end.date() or self.end.date() == other.start.date():
+        if (
+            self.start.date() == other.end.date()
+            or self.end.date() == other.start.date()
+        ):
             return True
-        return (self.start <= other.start <= self.end) or (other.start <= self.start <= other.end)
+        return (self.start <= other.start <= self.end) or (
+            other.start <= self.start <= other.end
+        )
