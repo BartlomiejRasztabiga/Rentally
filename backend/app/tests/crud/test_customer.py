@@ -33,7 +33,9 @@ def test_update_customer(db: Session) -> None:
     customer = crud.customer.create(db=db, obj_in=customer_create_dto)
 
     customer_update_dto = CustomerUpdateDto(full_name="Test customer 2")  # type: ignore
-    updated_customer = crud.customer.update(db=db, db_obj=customer, obj_in=customer_update_dto)
+    updated_customer = crud.customer.update(
+        db=db, db_obj=customer, obj_in=customer_update_dto
+    )
 
     assert customer.id == updated_customer.id
     assert updated_customer.full_name is not None
