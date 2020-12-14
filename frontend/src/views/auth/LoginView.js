@@ -39,7 +39,7 @@ const LoginView = () => {
 
     axios({
       method: "post",
-      url: ACCESS_TOKEN_URL,
+      url: `${ACCESS_TOKEN_URL}/`,
       data: bodyFormData,
       headers: { "Content-Type": "multipart/form-data" }
     })

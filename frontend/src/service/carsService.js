@@ -4,7 +4,7 @@ import cleanupFalsyFields from "../utils/cleanupFalsyFields";
 
 
 const getCars = async () => {
-  return await axios.get(CARS_URL).then(response => response.data);
+  return await axios.get(`${CARS_URL}/`).then(response => response.data);
 };
 
 const getCarById = async (carId) => {
@@ -12,7 +12,7 @@ const getCarById = async (carId) => {
 };
 
 const createCar = async (car) => {
-  return await axios.post(CARS_URL, cleanupFalsyFields(car)).then(response => response.data);
+  return await axios.post(`${CARS_URL}/`, cleanupFalsyFields(car)).then(response => response.data);
 };
 
 const updateCar = async (car) => {

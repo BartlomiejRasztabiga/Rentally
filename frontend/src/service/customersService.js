@@ -4,7 +4,7 @@ import cleanupFalsyFields from "../utils/cleanupFalsyFields";
 
 
 const getCustomers = async () => {
-  return await axios.get(CUSTOMERS_URL).then(response => response.data);
+  return await axios.get(`${CUSTOMERS_URL}/`).then(response => response.data);
 };
 
 const getCustomerById = async (customerId) => {
@@ -12,7 +12,7 @@ const getCustomerById = async (customerId) => {
 };
 
 const createCustomer = async (customer) => {
-  return await axios.post(CUSTOMERS_URL, cleanupFalsyFields(customer)).then(response => response.data);
+  return await axios.post(`${CUSTOMERS_URL}/`, cleanupFalsyFields(customer)).then(response => response.data);
 };
 
 const updateCustomer = async (customer) => {
