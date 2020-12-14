@@ -1,7 +1,6 @@
-from typing import List, Optional
+from typing import Optional
 
 from app.schemas.base import BaseModelWithOptionals
-from app.schemas.reservation import Reservation
 
 
 # Shared properties
@@ -9,7 +8,6 @@ class CustomerBase(BaseModelWithOptionals):
     full_name: str
     address: Optional[str]
     phone_number: Optional[str]
-    reservations: Optional[List[Reservation]]
 
 
 # Properties to receive via API on creation

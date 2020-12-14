@@ -2,7 +2,6 @@ from datetime import datetime
 from typing import Optional
 
 from app.models.reservation import ReservationStatus
-from app.schemas import Car, Customer
 from app.schemas.base import BaseModelWithOptionals
 
 
@@ -38,8 +37,7 @@ class ReservationInDBBase(ReservationBase):
 
 # Additional properties to return via API
 class Reservation(ReservationInDBBase):
-    car: Optional[Car]
-    customer: Optional[Customer]
+    pass
 
 
 # Additional properties stored in DB
