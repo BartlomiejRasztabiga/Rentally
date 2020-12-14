@@ -1,10 +1,10 @@
 from typing import List, Optional
 
 from app.schemas.base import BaseModelWithOptionals
-# Shared properties
 from app.schemas.reservation import Reservation
 
 
+# Shared properties
 class CustomerBase(BaseModelWithOptionals):
     full_name: str
     address: Optional[str]

@@ -1,13 +1,18 @@
+from datetime import datetime
 from typing import Optional
 
+from app.models.reservation import ReservationStatus
+from app.schemas import Car, Customer
 from app.schemas.base import BaseModelWithOptionals
 
 
 # Shared properties
 class ReservationBase(BaseModelWithOptionals):
-    full_name: str
-    address: Optional[str]
-    phone_number: Optional[str]
+    car_id: int
+    customer_id: int
+    start_date: datetime
+    end_date: datetime
+    status: ReservationStatus
 
 
 # Properties to receive via API on creation
@@ -33,7 +38,8 @@ class ReservationInDBBase(ReservationBase):
 
 # Additional properties to return via API
 class Reservation(ReservationInDBBase):
-    pass
+    car: Optional[Car]
+    customer: Optional[Customer]
 
 
 # Additional properties stored in DB
