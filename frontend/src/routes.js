@@ -3,7 +3,9 @@ import { Navigate } from "react-router-dom";
 
 import DashboardLayout from "src/layouts/DashboardLayout";
 import MainLayout from "src/layouts/MainLayout";
-import CustomerListView from "src/views/customer/CustomerListView";
+import CustomersListView from "src/views/customers/CustomerListView";
+import CustomerDetailsView from "src/views/customers/CustomerDetailsView";
+import CreateCustomerView from "./views/customers/CreateCustomerView";
 import DashboardView from "src/views/dashboard/DashboardView";
 import LoginView from "src/views/auth/LoginView";
 import NotFoundView from "src/views/errors/NotFoundView";
@@ -18,11 +20,13 @@ const routes = [
     path: "app",
     element: <DashboardLayout />,
     children: [
-      { path: "customers", element: <CustomerListView /> },
       { path: "dashboard", element: <DashboardView /> },
       { path: "cars", element: <CarsListView /> },
       { path: "cars/new", element: <CreateCarView /> },
       { path: "cars/:carId", element: <CarDetailsView /> },
+      { path: "customers", element: <CustomersListView /> },
+      { path: "customers/new", element: <CreateCustomerView /> },
+      { path: "customers/:customerId", element: <CustomerDetailsView /> },
       { path: "settings", element: <SettingsView /> },
       { path: "*", element: <Navigate to="/404" /> }
     ]
