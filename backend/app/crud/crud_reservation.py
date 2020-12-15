@@ -30,14 +30,14 @@ class CRUDReservation(
         self,
         db: Session,
         obj: Union[ReservationCreateDto, ReservationUpdateDto, Reservation],
-        reservation_id: int = None,
+        current_reservation_id: int = None,
     ) -> None:
         reservations_for_this_car = self.get_active_by_car_id(db, obj.car_id)
         interval1 = Interval(obj.start_date, obj.end_date)
 
         for _reservation in reservations_for_this_car:
-            # TODO shit code
-            if reservation_id and reservation_id == _reservation.id:
+            if current_reservation_id and current_reservation_id == _reservation.id:
+                # collision with the same object is obvious, skip
                 continue
 
             interval2 = Interval(_reservation.start_date, _reservation.end_date)
@@ -51,10 +51,6 @@ class CRUDReservation(
     def validate_status(
         old_status: ReservationStatus, new_status: ReservationStatus
     ) -> None:
-        if old_status and new_status:
-            return
-
-            # TODO add tests
         if old_status == ReservationStatus.CANCELLED:
             raise UpdatingCancelledReservationException()
         if (
@@ -62,17 +58,12 @@ class CRUDReservation(
             and new_status == ReservationStatus.NEW
         ):
             raise InvalidStatusTransitionReservationException()
-        if (
-            old_status == ReservationStatus.COLLECTED
-            and new_status == ReservationStatus.CANCELLED
-        ):
-            raise InvalidStatusTransitionReservationException()
 
     def create(self, db: Session, *, obj_in: ReservationCreateDto) -> Reservation:
         self.validate_dates(obj_in.start_date, obj_in.end_date)
 
         # TODO cannot reserve a car if there is already another reservation
-        # or rental for the same time frame
+        # TODO or rental for the same time frame
         self.validate_collisions(db, obj_in)
 
         obj_in.status = ReservationStatus.NEW
@@ -103,8 +94,20 @@ class CRUDReservation(
             db.query(Reservation)
             .filter(
                 Reservation.car_id == car_id
-                and Reservation.status
-                in [ReservationStatus.NEW, ReservationStatus.COLLECTED]
+                and (
+                    Reservation.status == ReservationStatus.NEW
+                    or Reservation.status == ReservationStatus.COLLECTED
+                )
+            )
+            .all()
+        )
+
+    def get_active(self, db: Session) -> List[Reservation]:
+        return (
+            db.query(Reservation)
+            .filter(
+                Reservation.status == ReservationStatus.NEW
+                or Reservation.status == ReservationStatus.COLLECTED
             )
             .all()
         )

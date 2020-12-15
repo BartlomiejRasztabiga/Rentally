@@ -1,12 +1,14 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pytest
 from sqlalchemy.orm import Session
 
 from app import crud
 from app.exceptions.reservation import (
+    InvalidStatusTransitionReservationException,
     ReservationCollisionException,
     StartDateNotBeforeEndDateException,
+    UpdatingCancelledReservationException,
 )
 from app.models.reservation import ReservationStatus
 from app.schemas import ReservationUpdateDto
@@ -224,3 +226,144 @@ def test_update_reservation(db: Session) -> None:
     assert stored_reservation.end_date == reservation_create_dto.end_date
     assert stored_reservation.status == ReservationStatus.COLLECTED
     assert stored_reservation.id is not None
+
+
+def test_update_reservation_dates_collision_will_throw(db: Session) -> None:
+    car = create_random_car(db)
+    customer = create_random_customer(db)
+
+    start_date1 = datetime(2020, 12, 3, 9)
+    end_date1 = datetime(2020, 12, 4, 12)
+
+    reservation_create_dto = get_test_reservation_create_dto(
+        car, customer, start_date1, end_date1
+    )
+
+    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+
+    start_date2 = datetime(2020, 12, 1, 9)
+    end_date2 = datetime(2020, 12, 2, 12)
+
+    reservation_create_dto = get_test_reservation_create_dto(
+        car, customer, start_date2, end_date2
+    )
+    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+
+    reservation_update_dto = ReservationUpdateDto(
+        car_id=reservation.car_id,
+        customer_id=reservation.customer_id,
+        start_date=start_date1,
+        end_date=end_date1,
+        status=ReservationStatus.COLLECTED,
+    )
+
+    with pytest.raises(ReservationCollisionException):
+        crud.reservation.update(
+            db=db, db_obj=reservation, obj_in=reservation_update_dto
+        )
+
+
+def test_create_reservation_dates_collision_on_cancelled(db: Session) -> None:
+    car = create_random_car(db)
+    customer = create_random_customer(db)
+
+    start_date1 = datetime(2020, 12, 3, 9)
+    end_date1 = datetime(2020, 12, 4, 12)
+
+    reservation_create_dto = get_test_reservation_create_dto(
+        car, customer, start_date1, end_date1
+    )
+
+    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+
+    reservation_update_dto = ReservationUpdateDto(
+        car_id=reservation.car_id,
+        customer_id=reservation.customer_id,
+        start_date=reservation.start_date,
+        end_date=reservation.end_date,
+        status=ReservationStatus.CANCELLED,
+    )
+
+    crud.reservation.update(db=db, db_obj=reservation, obj_in=reservation_update_dto)
+
+    start_date2 = datetime(2020, 12, 3, 9)
+    end_date2 = datetime(2020, 12, 4, 12)
+
+    reservation_create_dto = get_test_reservation_create_dto(
+        car, customer, start_date2, end_date2
+    )
+    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+
+
+def test_update_reservation_cancelled_will_throw(db: Session) -> None:
+    car = create_random_car(db)
+    customer = create_random_customer(db)
+
+    start_date1 = datetime(2020, 12, 3, 9)
+    end_date1 = datetime(2020, 12, 4, 12)
+
+    reservation_create_dto = get_test_reservation_create_dto(
+        car, customer, start_date1, end_date1
+    )
+
+    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+
+    reservation_update_dto = ReservationUpdateDto(
+        car_id=reservation.car_id,
+        customer_id=reservation.customer_id,
+        start_date=reservation.start_date,
+        end_date=reservation.end_date,
+        status=ReservationStatus.CANCELLED,
+    )
+
+    crud.reservation.update(db=db, db_obj=reservation, obj_in=reservation_update_dto)
+
+    reservation_update_dto = ReservationUpdateDto(
+        car_id=reservation.car_id,
+        customer_id=reservation.customer_id,
+        start_date=reservation.start_date,
+        end_date=reservation.end_date + timedelta(days=1),
+        status=ReservationStatus.CANCELLED,
+    )
+
+    with pytest.raises(UpdatingCancelledReservationException):
+        crud.reservation.update(
+            db=db, db_obj=reservation, obj_in=reservation_update_dto
+        )
+
+
+def test_update_reservation_collected_to_new_will_throw(db: Session) -> None:
+    car = create_random_car(db)
+    customer = create_random_customer(db)
+
+    start_date1 = datetime(2020, 12, 3, 9)
+    end_date1 = datetime(2020, 12, 4, 12)
+
+    reservation_create_dto = get_test_reservation_create_dto(
+        car, customer, start_date1, end_date1
+    )
+
+    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+
+    reservation_update_dto = ReservationUpdateDto(
+        car_id=reservation.car_id,
+        customer_id=reservation.customer_id,
+        start_date=reservation.start_date,
+        end_date=reservation.end_date,
+        status=ReservationStatus.COLLECTED,
+    )
+
+    crud.reservation.update(db=db, db_obj=reservation, obj_in=reservation_update_dto)
+
+    reservation_update_dto = ReservationUpdateDto(
+        car_id=reservation.car_id,
+        customer_id=reservation.customer_id,
+        start_date=reservation.start_date,
+        end_date=reservation.end_date + timedelta(days=1),
+        status=ReservationStatus.NEW,
+    )
+
+    with pytest.raises(InvalidStatusTransitionReservationException):
+        crud.reservation.update(
+            db=db, db_obj=reservation, obj_in=reservation_update_dto
+        )
