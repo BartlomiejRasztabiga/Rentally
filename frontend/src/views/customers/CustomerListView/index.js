@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CustomerListView = () => {
+const CustomersListView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const [customers, setCustomers] = useState([]);
@@ -88,4 +88,4 @@ const CustomerListView = () => {
   );
 };
 
-export default CustomerListView;
+export default CustomersListView;

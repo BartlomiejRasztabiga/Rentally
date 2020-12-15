@@ -7,6 +7,9 @@ from app.models.reservation import ReservationStatus
 
 
 # Shared properties
+from app.schemas import Car, Customer
+
+
 class ReservationBase(BaseModel):
     car_id: int
     customer_id: int
@@ -34,7 +37,8 @@ class ReservationInDBBase(ReservationBase):
 
 # Additional properties to return via API
 class Reservation(ReservationInDBBase):
-    pass
+    car: Optional[Car] = None
+    customer: Optional[Customer] = None
 
 
 # Additional properties stored in DB

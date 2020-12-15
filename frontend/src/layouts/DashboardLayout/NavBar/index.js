@@ -5,6 +5,7 @@ import { Avatar, Box, Divider, Drawer, Hidden, List, makeStyles, Typography } fr
 import DriveEtaIcon from '@material-ui/icons/DriveEta';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 
 import NavItem from "./NavItem";
 
@@ -18,6 +19,11 @@ const items = [
     href: "/app/dashboard",
     icon: DashboardIcon,
     title: "Dashboard"
+  },
+  {
+    href: "/app/reservations",
+    icon: AssignmentIcon,
+    title: "Reservations"
   },
   {
     href: "/app/customers",

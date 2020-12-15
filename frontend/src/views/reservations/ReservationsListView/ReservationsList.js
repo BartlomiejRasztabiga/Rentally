@@ -1,0 +1,53 @@
+import React from "react";
+import clsx from "clsx";
+import PropTypes from "prop-types";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import { Box, Card, makeStyles, Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
+import ReservationRow from "./ReservationRow";
+
+const useStyles = makeStyles((theme) => ({
+  root: {}
+}));
+
+const ReservationsList = ({ className, reservations, ...rest }) => {
+  const classes = useStyles();
+
+
+  return (
+    <Card className={clsx(classes.root, className)} {...rest}>
+      <PerfectScrollbar>
+        <Box minWidth={1050}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Car</TableCell>
+                <TableCell>Customer</TableCell>
+                <TableCell>Start date</TableCell>
+                <TableCell>End date</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {reservations.map((reservation) => (
+                <ReservationRow reservation={reservation} />
+              ))}
+            </TableBody>
+          </Table>
+        </Box>
+      </PerfectScrollbar>
+      <Table
+        component="div"
+        count={reservations.length}
+      />
+    </Card>
+  );
+};
+
+ReservationsList.propTypes = {
+  className: PropTypes.string,
+  reservations: PropTypes.array.isRequired
+};
+
+export default ReservationsList;
