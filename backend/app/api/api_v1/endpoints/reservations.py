@@ -1,4 +1,4 @@
-from typing import List, Any
+from typing import List
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
@@ -7,7 +7,7 @@ from app import crud, models, schemas
 from app.api import deps
 from app.exceptions.instance_not_found import ReservationNotFoundException
 from app.exceptions.not_enough_permissions import NotEnoughPermissionsException
-from app.models.reservation import ReservationStatus
+from app.models.reservation import Reservation, ReservationStatus
 from app.schemas.reservation import ReservationsQueryCriteria
 
 router = APIRouter()
@@ -15,10 +15,10 @@ router = APIRouter()
 
 @router.get("/", response_model=List[schemas.Reservation])
 def get_all_reservations(
-        db: Session = Depends(deps.get_db),
-        current_user: models.User = Depends(deps.get_current_user),
-        reservations_query_criteria: ReservationsQueryCriteria = None
-) -> List[schemas.Reservation]:
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_user),
+    reservations_query_criteria: ReservationsQueryCriteria = None,
+) -> List[Reservation]:
     """
     Retrieve all active reservations.
     """
@@ -30,10 +30,10 @@ def get_all_reservations(
 
 @router.get("/{id}", response_model=schemas.Reservation)
 def get_reservation(
-        id: int,
-        db: Session = Depends(deps.get_db),
-        current_user: models.User = Depends(deps.get_current_user),
-) -> schemas.Reservation:
+    id: int,
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_user),
+) -> Reservation:
     """
     Get reservation by ID.
     """
@@ -46,11 +46,11 @@ def get_reservation(
 
 @router.delete("/{id}", response_model=schemas.Reservation)
 def delete_reservation(
-        *,
-        db: Session = Depends(deps.get_db),
-        id: int,
-        current_user: models.User = Depends(deps.get_current_active_admin),
-) -> Any:
+    *,
+    db: Session = Depends(deps.get_db),
+    id: int,
+    current_user: models.User = Depends(deps.get_current_active_admin),
+) -> Reservation:
     """
     Delete a reservation.
     """
@@ -67,11 +67,11 @@ def delete_reservation(
 
 @router.post("/", response_model=schemas.Reservation)
 def create_reservation(
-        *,
-        db: Session = Depends(deps.get_db),
-        reservation_create_dto: schemas.ReservationCreateDto,
-        current_user: models.User = Depends(deps.get_current_user),
-) -> Any:
+    *,
+    db: Session = Depends(deps.get_db),
+    reservation_create_dto: schemas.ReservationCreateDto,
+    current_user: models.User = Depends(deps.get_current_user),
+) -> Reservation:
     """
     Create new reservation.
     """
@@ -82,19 +82,21 @@ def create_reservation(
 
 @router.put("/{id}", response_model=schemas.Reservation)
 def update_reservation(
-        *,
-        db: Session = Depends(deps.get_db),
-        id: int,
-        reservation_update_dto: schemas.ReservationUpdateDto,
-        current_user: models.User = Depends(deps.get_current_user),
-) -> Any:
+    *,
+    db: Session = Depends(deps.get_db),
+    id: int,
+    reservation_update_dto: schemas.ReservationUpdateDto,
+    current_user: models.User = Depends(deps.get_current_user),
+) -> Reservation:
     """
     Update a reservation.
     """
-    reservation = crud.car.get(db=db, _id=id)
+    reservation = crud.reservation.get(db=db, _id=id)
 
     if not reservation:
         raise ReservationNotFoundException()
 
-    reservation = crud.reservation.update(db=db, db_obj=reservation, obj_in=reservation_update_dto)
+    reservation = crud.reservation.update(
+        db=db, db_obj=reservation, obj_in=reservation_update_dto
+    )
     return reservation
