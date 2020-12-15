@@ -23,4 +23,5 @@ jobs:
       - name: npm install and npm run build
         run: |
           npm ci
+          prettier --check .
           npm run build

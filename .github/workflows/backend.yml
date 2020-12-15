@@ -27,9 +27,6 @@ jobs:
       - name: Lint
         run: |
           poetry run ./scripts/lint.sh
-      - name: Prettier
-        run: |
-          poetry run prettier --check .
 
   test:
     runs-on: ubuntu-latest
