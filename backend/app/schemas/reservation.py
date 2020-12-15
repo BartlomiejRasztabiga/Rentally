@@ -4,12 +4,10 @@ from typing import Optional
 from pydantic.main import BaseModel
 
 from app.models.reservation import ReservationStatus
-
-
-# Shared properties
 from app.schemas import Car, Customer
 
 
+# Shared properties
 class ReservationBase(BaseModel):
     car_id: int
     customer_id: int
