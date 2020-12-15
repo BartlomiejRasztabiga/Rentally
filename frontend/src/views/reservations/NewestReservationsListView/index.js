@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
 
 const sortReservationsByDate = (reservations) => {
   return reservations.sort((a, b) => {
-    return new Date(b.start_date) - new Date(a.start_date);
+    return new Date(a.start_date) - new Date(b.start_date);
   });
 };
 

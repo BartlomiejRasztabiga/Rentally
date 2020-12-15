@@ -114,7 +114,6 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
   };
 
   const handleUpdateReservation = (reservation) => {
-    // TODO cannot update status
     updateReservation(reservation)
       .then((reservation) => {
         setReservation(reservation);
@@ -204,6 +203,7 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
                   <Grid item md={6} xs={12}>
                     <DateTimePicker
                       fullWidth
+                      ampm={false}
                       label="Start date"
                       name="start_date"
                       inputVariant="outlined"
@@ -214,6 +214,7 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
                   <Grid item md={6} xs={12}>
                     <DateTimePicker
                       fullWidth
+                      ampm={false}
                       label="End date"
                       name="end_date"
                       inputVariant="outlined"

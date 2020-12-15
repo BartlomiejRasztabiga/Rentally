@@ -15,12 +15,14 @@ const getReservationById = async (reservationId) => {
 };
 
 const createReservation = async (reservation) => {
+  reservation.status = 'NEW'
   return await axios
     .post(`${RESERVATIONS_URL}/`, cleanupFalsyFields(reservation))
     .then((response) => response.data);
 };
 
 const updateReservation = async (reservation) => {
+  reservation.status = null
   return await axios
     .put(
       `${RESERVATIONS_URL}/${reservation.id}`,
