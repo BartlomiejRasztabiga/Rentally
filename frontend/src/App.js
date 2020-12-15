@@ -12,6 +12,8 @@ const App = () => {
   const routing = useRoutes(routes);
   const [accessToken, setAccessTokenState] = useState(localStorage.getItem("access_token"));
 
+  // TODO can this be extracted to auth context?
+
   const setAccessToken = (data) => {
     if (!data) {
       localStorage.removeItem("access_token");
