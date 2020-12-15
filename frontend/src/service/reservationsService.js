@@ -22,7 +22,6 @@ const createReservation = async (reservation) => {
 };
 
 const updateReservation = async (reservation) => {
-  reservation.status = null;
   return await axios
     .put(
       `${RESERVATIONS_URL}/${reservation.id}`,

@@ -26,6 +26,7 @@ import {
 
 import { APP_RESERVATIONS_URL } from "../config";
 import { DateTimePicker } from "@material-ui/pickers";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,7 +50,7 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  const [reservation, setReservation] = useState({});
+  const [reservation, setReservation] = useState({start_date: moment(), end_date: moment()});
   const [loaded, setLoaded] = useState(false);
   const [loadingError, setLoadingError] = useState(null);
   const [postError, setPostError] = useState(null);
@@ -206,6 +207,7 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
                       label="Start date"
                       name="start_date"
                       inputVariant="outlined"
+                      disablePast={isInCreateMode}
                       onChange={handleStartDateChange}
                       value={reservation.start_date}
                     />
@@ -217,6 +219,7 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
                       label="End date"
                       name="end_date"
                       inputVariant="outlined"
+                      disablePast={isInCreateMode}
                       onChange={handleEndDateChange}
                       value={reservation.end_date}
                     />
