@@ -8,35 +8,39 @@ import {
   Grid,
   makeStyles,
   TextField,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import Loading from "./Loading";
 import ReactJson from "react-json-view";
-import { createCustomer, deleteCustomer, getCustomerById, updateCustomer } from "../service/customersService";
+import {
+  createCustomer,
+  deleteCustomer,
+  getCustomerById,
+  updateCustomer,
+} from "../service/customersService";
 import { APP_CUSTOMERS_URL } from "../config";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   link: {
     color: "inherit",
-    textDecoration: "none"
+    textDecoration: "none",
   },
   customerDetails: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5)
+    marginBottom: theme.spacing(5),
   },
   errorBox: {
-    margin: theme.spacing(5)
-  }
+    margin: theme.spacing(5),
+  },
 }));
 
 const CreateUpdateCustomerForm = ({ customerId }) => {
@@ -54,24 +58,24 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
 
   useEffect(() => {
     if (isInEditMode) {
-      getCustomerById(customerId).then(customer => {
-        setCustomer(customer);
-        setLoadingError(null);
-        setLoaded(true);
-      }).catch(error => {
-        setLoaded(true);
-        if (error.response.status === 404) {
-          setLoadingError("Customer with given id not found");
-        }
-      });
+      getCustomerById(customerId)
+        .then((customer) => {
+          setCustomer(customer);
+          setLoadingError(null);
+          setLoaded(true);
+        })
+        .catch((error) => {
+          setLoaded(true);
+          if (error.response.status === 404) {
+            setLoadingError("Customer with given id not found");
+          }
+        });
     }
-
   }, [isInEditMode, customerId]);
 
-  const emptyIfNull = value => {
+  const emptyIfNull = (value) => {
     return value || "";
   };
-
 
   const handleChange = (event) => {
     updateCustomerField(event.target.name, event.target.value);
@@ -80,10 +84,9 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
   const updateCustomerField = (fieldName, value) => {
     setCustomer({
       ...customer,
-      [fieldName]: value
+      [fieldName]: value,
     });
   };
-
 
   const handleCreateUpdateCustomer = () => {
     if (customerId) {
@@ -93,22 +96,26 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
     }
   };
 
-  const handleUpdateCustomer = customer => {
-    updateCustomer(customer).then(customer => {
-      setCustomer(customer);
-      setPostError(null);
-      setSuccessSnackbarOpen(true);
-    }).catch(error => {
-      setPostError(JSON.stringify(error.response.data));
-    });
+  const handleUpdateCustomer = (customer) => {
+    updateCustomer(customer)
+      .then((customer) => {
+        setCustomer(customer);
+        setPostError(null);
+        setSuccessSnackbarOpen(true);
+      })
+      .catch((error) => {
+        setPostError(JSON.stringify(error.response.data));
+      });
   };
 
-  const handleCreateCustomer = customer => {
-    createCustomer(customer).then(customer => {
-      navigate(`${APP_CUSTOMERS_URL}/${customer.id}`, { replace: true });
-    }).catch(error => {
-      setPostError(JSON.stringify(error.response.data));
-    });
+  const handleCreateCustomer = (customer) => {
+    createCustomer(customer)
+      .then((customer) => {
+        navigate(`${APP_CUSTOMERS_URL}/${customer.id}`, { replace: true });
+      })
+      .catch((error) => {
+        setPostError(JSON.stringify(error.response.data));
+      });
   };
 
   const handleDeleteCustomer = () => {
@@ -118,42 +125,43 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
   };
 
   if (loadingError) {
-    return (<Grid
-      container
-      spacing={0}
-      direction="column"
-      alignItems="center"
-      justify="center"
-      style={{ minHeight: "100vh" }}
-    >
-      <Grid item xs={3}>
-        <Typography variant="h2">{loadingError}</Typography>
+    return (
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Grid item xs={3}>
+          <Typography variant="h2">{loadingError}</Typography>
+        </Grid>
       </Grid>
-    </Grid>);
+    );
   }
-
 
   return (
     <React.Fragment>
-      {(loaded || isInCreateMode) ? (
+      {loaded || isInCreateMode ? (
         <Container className={classes.customerDetails}>
           {/*TODO Can extract snackbar to another component? */}
           <Snackbar
             open={successSnackbarOpen}
             autoHideDuration={3000}
             onClose={() => setSuccessSnackbarOpen(false)}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}>
-            <Alert severity="success">
-              Successfully saved!
-            </Alert>
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          >
+            <Alert severity="success">Successfully saved!</Alert>
           </Snackbar>
           <Card className={clsx(classes.root)}>
             <CardContent>
-              {postError &&
-              <div color="error" className={classes.errorBox}><ReactJson src={JSON.parse(postError)} theme="ocean" />
-              </div>}
-              <form
-                autoComplete="off">
+              {postError && (
+                <div color="error" className={classes.errorBox}>
+                  <ReactJson src={JSON.parse(postError)} theme="ocean" />
+                </div>
+              )}
+              <form autoComplete="off">
                 <Grid container spacing={3}>
                   <Grid item md={6} xs={12}>
                     <TextField
@@ -193,14 +201,24 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
             <CardActions disableSpacing>
               <Grid container>
                 <Grid item md={6}>
-                  <Button variant="contained" component="span" color="primary" onClick={handleCreateUpdateCustomer}>
+                  <Button
+                    variant="contained"
+                    component="span"
+                    color="primary"
+                    onClick={handleCreateUpdateCustomer}
+                  >
                     Save
                   </Button>
                 </Grid>
                 {isInEditMode && (
                   <Grid item md={6}>
                     <Grid container justify="flex-end">
-                      <Button variant="contained" component="span" color="secondary" onClick={handleDeleteCustomer}>
+                      <Button
+                        variant="contained"
+                        component="span"
+                        color="secondary"
+                        onClick={handleDeleteCustomer}
+                      >
                         Delete
                       </Button>
                     </Grid>
@@ -210,15 +228,16 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
             </CardActions>
           </Card>
         </Container>
-      ) : <Loading />}
+      ) : (
+        <Loading />
+      )}
     </React.Fragment>
   );
 };
 
 CreateUpdateCustomerForm.propTypes = {
   className: PropTypes.string,
-  carId: PropTypes.string
+  carId: PropTypes.string,
 };
-
 
 export default CreateUpdateCustomerForm;

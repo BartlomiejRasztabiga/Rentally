@@ -11,8 +11,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.dark,
     minHeight: "100%",
     paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
-  }
+    paddingTop: theme.spacing(3),
+  },
 }));
 
 const ReservationsListView = () => {
@@ -21,7 +21,7 @@ const ReservationsListView = () => {
   const [reservations, setReservations] = useState([]);
 
   useEffect(() => {
-    getReservations().then(reservations => {
+    getReservations().then((reservations) => {
       setReservations(reservations);
     });
   }, []);
@@ -34,7 +34,11 @@ const ReservationsListView = () => {
     <Page className={classes.root}>
       <Container maxWidth={false}>
         <Box display="flex" justifyContent="flex-end">
-          <Button color="primary" variant="contained" onClick={handleAddReservation}>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={handleAddReservation}
+          >
             Add reservation
           </Button>
         </Box>

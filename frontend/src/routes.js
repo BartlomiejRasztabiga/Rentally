@@ -33,11 +33,14 @@ const routes = [
 
       { path: "reservations", element: <ReservationsListView /> },
       { path: "reservations/new", element: <ReservationsListView /> },
-      { path: "reservations/:reservationId", element: <ReservationsListView /> },
+      {
+        path: "reservations/:reservationId",
+        element: <ReservationsListView />,
+      },
 
       { path: "settings", element: <SettingsView /> },
-      { path: "*", element: <Navigate to="/404" /> }
-    ]
+      { path: "*", element: <Navigate to="/404" /> },
+    ],
   },
   {
     path: "/",
@@ -47,9 +50,9 @@ const routes = [
       { path: "register", element: <RegisterView /> },
       { path: "404", element: <NotFoundView /> },
       { path: "/", element: <Navigate to="/app/dashboard" /> },
-      { path: "*", element: <Navigate to="/404" /> }
-    ]
-  }
+      { path: "*", element: <Navigate to="/404" /> },
+    ],
+  },
 ];
 
 export default routes;

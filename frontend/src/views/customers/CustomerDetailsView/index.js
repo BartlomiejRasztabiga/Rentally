@@ -5,24 +5,23 @@ import { useParams } from "react-router";
 import history from "history/browser";
 import CreateUpdateCustomerForm from "../../../components/CreateUpdateCustomerForm";
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   link: {
     color: "inherit",
-    textDecoration: "none"
+    textDecoration: "none",
   },
   carDetails: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5)
+    marginBottom: theme.spacing(5),
   },
   uploadImageBox: {
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 }));
 
 const CustomerDetails = () => {
@@ -32,7 +31,6 @@ const CustomerDetails = () => {
   const handleGoBack = () => {
     history.back();
   };
-
 
   return (
     <React.Fragment>
@@ -47,13 +45,12 @@ const CustomerDetails = () => {
         <CreateUpdateCustomerForm customerId={customerId} />
       </Container>
     </React.Fragment>
-
   );
 };
 
 CustomerDetails.propTypes = {
   className: PropTypes.string,
-  customerId: PropTypes.number
+  customerId: PropTypes.number,
 };
 
 export default CustomerDetails;

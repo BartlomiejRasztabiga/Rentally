@@ -10,7 +10,9 @@ import { getMe } from "./service/usersService";
 
 const App = () => {
   const routing = useRoutes(routes);
-  const [accessToken, setAccessTokenState] = useState(localStorage.getItem("access_token"));
+  const [accessToken, setAccessTokenState] = useState(
+    localStorage.getItem("access_token")
+  );
 
   // TODO can this be extracted to auth context?
 

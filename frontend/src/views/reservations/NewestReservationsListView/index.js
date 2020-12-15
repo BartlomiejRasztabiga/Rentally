@@ -2,23 +2,29 @@ import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
-import { Box, Button, Card, CardHeader, Divider, makeStyles } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Card,
+  CardHeader,
+  Divider,
+  makeStyles,
+} from "@material-ui/core";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import { getReservations } from "../../../service/reservationsService";
 import ReservationsList from "../ReservationsListView/ReservationsList";
 import { Link } from "react-router-dom";
 import { APP_RESERVATIONS_URL } from "../../../config";
 
-
 const useStyles = makeStyles(() => ({
   root: {},
   actions: {
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   link: {
     color: "inherit",
-    textDecoration: "none"
-  }
+    textDecoration: "none",
+  },
 }));
 
 const sortReservationsByDate = (reservations) => {
@@ -32,7 +38,7 @@ const NewestReservations = ({ className, ...rest }) => {
   const [reservations, setReservations] = useState([]);
 
   useEffect(() => {
-    getReservations().then(reservations => {
+    getReservations().then((reservations) => {
       setReservations(reservations);
     });
   }, []);
@@ -42,7 +48,9 @@ const NewestReservations = ({ className, ...rest }) => {
       <CardHeader title="Newest Reservations" />
       <Divider />
       <PerfectScrollbar>
-        <ReservationsList reservations={sortReservationsByDate(reservations).slice(0, 5)} />
+        <ReservationsList
+          reservations={sortReservationsByDate(reservations).slice(0, 5)}
+        />
       </PerfectScrollbar>
       <Box display="flex" justifyContent="flex-end" p={2}>
         <Button
@@ -51,8 +59,9 @@ const NewestReservations = ({ className, ...rest }) => {
           size="small"
           variant="text"
         >
-          <Link className={classes.link} to={APP_RESERVATIONS_URL}>View all</Link>
-
+          <Link className={classes.link} to={APP_RESERVATIONS_URL}>
+            View all
+          </Link>
         </Button>
       </Box>
     </Card>
@@ -60,7 +69,7 @@ const NewestReservations = ({ className, ...rest }) => {
 };
 
 NewestReservations.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default NewestReservations;

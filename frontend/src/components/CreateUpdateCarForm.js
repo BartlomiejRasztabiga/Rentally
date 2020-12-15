@@ -14,12 +14,17 @@ import {
   Paper,
   Select,
   TextField,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { createCar, deleteCar, getCarById, updateCar } from "../service/carsService";
+import {
+  createCar,
+  deleteCar,
+  getCarById,
+  updateCar,
+} from "../service/carsService";
 import convertToBase64 from "../utils/convertToBase64";
 import Loading from "./Loading";
 import ReactJson from "react-json-view";
@@ -27,27 +32,26 @@ import { APP_CARS_URL } from "../config";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   link: {
     color: "inherit",
-    textDecoration: "none"
+    textDecoration: "none",
   },
   carDetails: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5)
+    marginBottom: theme.spacing(5),
   },
   uploadImageBox: {
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   errorBox: {
-    margin: theme.spacing(5)
-  }
+    margin: theme.spacing(5),
+  },
 }));
 
 const CreateUpdateCarForm = ({ carId }) => {
@@ -65,21 +69,22 @@ const CreateUpdateCarForm = ({ carId }) => {
 
   useEffect(() => {
     if (isInEditMode) {
-      getCarById(carId).then(car => {
-        setCar(car);
-        setLoadingError(null);
-        setLoaded(true);
-      }).catch(error => {
-        setLoaded(true);
-        if (error.response.status === 404) {
-          setLoadingError("Car with given id not found");
-        }
-      });
+      getCarById(carId)
+        .then((car) => {
+          setCar(car);
+          setLoadingError(null);
+          setLoaded(true);
+        })
+        .catch((error) => {
+          setLoaded(true);
+          if (error.response.status === 404) {
+            setLoadingError("Car with given id not found");
+          }
+        });
     }
-
   }, [isInEditMode, carId]);
 
-  const emptyIfNull = value => {
+  const emptyIfNull = (value) => {
     return value || "";
   };
 
@@ -96,7 +101,7 @@ const CreateUpdateCarForm = ({ carId }) => {
   const updateCarField = (fieldName, value) => {
     setCar({
       ...car,
-      [fieldName]: value
+      [fieldName]: value,
     });
   };
 
@@ -116,22 +121,26 @@ const CreateUpdateCarForm = ({ carId }) => {
     }
   };
 
-  const handleUpdateCar = car => {
-    updateCar(car).then(car => {
-      setCar(car);
-      setPostError(null);
-      setSuccessSnackbarOpen(true);
-    }).catch(error => {
-      setPostError(JSON.stringify(error.response.data));
-    });
+  const handleUpdateCar = (car) => {
+    updateCar(car)
+      .then((car) => {
+        setCar(car);
+        setPostError(null);
+        setSuccessSnackbarOpen(true);
+      })
+      .catch((error) => {
+        setPostError(JSON.stringify(error.response.data));
+      });
   };
 
-  const handleCreateCar = car => {
-    createCar(car).then(car => {
-      navigate(APP_CARS_URL, { replace: true });
-    }).catch(error => {
-      setPostError(JSON.stringify(error.response.data));
-    });
+  const handleCreateCar = (car) => {
+    createCar(car)
+      .then((car) => {
+        navigate(APP_CARS_URL, { replace: true });
+      })
+      .catch((error) => {
+        setPostError(JSON.stringify(error.response.data));
+      });
   };
 
   const handleDeleteCar = () => {
@@ -141,41 +150,53 @@ const CreateUpdateCarForm = ({ carId }) => {
   };
 
   if (loadingError) {
-    return (<Grid
-      container
-      spacing={0}
-      direction="column"
-      alignItems="center"
-      justify="center"
-      style={{ minHeight: "100vh" }}
-    >
-      <Grid item xs={3}>
-        <Typography variant="h2">{loadingError}</Typography>
+    return (
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Grid item xs={3}>
+          <Typography variant="h2">{loadingError}</Typography>
+        </Grid>
       </Grid>
-    </Grid>);
+    );
   }
 
   return (
     <React.Fragment>
-      {(loaded || isInCreateMode) ? (
+      {loaded || isInCreateMode ? (
         <Container className={classes.carDetails}>
           {/*TODO Can extract snackbar to another component? */}
           <Snackbar
             open={successSnackbarOpen}
             autoHideDuration={3000}
             onClose={() => setSuccessSnackbarOpen(false)}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}>
-            <Alert severity="success">
-              Successfully saved!
-            </Alert>
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          >
+            <Alert severity="success">Successfully saved!</Alert>
           </Snackbar>
           <Card className={clsx(classes.root)}>
             <CardContent>
-              <Box display="flex" justifyContent="center" mb={3} flexDirection="column"
-                   className={classes.uploadImageBox}>
+              <Box
+                display="flex"
+                justifyContent="center"
+                mb={3}
+                flexDirection="column"
+                className={classes.uploadImageBox}
+              >
                 <Paper variant="outlined">
                   {car.image_base64 && (
-                    <img src={emptyIfNull(car.image_base64)} alt={car.model_name} width="500px" height="250px" />)}
+                    <img
+                      src={emptyIfNull(car.image_base64)}
+                      alt={car.model_name}
+                      width="500px"
+                      height="250px"
+                    />
+                  )}
                 </Paper>
                 <input
                   accept="image/*"
@@ -192,11 +213,12 @@ const CreateUpdateCarForm = ({ carId }) => {
                   </Button>
                 </label>
               </Box>
-              {postError &&
-              <div color="error" className={classes.errorBox}><ReactJson src={JSON.parse(postError)} theme="ocean" />
-              </div>}
-              <form
-                autoComplete="off">
+              {postError && (
+                <div color="error" className={classes.errorBox}>
+                  <ReactJson src={JSON.parse(postError)} theme="ocean" />
+                </div>
+              )}
+              <form autoComplete="off">
                 <Grid container spacing={3}>
                   <Grid item md={6} xs={12}>
                     <TextField
@@ -470,14 +492,24 @@ const CreateUpdateCarForm = ({ carId }) => {
             <CardActions disableSpacing>
               <Grid container>
                 <Grid item md={6}>
-                  <Button variant="contained" component="span" color="primary" onClick={handleCreateUpdateCar}>
+                  <Button
+                    variant="contained"
+                    component="span"
+                    color="primary"
+                    onClick={handleCreateUpdateCar}
+                  >
                     Save
                   </Button>
                 </Grid>
                 {isInEditMode && (
                   <Grid item md={6}>
                     <Grid container justify="flex-end">
-                      <Button variant="contained" component="span" color="secondary" onClick={handleDeleteCar}>
+                      <Button
+                        variant="contained"
+                        component="span"
+                        color="secondary"
+                        onClick={handleDeleteCar}
+                      >
                         Delete
                       </Button>
                     </Grid>
@@ -487,15 +519,16 @@ const CreateUpdateCarForm = ({ carId }) => {
             </CardActions>
           </Card>
         </Container>
-      ) : <Loading />}
+      ) : (
+        <Loading />
+      )}
     </React.Fragment>
   );
 };
 
 CreateUpdateCarForm.propTypes = {
   className: PropTypes.string,
-  carId: PropTypes.string
+  carId: PropTypes.string,
 };
-
 
 export default CreateUpdateCarForm;

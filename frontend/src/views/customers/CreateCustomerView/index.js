@@ -4,16 +4,15 @@ import { Box, Button, Container, makeStyles } from "@material-ui/core";
 import history from "history/browser";
 import CreateUpdateCustomerForm from "../../../components/CreateUpdateCustomerForm";
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   carDetails: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5)
-  }
+    marginBottom: theme.spacing(5),
+  },
 }));
 
 const CreateCustomerView = () => {
@@ -36,12 +35,11 @@ const CreateCustomerView = () => {
         <CreateUpdateCustomerForm />
       </Container>
     </React.Fragment>
-
   );
 };
 
 CreateCustomerView.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default CreateCustomerView;

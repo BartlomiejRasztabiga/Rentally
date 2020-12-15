@@ -7,14 +7,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.dark,
     height: "100%",
     paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
+    paddingTop: theme.spacing(3),
   },
   image: {
     marginTop: 50,
     display: "inline-block",
     maxWidth: "100%",
-    width: 560
-  }
+    width: 560,
+  },
 }));
 
 const NotFoundView = () => {

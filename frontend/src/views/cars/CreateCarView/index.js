@@ -4,16 +4,15 @@ import { Box, Button, Container, makeStyles } from "@material-ui/core";
 import history from "history/browser";
 import CreateUpdateCarForm from "../../../components/CreateUpdateCarForm";
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   carDetails: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5)
-  }
+    marginBottom: theme.spacing(5),
+  },
 }));
 
 const CreateCarView = () => {
@@ -40,7 +39,7 @@ const CreateCarView = () => {
 };
 
 CreateCarView.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default CreateCarView;

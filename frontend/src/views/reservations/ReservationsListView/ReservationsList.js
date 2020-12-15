@@ -2,16 +2,24 @@ import React from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { Box, Card, makeStyles, Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
+import {
+  Box,
+  Card,
+  makeStyles,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@material-ui/core";
 import ReservationRow from "./ReservationRow";
 
 const useStyles = makeStyles((theme) => ({
-  root: {}
+  root: {},
 }));
 
 const ReservationsList = ({ className, reservations, ...rest }) => {
   const classes = useStyles();
-
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
@@ -43,7 +51,7 @@ const ReservationsList = ({ className, reservations, ...rest }) => {
 
 ReservationsList.propTypes = {
   className: PropTypes.string,
-  reservations: PropTypes.array.isRequired
+  reservations: PropTypes.array.isRequired,
 };
 
 export default ReservationsList;

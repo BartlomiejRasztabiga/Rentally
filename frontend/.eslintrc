@@ -4,37 +4,14 @@
     "es6": true,
     "browser": true
   },
-  "extends": [
-    "eslint:recommended",
-    "react-app"
-  ],
+  "extends": ["eslint:recommended", "react-app", "prettier"],
   "settings": {
     "import/resolver": {
       "node": {
-        "paths": [
-          "src"
-        ],
-        "extensions": [
-          ".js",
-          ".jsx"
-        ]
+        "paths": ["src"],
+        "extensions": [".js", ".jsx"]
       }
     }
   },
-  "rules": {
-    "arrow-body-style": "off",
-    "comma-dangle": "off",
-    "import/no-unresolved": "off",
-    "jsx-a11y/anchor-is-valid": "off",
-    "jsx-a11y/click-events-have-key-events": "off",
-    "jsx-a11y/control-has-associated-label": "off",
-    "jsx-a11y/no-static-element-interactions": "off",
-    "no-console": "off",
-    "no-param-reassign": "off",
-    "no-plusplus": "off",
-    "react/forbid-prop-types": "off",
-    "react/jsx-filename-extension": "off",
-    "react/jsx-props-no-spreading": "off",
-    "react/require-default-props": "off"
-  }
+  "rules": {}
 }

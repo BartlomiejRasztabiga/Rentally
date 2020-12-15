@@ -5,24 +5,23 @@ import { useParams } from "react-router";
 import history from "history/browser";
 import CreateUpdateCarForm from "../../../components/CreateUpdateCarForm";
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   link: {
     color: "inherit",
-    textDecoration: "none"
+    textDecoration: "none",
   },
   carDetails: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5)
+    marginBottom: theme.spacing(5),
   },
   uploadImageBox: {
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 }));
 
 const CarDetails = () => {
@@ -32,7 +31,6 @@ const CarDetails = () => {
   const handleGoBack = () => {
     history.back();
   };
-
 
   return (
     <React.Fragment>
@@ -52,7 +50,7 @@ const CarDetails = () => {
 
 CarDetails.propTypes = {
   className: PropTypes.string,
-  carId: PropTypes.number
+  carId: PropTypes.number,
 };
 
 export default CarDetails;
