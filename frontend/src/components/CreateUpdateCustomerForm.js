@@ -17,6 +17,8 @@ import Loading from "./Loading";
 import ReactJson from "react-json-view";
 import { createCustomer, deleteCustomer, getCustomerById, updateCustomer } from "../service/customersService";
 import { APP_CUSTOMERS_URL } from "../config";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +47,7 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
   const [loaded, setLoaded] = useState(false);
   const [loadingError, setLoadingError] = useState(null);
   const [postError, setPostError] = useState(null);
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
 
   const isInCreateMode = !customerId;
   const isInEditMode = !isInCreateMode;
@@ -94,6 +97,7 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
     updateCustomer(customer).then(customer => {
       setCustomer(customer);
       setPostError(null);
+      setSuccessSnackbarOpen(true);
     }).catch(error => {
       setPostError(JSON.stringify(error.response.data));
     });
@@ -133,6 +137,16 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
     <React.Fragment>
       {(loaded || isInCreateMode) ? (
         <Container className={classes.customerDetails}>
+          {/*TODO Can extract snackbar to another component? */}
+          <Snackbar
+            open={successSnackbarOpen}
+            autoHideDuration={3000}
+            onClose={() => setSuccessSnackbarOpen(false)}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}>
+            <Alert severity="success">
+              Successfully saved!
+            </Alert>
+          </Snackbar>
           <Card className={clsx(classes.root)}>
             <CardContent>
               {postError &&
