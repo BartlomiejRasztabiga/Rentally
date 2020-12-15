@@ -4,6 +4,7 @@ import Page from "src/components/Page";
 import { useNavigate } from "react-router";
 import { getReservations } from "../../../service/reservationsService";
 import ReservationsList from "./ReservationsList";
+import { APP_RESERVATIONS_URL } from "../../../config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +27,7 @@ const ReservationsListView = () => {
   }, []);
 
   const handleAddReservation = () => {
-    navigate("/app/reservations/new");
+    navigate(`${APP_RESERVATIONS_URL}/new`);
   };
 
   return (

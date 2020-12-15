@@ -8,6 +8,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import AcUnitIcon from "@material-ui/icons/AcUnit";
 import { Link } from "react-router-dom";
+import { APP_CARS_URL } from "../../../config";
 
 const EMPTY_IMG_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
 
@@ -49,13 +50,13 @@ const CarCard = ({ className, car, ...rest }) => {
             {car.model_name}
           </Typography>
           <Button variant="contained" color="primary">
-            <Link className={classes.link} to={`/app/cars/`}>RENT</Link>
+            <Link className={classes.link} to={APP_CARS_URL}>RENT</Link>
           </Button>
           <Button variant="contained" color="secondary">
-            <Link className={classes.link} to={`/app/cars/`}>RESERVE</Link>
+            <Link className={classes.link} to={APP_CARS_URL}>RESERVE</Link>
           </Button>
           <Button variant="contained">
-            <Link className={classes.link} to={`/app/cars/${car.id}`}>DETAILS</Link>
+            <Link className={classes.link} to={`${APP_CARS_URL}/${car.id}`}>DETAILS</Link>
           </Button>
         </Grid>
       </CardContent>

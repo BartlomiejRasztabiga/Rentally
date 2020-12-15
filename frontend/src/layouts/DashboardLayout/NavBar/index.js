@@ -8,6 +8,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 
 import NavItem from "./NavItem";
+import { APP_CARS_URL, APP_CUSTOMERS_URL, APP_RESERVATIONS_URL } from "../../../config";
 
 const user = {
   avatar: "/static/images/avatars/avatar_1.jpeg",
@@ -21,17 +22,17 @@ const items = [
     title: "Dashboard"
   },
   {
-    href: "/app/reservations",
+    href: APP_RESERVATIONS_URL,
     icon: AssignmentIcon,
     title: "Reservations"
   },
   {
-    href: "/app/customers",
+    href: APP_CUSTOMERS_URL,
     icon: SupervisorAccountIcon,
     title: "Customers"
   },
   {
-    href: "/app/cars",
+    href: APP_CARS_URL,
     icon: DriveEtaIcon,
     title: "Cars"
   }

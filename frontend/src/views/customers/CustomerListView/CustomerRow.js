@@ -4,6 +4,7 @@ import { Avatar, Box, Button, makeStyles, TableCell, TableRow, Typography } from
 import getInitials from "../../../utils/getInitials";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
+import { APP_CUSTOMERS_URL } from "../../../config";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -37,7 +38,7 @@ const Customer = ({ className, customer, ...rest }) => {
       <TableCell>{customer.phone_number}</TableCell>
       <TableCell>
         <Button color="primary" variant="contained">
-          <Link className={classes.link} to={`/app/customers/${customer.id}`}>DETAILS</Link>
+          <Link className={classes.link} to={`${APP_CUSTOMERS_URL}/${customer.id}`}>DETAILS</Link>
         </Button>
       </TableCell>
     </TableRow>

@@ -7,6 +7,7 @@ import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import { getReservations } from "../../../service/reservationsService";
 import ReservationsList from "../ReservationsListView/ReservationsList";
 import { Link } from "react-router-dom";
+import { APP_RESERVATIONS_URL } from "../../../config";
 
 
 const useStyles = makeStyles(() => ({
@@ -50,7 +51,7 @@ const NewestReservations = ({ className, ...rest }) => {
           size="small"
           variant="text"
         >
-          <Link className={classes.link} to={"/app/reservations"}>View all</Link>
+          <Link className={classes.link} to={APP_RESERVATIONS_URL}>View all</Link>
 
         </Button>
       </Box>

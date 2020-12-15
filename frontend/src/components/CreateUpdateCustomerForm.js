@@ -16,8 +16,8 @@ import PropTypes from "prop-types";
 import Loading from "./Loading";
 import ReactJson from "react-json-view";
 import { createCustomer, deleteCustomer, getCustomerById, updateCustomer } from "../service/customersService";
+import { APP_CUSTOMERS_URL } from "../config";
 
-const CUSTOMERS_BASE_URL = "/app/customers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -101,7 +101,7 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
 
   const handleCreateCustomer = customer => {
     createCustomer(customer).then(customer => {
-      navigate(`${CUSTOMERS_BASE_URL}/${customer.id}`, { replace: true });
+      navigate(`${APP_CUSTOMERS_URL}/${customer.id}`, { replace: true });
     }).catch(error => {
       setPostError(JSON.stringify(error.response.data));
     });
@@ -109,7 +109,7 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
 
   const handleDeleteCustomer = () => {
     deleteCustomer(customerId).then(() => {
-      navigate(CUSTOMERS_BASE_URL);
+      navigate(APP_CUSTOMERS_URL);
     });
   };
 

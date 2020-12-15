@@ -4,6 +4,7 @@ import { Box, Button, makeStyles, TableCell, TableRow, Typography } from "@mater
 import { Link } from "react-router-dom";
 import clsx from "clsx";
 import moment from "moment";
+import { APP_CARS_URL, APP_CUSTOMERS_URL, APP_RESERVATIONS_URL } from "../../../config";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -35,18 +36,18 @@ const Reservation = ({ className, reservation, ...rest }) => {
       </TableCell>
       <TableCell>
         <Link className={classes.relatedObjectLink}
-              to={`/app/cars/${reservation.car_id}`}>{reservation.car.model_name}</Link>
+              to={`${APP_CARS_URL}/${reservation.car_id}`}>{reservation.car.model_name}</Link>
       </TableCell>
       <TableCell>
         <Link className={classes.relatedObjectLink}
-              to={`/app/customers/${reservation.customer_id}`}>{reservation.customer.full_name}</Link>
+              to={`${APP_CUSTOMERS_URL}/${reservation.customer_id}`}>{reservation.customer.full_name}</Link>
       </TableCell>
       <TableCell>{formatDate(reservation.start_date)}</TableCell>
       <TableCell>{formatDate(reservation.end_date)}</TableCell>
       <TableCell>{reservation.status}</TableCell>
       <TableCell>
         <Button color="primary" variant="contained">
-          <Link className={classes.link} to={`/app/reservations/${reservation.id}`}>DETAILS</Link>
+          <Link className={classes.link} to={`${APP_RESERVATIONS_URL}/${reservation.id}`}>DETAILS</Link>
         </Button>
       </TableCell>
     </TableRow>

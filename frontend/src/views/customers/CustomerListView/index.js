@@ -15,6 +15,7 @@ import CustomersList from "./CustomersList";
 import SearchIcon from "@material-ui/icons/Search";
 import { getCustomers } from "../../../service/customersService";
 import { useNavigate } from "react-router";
+import { APP_CUSTOMERS_URL } from "../../../config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,7 +39,7 @@ const CustomersListView = () => {
   }, []);
 
   const handleAddCustomer = () => {
-    navigate("/app/customers/new");
+    navigate(`${APP_CUSTOMERS_URL}/new`);
   };
 
   const filterCustomersBasedOnSearchPhrase = () => {

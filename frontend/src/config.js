@@ -5,4 +5,18 @@ const CARS_URL = API_URL + "/cars";
 const CUSTOMERS_URL = API_URL + "/customers";
 const RESERVATIONS_URL = API_URL + "/reservations";
 
-export { API_URL, ACCESS_TOKEN_URL, GET_ME_URL, CARS_URL, CUSTOMERS_URL, RESERVATIONS_URL };
+const APP_CARS_URL = "/app/cars";
+const APP_CUSTOMERS_URL = "/app/customers";
+const APP_RESERVATIONS_URL = "/app/reservations";
+
+export {
+  API_URL,
+  ACCESS_TOKEN_URL,
+  GET_ME_URL,
+  CARS_URL,
+  CUSTOMERS_URL,
+  RESERVATIONS_URL,
+  APP_CARS_URL,
+  APP_CUSTOMERS_URL,
+  APP_RESERVATIONS_URL
+};

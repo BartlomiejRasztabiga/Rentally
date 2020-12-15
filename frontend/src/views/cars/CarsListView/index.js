@@ -15,7 +15,8 @@ import Page from "src/components/Page";
 import CarCard from "./CarCard";
 import { getCars } from "../../../service/carsService";
 import { useNavigate } from "react-router";
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from "@material-ui/icons/Search";
+import { APP_CARS_URL } from "../../../config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,8 +43,8 @@ const CarsList = () => {
   }, []);
 
   const handleAddCar = () => {
-    navigate("/app/cars/new")
-  }
+    navigate(`${APP_CARS_URL}/new`);
+  };
 
   return (
     <Page className={classes.root}>

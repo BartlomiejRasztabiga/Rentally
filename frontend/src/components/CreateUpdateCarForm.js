@@ -23,6 +23,7 @@ import { createCar, deleteCar, getCarById, updateCar } from "../service/carsServ
 import convertToBase64 from "../utils/convertToBase64";
 import Loading from "./Loading";
 import ReactJson from "react-json-view";
+import { APP_CARS_URL } from "../config";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -123,7 +124,7 @@ const CreateUpdateCarForm = ({ carId }) => {
 
   const handleCreateCar = car => {
     createCar(car).then(car => {
-      navigate(`/app/cars/${car.id}`, { replace: true });
+      navigate(APP_CARS_URL, { replace: true });
     }).catch(error => {
       setPostError(JSON.stringify(error.response.data));
     });
@@ -131,7 +132,7 @@ const CreateUpdateCarForm = ({ carId }) => {
 
   const handleDeleteCar = () => {
     deleteCar(carId).then(() => {
-      navigate("/app/cars");
+      navigate(APP_CARS_URL, { replace: true });
     });
   };
 
