@@ -30,17 +30,13 @@ const ReservationsList = ({ className, reservations, ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {reservations.map((reservation) => (
-                <ReservationRow reservation={reservation} />
+              {reservations.map((reservation, key) => (
+                <ReservationRow reservation={reservation} key={key} />
               ))}
             </TableBody>
           </Table>
         </Box>
       </PerfectScrollbar>
-      <Table
-        component="div"
-        count={reservations.length}
-      />
     </Card>
   );
 };
