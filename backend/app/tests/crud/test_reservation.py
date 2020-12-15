@@ -418,3 +418,34 @@ def test_get_active_by_car_id_only_active(db: Session) -> None:
 
     active_reservations = crud.reservation.get_active_by_car_id(db, car1.id)
     assert len(active_reservations) == 0
+
+
+def test_get_active(db: Session) -> None:
+    car = create_random_car(db)
+    car2 = create_random_car(db)
+    customer = create_random_customer(db)
+    customer2 = create_random_customer(db)
+
+    start_date1 = datetime(2020, 12, 1)
+    end_date1 = datetime(2020, 12, 2)
+
+    start_date2 = datetime(2020, 12, 3)
+    end_date2 = datetime(2020, 12, 4)
+
+    reservation_create_dto = get_test_reservation_create_dto(
+        car, customer, start_date1, end_date1
+    )
+    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+
+    reservation_create_dto = get_test_reservation_create_dto(
+        car, customer, start_date2, end_date2
+    )
+    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+
+    reservation_create_dto = get_test_reservation_create_dto(
+        car2, customer2, start_date2, end_date2
+    )
+    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+
+    active_reservations = crud.reservation.get_active(db)
+    assert len(active_reservations) >= 3  # there might be other objects in db
