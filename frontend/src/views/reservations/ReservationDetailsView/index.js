@@ -3,26 +3,26 @@ import PropTypes from "prop-types";
 import { Box, Button, Container, makeStyles } from "@material-ui/core";
 import { useParams } from "react-router";
 import history from "history/browser";
-import CreateUpdateCustomerForm from "../../../components/CreateUpdateCustomerForm";
+import CreateUpdateReservationForm from "../../../components/CreateUpdateReservationForm";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
   },
   link: {
     color: "inherit",
-    textDecoration: "none",
+    textDecoration: "none"
   },
-  customerDetails: {
+  reservationDetails: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5),
+    marginBottom: theme.spacing(5)
   }
 }));
 
-const CustomerDetails = () => {
+const ReservationDetails = () => {
   const classes = useStyles();
-  let { customerId } = useParams();
+  let { reservationId } = useParams();
 
   const handleGoBack = () => {
     history.back();
@@ -30,23 +30,23 @@ const CustomerDetails = () => {
 
   return (
     <React.Fragment>
-      <Container maxWidth={false} className={classes.customerDetails}>
+      <Container maxWidth={false} className={classes.reservationDetails}>
         <Box display="flex" justifyContent="flex-start">
           <Button color="primary" variant="contained" onClick={handleGoBack}>
             Go back
           </Button>
         </Box>
       </Container>
-      <Container className={classes.customerDetails}>
-        <CreateUpdateCustomerForm customerId={customerId} />
+      <Container className={classes.reservationDetails}>
+        <CreateUpdateReservationForm reservationId={reservationId} />
       </Container>
     </React.Fragment>
   );
 };
 
-CustomerDetails.propTypes = {
+ReservationDetails.propTypes = {
   className: PropTypes.string,
-  customerId: PropTypes.number,
+  reservationId: PropTypes.number
 };
 
-export default CustomerDetails;
+export default ReservationDetails;

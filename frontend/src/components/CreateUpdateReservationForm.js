@@ -15,15 +15,17 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import Loading from "./Loading";
 import ReactJson from "react-json-view";
-import {
-  createCustomer,
-  deleteCustomer,
-  getCustomerById,
-  updateCustomer,
-} from "../service/customersService";
-import { APP_CUSTOMERS_URL } from "../config";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+import {
+  createReservation,
+  deleteReservation,
+  getReservationById,
+  updateReservation,
+} from "../service/reservationsService";
+
+import { APP_RESERVATIONS_URL } from "../config";
+import { DateTimePicker } from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
     textDecoration: "none",
   },
-  customerDetails: {
+  reservationDetails: {
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(5),
   },
@@ -43,63 +45,79 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CreateUpdateCustomerForm = ({ customerId }) => {
+const CreateUpdateReservationForm = ({ reservationId }) => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  const [customer, setCustomer] = useState({});
+  const [reservation, setReservation] = useState({});
   const [loaded, setLoaded] = useState(false);
   const [loadingError, setLoadingError] = useState(null);
   const [postError, setPostError] = useState(null);
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
 
-  const isInCreateMode = !customerId;
+  const isInCreateMode = !reservationId;
   const isInEditMode = !isInCreateMode;
 
   useEffect(() => {
     if (isInEditMode) {
-      getCustomerById(customerId)
-        .then((customer) => {
-          setCustomer(customer);
+      getReservationById(reservationId)
+        .then((reservation) => {
+          setReservation(reservation);
           setLoadingError(null);
           setLoaded(true);
         })
         .catch((error) => {
           setLoaded(true);
           if (error.response.status === 404) {
-            setLoadingError("Customer with given id not found");
+            setLoadingError("Reservation with given id not found");
           }
         });
     }
-  }, [isInEditMode, customerId]);
+  }, [isInEditMode, reservationId]);
 
   const emptyIfNull = (value) => {
     return value || "";
   };
 
   const handleChange = (event) => {
-    updateCustomerField(event.target.name, event.target.value);
+    updateReservationField(event.target.name, event.target.value);
   };
 
-  const updateCustomerField = (fieldName, value) => {
-    setCustomer({
-      ...customer,
+  const handleStartDateChange = (date) => {
+    setReservation({
+      ...reservation,
+      start_date: date.format()
+    })
+  }
+
+  const handleEndDateChange = (date) => {
+    setReservation({
+      ...reservation,
+      end_date: date.format()
+    })
+  }
+
+  const updateReservationField = (fieldName, value) => {
+    setReservation({
+      ...reservation,
       [fieldName]: value,
     });
   };
 
-  const handleCreateUpdateCustomer = () => {
-    if (customerId) {
-      handleUpdateCustomer(customer);
+  const handleCreateUpdateReservation = () => {
+    console.log(reservation)
+    if (reservationId) {
+      handleUpdateReservation(reservation);
     } else {
-      handleCreateCustomer(customer);
+      handleCreateReservation(reservation);
     }
   };
 
-  const handleUpdateCustomer = (customer) => {
-    updateCustomer(customer)
-      .then((customer) => {
-        setCustomer(customer);
+  const handleUpdateReservation = (reservation) => {
+    // TODO cannot update status
+    updateReservation(reservation)
+      .then((reservation) => {
+        setReservation(reservation);
         setPostError(null);
         setSuccessSnackbarOpen(true);
       })
@@ -108,10 +126,10 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
       });
   };
 
-  const handleCreateCustomer = (customer) => {
-    createCustomer(customer)
-      .then((customer) => {
-        navigate(APP_CUSTOMERS_URL, { replace: true });
+  const handleCreateReservation = (reservation) => {
+    createReservation(reservation)
+      .then((reservation) => {
+        navigate(APP_RESERVATIONS_URL, { replace: true });
       })
       .catch((error) => {
         setPostError(JSON.stringify(error.response.data));
@@ -119,8 +137,8 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
   };
 
   const handleDeleteCustomer = () => {
-    deleteCustomer(customerId).then(() => {
-      navigate(APP_CUSTOMERS_URL, { replace: true });
+    deleteReservation(reservationId).then(() => {
+      navigate(APP_RESERVATIONS_URL, { replace: true });
     });
   };
 
@@ -166,33 +184,51 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Full name"
-                      name="full_name"
+                      label="Car"
+                      name="car_id"
                       onChange={handleChange}
-                      required
-                      error={!customer.full_name}
-                      value={emptyIfNull(customer.full_name)}
+                      value={emptyIfNull(reservation.car_id)}
                       variant="outlined"
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Address"
-                      name="address"
+                      label="Customer"
+                      name="customer_id"
                       onChange={handleChange}
-                      value={emptyIfNull(customer.address)}
+                      value={emptyIfNull(reservation.customer_id)}
                       variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item md={6} xs={12}>
+                    <DateTimePicker
+                      fullWidth
+                      label="Start date"
+                      name="start_date"
+                      inputVariant="outlined"
+                      onChange={handleStartDateChange}
+                      value={reservation.start_date}
+                    />
+                  </Grid>
+                  <Grid item md={6} xs={12}>
+                    <DateTimePicker
+                      fullWidth
+                      label="End date"
+                      name="end_date"
+                      inputVariant="outlined"
+                      onChange={handleEndDateChange}
+                      value={reservation.end_date}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      label="Phone number"
-                      name="phone_number"
-                      onChange={handleChange}
-                      value={emptyIfNull(customer.phone_number)}
+                      label="Status"
+                      name="status"
+                      value={emptyIfNull(reservation.status)}
                       variant="outlined"
+                      disabled
                     />
                   </Grid>
                 </Grid>
@@ -205,7 +241,7 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
                     variant="contained"
                     component="span"
                     color="primary"
-                    onClick={handleCreateUpdateCustomer}
+                    onClick={handleCreateUpdateReservation}
                   >
                     Save
                   </Button>
@@ -235,9 +271,9 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
   );
 };
 
-CreateUpdateCustomerForm.propTypes = {
+CreateUpdateReservationForm.propTypes = {
   className: PropTypes.string,
-  carId: PropTypes.string,
+  reservationId: PropTypes.string,
 };
 
-export default CreateUpdateCustomerForm;
+export default CreateUpdateReservationForm;

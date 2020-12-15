@@ -15,6 +15,8 @@ import SettingsView from "./views/settings/SettingsView";
 import CarDetailsView from "./views/cars/CarDetailsView";
 import CreateCarView from "./views/cars/CreateCarView";
 import ReservationsListView from "./views/reservations/ReservationsListView";
+import ReservationDetailsView from "./views/reservations/ReservationDetailsView";
+import CreateReservationView from "./views/reservations/CreateReservationView";
 
 const routes = [
   {
@@ -32,15 +34,15 @@ const routes = [
       { path: "customers/:customerId", element: <CustomerDetailsView /> },
 
       { path: "reservations", element: <ReservationsListView /> },
-      { path: "reservations/new", element: <ReservationsListView /> },
+      { path: "reservations/new", element: <CreateReservationView /> },
       {
         path: "reservations/:reservationId",
-        element: <ReservationsListView />,
+        element: <ReservationDetailsView />
       },
 
       { path: "settings", element: <SettingsView /> },
-      { path: "*", element: <Navigate to="/404" /> },
-    ],
+      { path: "*", element: <Navigate to="/404" /> }
+    ]
   },
   {
     path: "/",
@@ -50,9 +52,9 @@ const routes = [
       { path: "register", element: <RegisterView /> },
       { path: "404", element: <NotFoundView /> },
       { path: "/", element: <Navigate to="/app/dashboard" /> },
-      { path: "*", element: <Navigate to="/404" /> },
-    ],
-  },
+      { path: "*", element: <Navigate to="/404" /> }
+    ]
+  }
 ];
 
 export default routes;

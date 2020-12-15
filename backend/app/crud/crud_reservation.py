@@ -67,6 +67,8 @@ class CRUDReservation(
         # TODO or rental for the same time frame
         self.validate_collisions(db, obj_in)
 
+        # TODO dates cannot be in the past on create?
+
         obj_in.status = ReservationStatus.NEW
         return super().create(db=db, obj_in=obj_in)
 
