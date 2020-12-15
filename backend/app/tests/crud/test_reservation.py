@@ -367,3 +367,54 @@ def test_update_reservation_collected_to_new_will_throw(db: Session) -> None:
         crud.reservation.update(
             db=db, db_obj=reservation, obj_in=reservation_update_dto
         )
+
+
+def test_get_active_by_car_id(db: Session) -> None:
+    car1 = create_random_car(db)
+    car2 = create_random_car(db)
+    customer = create_random_customer(db)
+
+    start_date1 = datetime(2020, 12, 1)
+    end_date1 = datetime(2020, 12, 2)
+
+    start_date2 = datetime(2020, 12, 3)
+    end_date2 = datetime(2020, 12, 4)
+
+    reservation_create_dto = get_test_reservation_create_dto(
+        car1, customer, start_date1, end_date1, status=ReservationStatus.NEW
+    )
+    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+
+    reservation_create_dto = get_test_reservation_create_dto(
+        car2, customer, start_date2, end_date2, status=ReservationStatus.NEW
+    )
+    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+
+    active_reservations = crud.reservation.get_active_by_car_id(db, car2.id)
+    assert len(active_reservations) == 1
+
+
+def test_get_active_by_car_id_only_active(db: Session) -> None:
+    car1 = create_random_car(db)
+    customer = create_random_customer(db)
+
+    start_date1 = datetime(2020, 12, 1)
+    end_date1 = datetime(2020, 12, 2)
+
+    reservation_create_dto = get_test_reservation_create_dto(
+        car1, customer, start_date1, end_date1, status=ReservationStatus.NEW
+    )
+    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+
+    reservation_update_dto = ReservationUpdateDto(
+        car_id=reservation.car_id,
+        customer_id=reservation.customer_id,
+        start_date=reservation.start_date,
+        end_date=reservation.end_date,
+        status=ReservationStatus.CANCELLED,
+    )
+
+    crud.reservation.update(db=db, db_obj=reservation, obj_in=reservation_update_dto)
+
+    active_reservations = crud.reservation.get_active_by_car_id(db, car1.id)
+    assert len(active_reservations) == 0

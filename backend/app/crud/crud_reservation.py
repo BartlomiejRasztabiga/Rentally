@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import List, Union
 
 from fastapi.encoders import jsonable_encoder
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
@@ -93,11 +94,11 @@ class CRUDReservation(
         return (
             db.query(Reservation)
             .filter(
-                Reservation.car_id == car_id
-                and (
-                    Reservation.status == ReservationStatus.NEW
-                    or Reservation.status == ReservationStatus.COLLECTED
-                )
+                Reservation.car_id == car_id,
+                or_(
+                    Reservation.status == ReservationStatus.NEW,
+                    Reservation.status == ReservationStatus.COLLECTED,
+                ),
             )
             .all()
         )
@@ -106,8 +107,10 @@ class CRUDReservation(
         return (
             db.query(Reservation)
             .filter(
-                Reservation.status == ReservationStatus.NEW
-                or Reservation.status == ReservationStatus.COLLECTED
+                or_(
+                    Reservation.status == ReservationStatus.NEW,
+                    Reservation.status == ReservationStatus.COLLECTED,
+                )
             )
             .all()
         )
