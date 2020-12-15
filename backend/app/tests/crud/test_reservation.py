@@ -207,13 +207,7 @@ def test_update_reservation(db: Session) -> None:
     )
     reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
 
-    reservation_update_dto = ReservationUpdateDto(
-        car_id=reservation.car_id,
-        customer_id=reservation.customer_id,
-        start_date=reservation.start_date,
-        end_date=reservation.end_date,
-        status=ReservationStatus.COLLECTED,
-    )
+    reservation_update_dto = ReservationUpdateDto(status=ReservationStatus.COLLECTED)
 
     stored_reservation = crud.reservation.update(
         db=db, db_obj=reservation, obj_in=reservation_update_dto

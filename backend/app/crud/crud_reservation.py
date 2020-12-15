@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Union
+from typing import Any, Dict, List, Union
 
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
@@ -50,7 +50,10 @@ class CRUDReservation(
     def validate_status(
         old_status: ReservationStatus, new_status: ReservationStatus
     ) -> None:
-        # TODO add tests
+        if old_status and new_status:
+            return
+
+            # TODO add tests
         if old_status == ReservationStatus.CANCELLED:
             raise UpdatingCancelledReservationException()
         if (
@@ -75,18 +78,25 @@ class CRUDReservation(
         return super().create(db=db, obj_in=obj_in)
 
     def update(
-        self, db: Session, *, db_obj: Reservation, obj_in: ReservationUpdateDto
+        self,
+        db: Session,
+        *,
+        db_obj: Reservation,
+        obj_in: Union[ReservationUpdateDto, Dict[str, Any]]
     ) -> Reservation:
-        self.validate_status(db_obj.status, obj_in.status)
-        self.validate_dates(obj_in.start_date, obj_in.end_date)
-        self.validate_collisions(db, obj_in, db_obj.id)
-        # TODO add tests for collisions on updated
-
         obj_data = jsonable_encoder(db_obj)
-        update_data = obj_in.dict(exclude_unset=True)
+        if isinstance(obj_in, dict):
+            update_data = obj_in
+        else:
+            update_data = obj_in.dict(exclude_unset=True)
         for field in obj_data:
             if field in update_data:
                 setattr(db_obj, field, update_data[field])
+
+        self.validate_status(db_obj.status, obj_in.status)  # TODO fix status type
+        self.validate_dates(db_obj.start_date, db_obj.end_date)
+        self.validate_collisions(db, db_obj, db_obj.id)
+
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
