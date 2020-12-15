@@ -1,7 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { Box, Button, Card, CardContent, Divider, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Divider,
+  Grid,
+  makeStyles,
+  Paper,
+  Typography,
+} from "@material-ui/core";
 import LocalGasStationIcon from "@material-ui/icons/LocalGasStation";
 import SettingsIcon from "@material-ui/icons/Settings";
 import PersonIcon from "@material-ui/icons/Person";
@@ -16,23 +26,23 @@ const EMPTY_IMG_BASE64 =
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   statsItem: {
     alignItems: "center",
-    display: "flex"
+    display: "flex",
   },
   statsIcon: {
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
   },
   large: {
     width: theme.spacing(20),
-    height: theme.spacing(20)
+    height: theme.spacing(20),
   },
   link: {
     color: "inherit",
-    textDecoration: "none"
-  }
+    textDecoration: "none",
+  },
 }));
 
 const CarCard = ({ className, car, ...rest }) => {
@@ -116,7 +126,9 @@ const CarCard = ({ className, car, ...rest }) => {
           <Grid className={classes.statsItem} item lg={4} md={4}>
             <AttachMoneyIcon />
             <Typography color="textPrimary" variant="h6">
-              {car.deposit_amount ? `${car.deposit_amount} PLN deposit` : "no deposit"}
+              {car.deposit_amount
+                ? `${car.deposit_amount} PLN deposit`
+                : "no deposit"}
             </Typography>
           </Grid>
         </Grid>
@@ -127,7 +139,7 @@ const CarCard = ({ className, car, ...rest }) => {
 
 CarCard.propTypes = {
   className: PropTypes.string,
-  car: PropTypes.object.isRequired
+  car: PropTypes.object.isRequired,
 };
 
 export default CarCard;
