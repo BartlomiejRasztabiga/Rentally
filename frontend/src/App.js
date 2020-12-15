@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRoutes } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import MomentUtils from '@date-io/moment';
+import MomentUtils from "@date-io/moment";
 import GlobalStyles from "./components/GlobalStyles";
 import theme from "./theme";
 import routes from "./routes";

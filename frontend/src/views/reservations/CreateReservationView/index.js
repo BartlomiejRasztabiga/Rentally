@@ -7,12 +7,12 @@ import CreateUpdateReservationForm from "../../../components/CreateUpdateReserva
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   reservationDetails: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5)
-  }
+    marginBottom: theme.spacing(5),
+  },
 }));
 
 const CreateReservationView = () => {
@@ -39,7 +39,7 @@ const CreateReservationView = () => {
 };
 
 CreateReservationView.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default CreateReservationView;

@@ -8,16 +8,16 @@ import CreateUpdateReservationForm from "../../../components/CreateUpdateReserva
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   link: {
     color: "inherit",
-    textDecoration: "none"
+    textDecoration: "none",
   },
   reservationDetails: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5)
-  }
+    marginBottom: theme.spacing(5),
+  },
 }));
 
 const ReservationDetails = () => {
@@ -46,7 +46,7 @@ const ReservationDetails = () => {
 
 ReservationDetails.propTypes = {
   className: PropTypes.string,
-  reservationId: PropTypes.number
+  reservationId: PropTypes.number,
 };
 
 export default ReservationDetails;

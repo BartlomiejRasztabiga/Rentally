@@ -86,16 +86,16 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
   const handleStartDateChange = (date) => {
     setReservation({
       ...reservation,
-      start_date: date.format()
-    })
-  }
+      start_date: date.format(),
+    });
+  };
 
   const handleEndDateChange = (date) => {
     setReservation({
       ...reservation,
-      end_date: date.format()
-    })
-  }
+      end_date: date.format(),
+    });
+  };
 
   const updateReservationField = (fieldName, value) => {
     setReservation({
@@ -105,7 +105,6 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
   };
 
   const handleCreateUpdateReservation = () => {
-    console.log(reservation)
     if (reservationId) {
       handleUpdateReservation(reservation);
     } else {
@@ -222,16 +221,19 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
                       value={reservation.end_date}
                     />
                   </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Status"
-                      name="status"
-                      value={emptyIfNull(reservation.status)}
-                      variant="outlined"
-                      disabled
-                    />
-                  </Grid>
+                  {/* new reservation always starts with NEW status */}
+                  {isInEditMode && (
+                    <Grid item md={6} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Status"
+                        name="status"
+                        value={emptyIfNull(reservation.status)}
+                        variant="outlined"
+                        disabled
+                      />
+                    </Grid>
+                  )}
                 </Grid>
               </form>
             </CardContent>

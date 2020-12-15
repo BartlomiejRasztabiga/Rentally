@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   customerDetails: {
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(5),
-  }
+  },
 }));
 
 const CustomerDetails = () => {
