@@ -1,10 +1,10 @@
 from typing import Optional
 
-from app.schemas.base import BaseModelWithOptionals
+from pydantic.main import BaseModel
 
 
 # Shared properties
-class CustomerBase(BaseModelWithOptionals):
+class CustomerBase(BaseModel):
     full_name: str
     address: Optional[str]
     phone_number: Optional[str]
@@ -16,11 +16,7 @@ class CustomerCreateDto(CustomerBase):
 
 
 # Properties to receive via API on update
-_update_optional_fields = CustomerBase.__fields__.keys()
-
-
-# Properties to receive via API on update
-class CustomerUpdateDto(CustomerBase, optional_fields=_update_optional_fields):
+class CustomerUpdateDto(CustomerBase):
     pass
 
 

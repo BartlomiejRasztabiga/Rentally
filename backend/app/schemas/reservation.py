@@ -1,12 +1,13 @@
 from datetime import datetime
 from typing import Optional
 
+from pydantic.main import BaseModel
+
 from app.models.reservation import ReservationStatus
-from app.schemas.base import BaseModelWithOptionals
 
 
 # Shared properties
-class ReservationBase(BaseModelWithOptionals):
+class ReservationBase(BaseModel):
     car_id: int
     customer_id: int
     start_date: datetime
@@ -20,11 +21,7 @@ class ReservationCreateDto(ReservationBase):
 
 
 # Properties to receive via API on update
-_update_optional_fields = ReservationBase.__fields__.keys()
-
-
-# Properties to receive via API on update
-class ReservationUpdateDto(ReservationBase, optional_fields=_update_optional_fields):
+class ReservationUpdateDto(ReservationBase):
     pass
 
 

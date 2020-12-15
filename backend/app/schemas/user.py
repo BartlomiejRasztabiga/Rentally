@@ -19,6 +19,7 @@ class UserCreateDto(UserBase):
 # Properties to receive via API on update
 class UserUpdateDto(UserBase):
     password: Optional[str] = None
+    hashed_password: Optional[str] = None
 
 
 class UserInDBBase(UserBase):

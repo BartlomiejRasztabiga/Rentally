@@ -1,12 +1,13 @@
 from decimal import Decimal
 from typing import Optional
 
+from pydantic.main import BaseModel
+
 from app.models.car import AcType, CarType, DriveType, FuelType, GearboxType
-from app.schemas.base import BaseModelWithOptionals
 
 
 # Shared properties
-class CarBase(BaseModelWithOptionals):
+class CarBase(BaseModel):
     model_name: str
     type: CarType
     fuel_type: FuelType
@@ -39,11 +40,7 @@ class CarCreateDto(CarBase):
     pass
 
 
-# Properties to receive via API on update
-_update_optional_fields = CarBase.__fields__.keys()
-
-
-class CarUpdateDto(CarBase, optional_fields=_update_optional_fields):
+class CarUpdateDto(CarBase):
     pass
 
 

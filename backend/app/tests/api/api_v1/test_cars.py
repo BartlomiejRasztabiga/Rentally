@@ -60,7 +60,15 @@ def test_update_car(
     car = create_random_car(db)
 
     data = {
+        "model_name": "test",
+        "type": "CAR",
+        "fuel_type": "DIESEL",
+        "gearbox_type": "AUTO",
+        "ac_type": "AUTO",
         "number_of_passengers": 8,
+        "drive_type": "FRONT",
+        "number_of_airbags": 8,
+        "price_per_day": "99.99",
     }
     response = client.put(
         f"{settings.API_V1_STR}/cars/{car.id}",

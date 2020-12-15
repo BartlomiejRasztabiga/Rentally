@@ -1,5 +1,6 @@
+from copy import deepcopy
 from datetime import datetime
-from typing import Any, Dict, List, Union
+from typing import List, Union
 
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
@@ -78,22 +79,17 @@ class CRUDReservation(
         return super().create(db=db, obj_in=obj_in)
 
     def update(
-        self,
-        db: Session,
-        *,
-        db_obj: Reservation,
-        obj_in: Union[ReservationUpdateDto, Dict[str, Any]]
+        self, db: Session, *, db_obj: Reservation, obj_in: ReservationUpdateDto
     ) -> Reservation:
+        old_reservation = deepcopy(db_obj)
+
         obj_data = jsonable_encoder(db_obj)
-        if isinstance(obj_in, dict):
-            update_data = obj_in
-        else:
-            update_data = obj_in.dict(exclude_unset=True)
+        update_data = obj_in.dict(exclude_unset=True)
         for field in obj_data:
             if field in update_data:
                 setattr(db_obj, field, update_data[field])
 
-        self.validate_status(db_obj.status, obj_in.status)  # TODO fix status type
+        self.validate_status(old_reservation.status, obj_in.status)  # type: ignore
         self.validate_dates(db_obj.start_date, db_obj.end_date)
         self.validate_collisions(db, db_obj, db_obj.id)
 
