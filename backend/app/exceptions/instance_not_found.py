@@ -14,3 +14,8 @@ class CarNotFoundException(InstanceNotFoundException):
 class CustomerNotFoundException(InstanceNotFoundException):
     def __init__(self):
         super().__init__("Customer")
+
+
+class ReservationNotFoundException(InstanceNotFoundException):
+    def __init__(self):
+        super().__init__("Reservation")

@@ -40,3 +40,23 @@ class Reservation(ReservationInDBBase):
 # Additional properties stored in DB
 class ReservationInDB(ReservationInDBBase):
     pass
+
+
+# criteria schemas for querying
+class TimeRangeCriteria(BaseModel):
+    start_date: datetime
+    end_date: datetime
+
+
+class CarCriteria(BaseModel):
+    car_id: int
+
+
+class CustomerCriteria(BaseModel):
+    customer_id: int
+
+
+class ReservationsQueryCriteria(BaseModel):
+    timeRange: Optional[TimeRangeCriteria]
+    car: Optional[CarCriteria]
+    customer: Optional[CustomerCriteria]
