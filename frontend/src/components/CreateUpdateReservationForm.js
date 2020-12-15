@@ -8,7 +8,7 @@ import {
   Grid,
   makeStyles,
   TextField,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ import {
   deleteReservation,
   getReservationById,
   updateReservation,
-  updateReservationStatus
+  updateReservationStatus,
 } from "../service/reservationsService";
 
 import { APP_RESERVATIONS_URL } from "../config";
@@ -38,26 +38,26 @@ import MenuItem from "@material-ui/core/MenuItem";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   link: {
     color: "inherit",
-    textDecoration: "none"
+    textDecoration: "none",
   },
   reservationDetails: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5)
+    marginBottom: theme.spacing(5),
   },
   errorBox: {
-    margin: theme.spacing(5)
+    margin: theme.spacing(5),
   },
   changeStatusButtonsBox: {
     marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3)
+    marginBottom: theme.spacing(3),
   },
   changeStatusButton: {
-    margin: theme.spacing(1)
-  }
+    margin: theme.spacing(1),
+  },
 }));
 
 const COLLECTED = "COLLECTED";
@@ -69,7 +69,7 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
 
   const [reservation, setReservation] = useState({
     start_date: moment(),
-    end_date: moment()
+    end_date: moment(),
   });
   const [loaded, setLoaded] = useState(false);
   const [loadingError, setLoadingError] = useState(null);
@@ -122,21 +122,21 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
   const handleStartDateChange = (date) => {
     setReservation({
       ...reservation,
-      start_date: date.format()
+      start_date: date.format(),
     });
   };
 
   const handleEndDateChange = (date) => {
     setReservation({
       ...reservation,
-      end_date: date.format()
+      end_date: date.format(),
     });
   };
 
   const updateReservationField = (fieldName, value) => {
     setReservation({
       ...reservation,
-      [fieldName]: value
+      [fieldName]: value,
     });
   };
 
@@ -177,21 +177,25 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
   };
 
   const handleCollectReservation = () => {
-    updateReservationStatus(reservation, COLLECTED).then(() => {
-      setReservation(reservation);
-      setPostError(null);
-      setSuccessSnackbarOpen(true);
-    }).catch((error) => {
-      setPostError(JSON.stringify(error.response.data));
-    });
+    updateReservationStatus(reservation, COLLECTED)
+      .then(() => {
+        setReservation(reservation);
+        setPostError(null);
+        setSuccessSnackbarOpen(true);
+      })
+      .catch((error) => {
+        setPostError(JSON.stringify(error.response.data));
+      });
   };
 
   const handleCancelReservation = () => {
-    updateReservationStatus(reservation, CANCELLED).then(() => {
-      navigate(APP_RESERVATIONS_URL, { replace: true });
-    }).catch((error) => {
-      setPostError(JSON.stringify(error.response.data));
-    });
+    updateReservationStatus(reservation, CANCELLED)
+      .then(() => {
+        navigate(APP_RESERVATIONS_URL, { replace: true });
+      })
+      .catch((error) => {
+        setPostError(JSON.stringify(error.response.data));
+      });
   };
 
   if (loadingError) {
@@ -231,32 +235,34 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
                   <ReactJson src={JSON.parse(postError)} theme="ocean" />
                 </div>
               )}
-              {isInEditMode && (<Grid
-                container
-                className={classes.changeStatusButtonsBox}
-                justify="flex-end"
-              >
-                <Grid item md={3}>
-                  <Button
-                    variant="outlined"
-                    component="span"
-                    color="primary"
-                    className={classes.changeStatusButton}
-                    onClick={handleCollectReservation}
-                  >
-                    COLLLECT
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    component="span"
-                    color="secondary"
-                    className={classes.changeStatusButton}
-                    onClick={handleCancelReservation}
-                  >
-                    CANCEL
-                  </Button>
+              {isInEditMode && (
+                <Grid
+                  container
+                  className={classes.changeStatusButtonsBox}
+                  justify="flex-end"
+                >
+                  <Grid item md={3}>
+                    <Button
+                      variant="outlined"
+                      component="span"
+                      color="primary"
+                      className={classes.changeStatusButton}
+                      onClick={handleCollectReservation}
+                    >
+                      COLLLECT
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      component="span"
+                      color="secondary"
+                      className={classes.changeStatusButton}
+                      onClick={handleCancelReservation}
+                    >
+                      CANCEL
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>)}
+              )}
               <form autoComplete="off">
                 <Grid container spacing={3}>
                   <Grid item md={6} xs={12}>
@@ -269,7 +275,9 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
                         label="Car"
                       >
                         {availableCars.map((car, key) => (
-                          <MenuItem value={car.id} key={key}>{car.model_name}</MenuItem>
+                          <MenuItem value={car.id} key={key}>
+                            {car.model_name}
+                          </MenuItem>
                         ))}
                       </Select>
                     </FormControl>
@@ -370,7 +378,7 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
 
 CreateUpdateReservationForm.propTypes = {
   className: PropTypes.string,
-  reservationId: PropTypes.string
+  reservationId: PropTypes.string,
 };
 
 export default CreateUpdateReservationForm;
