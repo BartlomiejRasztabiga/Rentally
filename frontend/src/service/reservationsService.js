@@ -30,6 +30,11 @@ const updateReservation = async (reservation) => {
     .then((response) => response.data);
 };
 
+const updateReservationStatus = async (reservation, newStatus) => {
+  reservation.status = newStatus;
+  return await updateReservation(reservation);
+};
+
 const deleteReservation = async (reservationId) => {
   return await axios
     .delete(`${RESERVATIONS_URL}/${reservationId}`)
@@ -42,4 +47,5 @@ export {
   updateReservation,
   deleteReservation,
   createReservation,
+  updateReservationStatus,
 };

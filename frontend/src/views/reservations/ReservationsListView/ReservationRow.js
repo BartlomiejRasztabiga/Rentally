@@ -33,7 +33,7 @@ const Reservation = ({ className, reservation, ...rest }) => {
   const classes = useStyles();
 
   const formatDate = (date) => {
-    return moment(date).format("DD.M.YYYY hh:mm");
+    return moment(date).format("DD.M.YYYY HH:mm");
   };
 
   return (
