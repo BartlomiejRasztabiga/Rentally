@@ -87,8 +87,6 @@ class CRUDReservation(
     def create(self, db: Session, *, obj_in: ReservationCreateDto) -> Reservation:
         self.validate_dates(obj_in.start_date, obj_in.end_date)
 
-        # TODO cannot reserve a car if there is already another reservation
-        # TODO or rental for the same time frame
         self.validate_collisions(db, obj_in)
 
         self.validate_dates_on_create(obj_in.start_date, obj_in.end_date)
@@ -102,6 +100,7 @@ class CRUDReservation(
         old_reservation = deepcopy(db_obj)
 
         # update db_obj
+        # TODO extract
         obj_data = jsonable_encoder(db_obj)
         update_data = obj_in.dict(exclude_unset=True)
         for field in obj_data:

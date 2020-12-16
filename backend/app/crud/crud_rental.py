@@ -89,6 +89,8 @@ class CRUDRental(CRUDBase[Rental, RentalCreateDto, RentalUpdateDto]):
 
         self.validate_dates_on_create(obj_in.start_date, obj_in.end_date)
 
+        # TODO if reservation_id is present, car_id and custoemr_id have to be the same
+
         obj_in.status = RentalStatus.IN_PROGRESS
         return super().create(db=db, obj_in=obj_in)
 
@@ -96,6 +98,7 @@ class CRUDRental(CRUDBase[Rental, RentalCreateDto, RentalUpdateDto]):
         old_rental = deepcopy(db_obj)
 
         # update db_obj
+        # TODO extract
         obj_data = jsonable_encoder(db_obj)
         update_data = obj_in.dict(exclude_unset=True)
         for field in obj_data:
@@ -105,6 +108,8 @@ class CRUDRental(CRUDBase[Rental, RentalCreateDto, RentalUpdateDto]):
         self.validate_status(old_rental.status, obj_in.status)  # type: ignore
         self.validate_dates(db_obj.start_date, db_obj.end_date)
         self.validate_collisions(db, db_obj, db_obj.id)
+
+        # TODO if reservation_id is present, car_id and custoemr_id have to be the same
 
         db.add(db_obj)
         db.commit()
