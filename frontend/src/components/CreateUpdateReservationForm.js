@@ -69,7 +69,7 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
 
   const [reservation, setReservation] = useState({
     start_date: moment(),
-    end_date: moment().add(1, 'days'),
+    end_date: moment().add(1, "days"),
   });
   const [loaded, setLoaded] = useState(false);
   const [loadingError, setLoadingError] = useState(null);
