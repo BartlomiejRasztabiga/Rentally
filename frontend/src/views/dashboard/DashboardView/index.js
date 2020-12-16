@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Grid, makeStyles } from "@material-ui/core";
 import Page from "src/components/Page";
 import NewestReservationsListView from "../../reservations/NewestReservationsListView";
+import NewestRentalsListView from "../../rentals/NewestRentalsListView";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,7 +24,7 @@ const Dashboard = () => {
             <NewestReservationsListView />
           </Grid>
           <Grid item lg={12} md={12} xl={12} xs={12}>
-            {/*<NewestReservationsListView />*/}
+            <NewestRentalsListView />
           </Grid>
         </Grid>
       </Container>
