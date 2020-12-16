@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app import services, models, schemas
+from app import models, schemas, services
 from app.api import deps
 from app.exceptions.instance_not_found import (
     CarNotFoundException,

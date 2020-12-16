@@ -3,7 +3,7 @@ from typing import Any, List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app import services, models, schemas
+from app import models, schemas, services
 from app.api import deps
 from app.exceptions.instance_not_found import CustomerNotFoundException
 
@@ -90,5 +90,7 @@ def update_customer(
     if not customer:
         raise CustomerNotFoundException()
 
-    customer = services.customer.update(db=db, db_obj=customer, obj_in=customer_update_dto)
+    customer = services.customer.update(
+        db=db, db_obj=customer, obj_in=customer_update_dto
+    )
     return customer

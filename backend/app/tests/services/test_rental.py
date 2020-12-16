@@ -5,9 +5,16 @@ import pytz
 from sqlalchemy.orm import Session
 
 from app import services
-from app.exceptions.rental import RentalAndReservationDifferenceException, UpdatingCompletedRentalException, \
-    RentalCreatedInThePastException, RentalCollisionException
-from app.exceptions.reservation import StartDateNotBeforeEndDateException, ReservationCollisionException
+from app.exceptions.rental import (
+    RentalAndReservationDifferenceException,
+    RentalCollisionException,
+    RentalCreatedInThePastException,
+    UpdatingCompletedRentalException,
+)
+from app.exceptions.reservation import (
+    ReservationCollisionException,
+    StartDateNotBeforeEndDateException,
+)
 from app.models.rental import RentalStatus
 from app.schemas.rental import RentalUpdateDto
 from app.tests.utils.car import create_random_car
@@ -45,7 +52,9 @@ def test_create_rental_with_reservation(db: Session) -> None:
 
     reservation = create_random_reservation(db, car, customer, start_date, end_date)
 
-    rental_create_dto = get_test_rental_create_dto(car, customer, start_date, end_date, reservation=reservation)
+    rental_create_dto = get_test_rental_create_dto(
+        car, customer, start_date, end_date, reservation=reservation
+    )
 
     rental = services.rental.create(db=db, obj_in=rental_create_dto)
 
@@ -58,7 +67,9 @@ def test_create_rental_with_reservation(db: Session) -> None:
     assert rental.customer == customer
 
 
-def test_update_rental_with_reservation_change_carid_customerid_will_throw(db: Session) -> None:
+def test_update_rental_with_reservation_change_carid_customerid_will_throw(
+    db: Session,
+) -> None:
     car = create_random_car(db)
     customer = create_random_customer(db)
     car1 = create_random_car(db)
@@ -69,7 +80,9 @@ def test_update_rental_with_reservation_change_carid_customerid_will_throw(db: S
 
     reservation = create_random_reservation(db, car, customer, start_date, end_date)
 
-    rental_create_dto = get_test_rental_create_dto(car, customer, start_date, end_date, reservation=reservation)
+    rental_create_dto = get_test_rental_create_dto(
+        car, customer, start_date, end_date, reservation=reservation
+    )
 
     rental = services.rental.create(db=db, obj_in=rental_create_dto)
 
@@ -164,7 +177,9 @@ def test_get_active(db: Session) -> None:
         status=RentalStatus.COMPLETED,
     )
 
-    updated_rental = services.rental.update(db=db, db_obj=rental, obj_in=rental_update_dto)
+    updated_rental = services.rental.update(
+        db=db, db_obj=rental, obj_in=rental_update_dto
+    )
 
     active_rentals = services.rental.get_active(db=db)
 
@@ -181,11 +196,15 @@ def test_create_rental_collision_with_another_rental_will_throw(db: Session) -> 
     start_date2 = datetime(2030, 12, 1, tzinfo=pytz.UTC)
     end_date2 = datetime(2030, 12, 2, tzinfo=pytz.UTC)
 
-    rental_create_dto = get_test_rental_create_dto(car, customer, start_date1, end_date1)
+    rental_create_dto = get_test_rental_create_dto(
+        car, customer, start_date1, end_date1
+    )
 
     services.rental.create(db=db, obj_in=rental_create_dto)
 
-    rental_create_dto = get_test_rental_create_dto(car, customer, start_date2, end_date2)
+    rental_create_dto = get_test_rental_create_dto(
+        car, customer, start_date2, end_date2
+    )
 
     with pytest.raises(RentalCollisionException):
         services.rental.create(db=db, obj_in=rental_create_dto)
@@ -200,7 +219,9 @@ def test_create_rental_collision_with_reservation_will_throw(db: Session) -> Non
 
     create_random_reservation(db, car, customer, start_date1, end_date1)
 
-    rental_create_dto = get_test_rental_create_dto(car, customer, start_date1, end_date1)
+    rental_create_dto = get_test_rental_create_dto(
+        car, customer, start_date1, end_date1
+    )
 
     with pytest.raises(ReservationCollisionException):
         services.rental.create(db=db, obj_in=rental_create_dto)

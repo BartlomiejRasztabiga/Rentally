@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from sqlalchemy.orm import Session
 
-from app import services, models
+from app import models, services
 from app.models.car import AcType, CarType, DriveType, FuelType, GearboxType
 from app.schemas.car import CarCreateDto
 

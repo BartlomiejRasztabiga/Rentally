@@ -8,7 +8,6 @@ from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from app import services
-from app.services.base import BaseService
 from app.exceptions.rental import RentalCollisionException
 from app.exceptions.reservation import (
     ReservationCollisionException,
@@ -19,6 +18,7 @@ from app.exceptions.reservation import (
 )
 from app.models.reservation import Reservation, ReservationStatus
 from app.schemas.reservation import ReservationCreateDto, ReservationUpdateDto
+from app.services.base import BaseService
 from app.utils.datetime_utils import datetime_without_seconds
 from app.utils.interval import Interval
 

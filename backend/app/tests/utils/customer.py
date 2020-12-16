@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from app import services, models
+from app import models, services
 from app.schemas.customer import CustomerCreateDto
 
 

@@ -7,7 +7,6 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from app import services
-from app.services.base import BaseService
 from app.exceptions.rental import (
     RentalAndReservationDifferenceException,
     RentalCollisionException,
@@ -21,6 +20,7 @@ from app.exceptions.reservation import (
 from app.models import Rental
 from app.models.rental import RentalStatus
 from app.schemas.rental import RentalCreateDto, RentalUpdateDto
+from app.services.base import BaseService
 from app.utils.datetime_utils import datetime_without_seconds
 from app.utils.interval import Interval
 
@@ -42,24 +42,24 @@ class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
 
     @staticmethod
     def validate_sync_with_reservation(
-            db: Session, _rental: Union[RentalCreateDto, RentalUpdateDto, Rental]
-    ):
+        db: Session, _rental: Union[RentalCreateDto, RentalUpdateDto, Rental]
+    ) -> None:
         if _rental.reservation_id:
             _reservation = services.reservation.get(db=db, _id=_rental.reservation_id)
             # was created from reservation, has to maintain same car_id and customer_id
             # as the reservation it was created from
             if (
-                    _rental.car_id != _reservation.car_id
-                    or _rental.customer_id != _reservation.customer_id
+                _rental.car_id != _reservation.car_id
+                or _rental.customer_id != _reservation.customer_id
             ):
                 raise RentalAndReservationDifferenceException()
 
     # TODO PLEASE REFACTOR
     def validate_collisions(
-            self,
-            db: Session,
-            _rental: Union[RentalCreateDto, RentalUpdateDto, Rental],
-            current_rental_id: int = None,
+        self,
+        db: Session,
+        _rental: Union[RentalCreateDto, RentalUpdateDto, Rental],
+        current_rental_id: int = None,
     ) -> None:
         reservations_for_this_car = services.reservation.get_active_by_car_id(
             db=db, car_id=_rental.car_id
@@ -67,7 +67,10 @@ class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
         rental_timeframe = Interval(_rental.start_date, _rental.end_date)
 
         for other_reservation in reservations_for_this_car:
-            if _rental.reservation_id and _rental.reservation_id == other_reservation.id:
+            if (
+                _rental.reservation_id
+                and _rental.reservation_id == other_reservation.id
+            ):
                 # collision with the same object is obvious, skip
                 continue
             other_reservation_timeframe = Interval(
@@ -130,12 +133,12 @@ class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
     def get_active_by_car_id(self, db: Session, car_id: int) -> List[Rental]:
         return (
             db.query(Rental)
-                .filter(Rental.car_id == car_id, Rental.status == RentalStatus.IN_PROGRESS, )
-                .all()
+            .filter(Rental.car_id == car_id, Rental.status == RentalStatus.IN_PROGRESS,)
+            .all()
         )
 
     def get_active(self, db: Session) -> List[Rental]:
-        return db.query(Rental).filter(Rental.status == RentalStatus.IN_PROGRESS, ).all()
+        return db.query(Rental).filter(Rental.status == RentalStatus.IN_PROGRESS,).all()
 
 
 rental = RentalService(Rental)

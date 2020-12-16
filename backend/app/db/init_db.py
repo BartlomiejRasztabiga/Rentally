@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from app import services, schemas
+from app import schemas, services
 from app.core.config import settings
 from app.db import base  # noqa: F401
 

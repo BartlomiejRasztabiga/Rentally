@@ -3,9 +3,9 @@ from typing import Optional
 from sqlalchemy.orm import Session
 
 from app.core.security import get_password_hash, verify_password
-from app.services.base import BaseService
 from app.models.user import User
 from app.schemas.user import UserCreateDto, UserUpdateDto
+from app.services.base import BaseService
 
 
 class UserService(BaseService[User, UserCreateDto, UserUpdateDto]):
