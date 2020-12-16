@@ -10,6 +10,7 @@ from app.db.base_class import Base
 
 if TYPE_CHECKING:
     from .reservation import Reservation  # noqa: F401
+    from .rental import Rental  # noqa: F401
 
 
 # fmt: off
@@ -62,6 +63,7 @@ class Car(Base):
     mileage_limit = Column(Float, nullable=True)
     image_base64 = Column(String, nullable=True)
     reservations = relationship("Reservation")
+    rentals = relationship("Rental")
 
     # TRUCK RELATED
     loading_capacity = Column(Float, nullable=True, index=True)
