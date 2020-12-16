@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Box, Button, Container, makeStyles } from "@material-ui/core";
 import { useParams } from "react-router";
 import history from "history/browser";
-import CreateUpdateCustomerForm from "../../../components/CreateUpdateCustomerForm";
+import CreateUpdateCustomerForm from "../../../components/forms/CreateUpdateCustomerForm";
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -14,46 +14,51 @@ import {
   Paper,
   Select,
   TextField,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { createCar, deleteCar, getCarById, updateCar } from "../service/carsService";
-import convertToBase64 from "../utils/convertToBase64";
-import Loading from "./Loading";
+import {
+  createCar,
+  deleteCar,
+  getCarById,
+  updateCar,
+} from "../../service/carsService";
+import convertToBase64 from "../../utils/convertToBase64";
+import Loading from "../Loading";
 import ReactJson from "react-json-view";
-import { APP_CARS_URL } from "../config";
+import { APP_CARS_URL, APP_RESERVATIONS_URL } from "../../config";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   link: {
     color: "inherit",
-    textDecoration: "none"
+    textDecoration: "none",
   },
   carDetails: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5)
+    marginBottom: theme.spacing(5),
   },
   uploadImageBox: {
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   errorBox: {
-    margin: theme.spacing(5)
+    margin: theme.spacing(5),
   },
   reserveRentButtonsBox: {
     marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3)
+    marginBottom: theme.spacing(3),
   },
   reserveRentButton: {
-    margin: theme.spacing(1)
-  }
+    margin: theme.spacing(1),
+  },
 }));
 
 const CreateUpdateCarForm = ({ carId }) => {
@@ -103,7 +108,7 @@ const CreateUpdateCarForm = ({ carId }) => {
   const updateCarField = (fieldName, value) => {
     setCar({
       ...car,
-      [fieldName]: value
+      [fieldName]: value,
     });
   };
 
@@ -153,6 +158,7 @@ const CreateUpdateCarForm = ({ carId }) => {
 
   const handleReserveCar = () => {
     // navigate
+    navigate(`${APP_RESERVATIONS_URL}/new`, { state: { carId: car.id } });
   };
 
   const handleRentCar = () => {
@@ -566,7 +572,7 @@ const CreateUpdateCarForm = ({ carId }) => {
 
 CreateUpdateCarForm.propTypes = {
   className: PropTypes.string,
-  carId: PropTypes.string
+  carId: PropTypes.string,
 };
 
 export default CreateUpdateCarForm;

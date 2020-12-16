@@ -13,15 +13,15 @@ import {
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import Loading from "./Loading";
+import Loading from "../Loading";
 import ReactJson from "react-json-view";
 import {
   createCustomer,
   deleteCustomer,
   getCustomerById,
   updateCustomer,
-} from "../service/customersService";
-import { APP_CUSTOMERS_URL } from "../config";
+} from "../../service/customersService";
+import { APP_CUSTOMERS_URL } from "../../config";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 

@@ -13,7 +13,7 @@ import {
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import Loading from "./Loading";
+import Loading from "../Loading";
 import ReactJson from "react-json-view";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
@@ -23,13 +23,13 @@ import {
   getReservationById,
   updateReservation,
   updateReservationStatus,
-} from "../service/reservationsService";
+} from "../../service/reservationsService";
 
-import { APP_RESERVATIONS_URL } from "../config";
+import { APP_RESERVATIONS_URL } from "../../config";
 import { DateTimePicker } from "@material-ui/pickers";
 import moment from "moment";
-import { getCars } from "../service/carsService";
-import { getCustomers } from "../service/customersService";
+import { getCars } from "../../service/carsService";
+import { getCustomers } from "../../service/customersService";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -63,11 +63,12 @@ const useStyles = makeStyles((theme) => ({
 const COLLECTED = "COLLECTED";
 const CANCELLED = "CANCELLED";
 
-const CreateUpdateReservationForm = ({ reservationId }) => {
+const CreateUpdateReservationForm = ({ reservationId, carId }) => {
   const classes = useStyles();
   const navigate = useNavigate();
 
   const [reservation, setReservation] = useState({
+    car_id: carId,
     start_date: moment(),
     end_date: moment().add(1, "days"),
   });

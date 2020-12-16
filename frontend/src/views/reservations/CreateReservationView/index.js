@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Box, Button, Container, makeStyles } from "@material-ui/core";
 import history from "history/browser";
-import CreateUpdateReservationForm from "../../../components/CreateUpdateReservationForm";
+import CreateUpdateReservationForm from "../../../components/forms/CreateUpdateReservationForm";
+import { useLocation } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
 
 const CreateReservationView = () => {
   const classes = useStyles();
+  const location = useLocation();
+
+  const carId = location.state ? location.state.carId : undefined;
 
   const handleGoBack = () => {
     history.back();
@@ -32,7 +36,7 @@ const CreateReservationView = () => {
         </Box>
       </Container>
       <Container className={classes.reservationDetails}>
-        <CreateUpdateReservationForm />
+        <CreateUpdateReservationForm carId={carId} />
       </Container>
     </React.Fragment>
   );
