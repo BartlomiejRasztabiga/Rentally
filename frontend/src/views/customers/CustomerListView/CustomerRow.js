@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Customer = ({ className, customer, ...rest }) => {
+const CustomerRow = ({ className, customer, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -65,9 +65,9 @@ const Customer = ({ className, customer, ...rest }) => {
   );
 };
 
-Customer.propTypes = {
+CustomerRow.propTypes = {
   className: PropTypes.string,
   customer: PropTypes.object.isRequired,
 };
 
-export default Customer;
+export default CustomerRow;

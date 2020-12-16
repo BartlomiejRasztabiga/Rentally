@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Reservation = ({ className, reservation, ...rest }) => {
+const ReservationRow = ({ className, reservation, ...rest }) => {
   const classes = useStyles();
 
   const formatDate = (date) => {
@@ -87,9 +87,9 @@ const Reservation = ({ className, reservation, ...rest }) => {
   );
 };
 
-Reservation.propTypes = {
+ReservationRow.propTypes = {
   className: PropTypes.string,
   reservation: PropTypes.object.isRequired,
 };
 
-export default Reservation;
+export default ReservationRow;
