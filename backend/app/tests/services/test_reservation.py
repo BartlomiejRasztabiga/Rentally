@@ -4,7 +4,7 @@ import pytest
 import pytz
 from sqlalchemy.orm import Session
 
-from app import crud
+from app import services
 from app.exceptions.rental import RentalCollisionException
 from app.exceptions.reservation import (
     ReservationCollisionException,
@@ -34,7 +34,7 @@ def test_create_reservation(db: Session) -> None:
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date, end_date
     )
-    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     assert reservation.id is not None
     assert reservation.start_date == start_date
@@ -55,7 +55,7 @@ def test_create_reservation_wrong_dates(db: Session) -> None:
         car, customer, start_date, end_date
     )
     with pytest.raises(StartDateNotBeforeEndDateException):
-        crud.reservation.create(db=db, obj_in=reservation_create_dto)
+        services.reservation.create(db=db, obj_in=reservation_create_dto)
 
 
 def test_create_reservation_wrong_dates2(db: Session) -> None:
@@ -69,7 +69,7 @@ def test_create_reservation_wrong_dates2(db: Session) -> None:
         car, customer, start_date, end_date
     )
     with pytest.raises(StartDateNotBeforeEndDateException):
-        crud.reservation.create(db=db, obj_in=reservation_create_dto)
+        services.reservation.create(db=db, obj_in=reservation_create_dto)
 
 
 def test_create_reservation_same_car_same_dates_will_throw(db: Session) -> None:
@@ -85,13 +85,13 @@ def test_create_reservation_same_car_same_dates_will_throw(db: Session) -> None:
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date1, end_date1
     )
-    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date2, end_date2
     )
     with pytest.raises(ReservationCollisionException):
-        crud.reservation.create(db=db, obj_in=reservation_create_dto)
+        services.reservation.create(db=db, obj_in=reservation_create_dto)
 
 
 def test_create_reservation_same_car_one_day_intersection_will_throw(
@@ -109,13 +109,13 @@ def test_create_reservation_same_car_one_day_intersection_will_throw(
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date1, end_date1
     )
-    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date2, end_date2
     )
     with pytest.raises(ReservationCollisionException):
-        crud.reservation.create(db=db, obj_in=reservation_create_dto)
+        services.reservation.create(db=db, obj_in=reservation_create_dto)
 
 
 def test_create_reservation_in_the_past_will_throw(db: Session, ) -> None:
@@ -130,7 +130,7 @@ def test_create_reservation_in_the_past_will_throw(db: Session, ) -> None:
     )
 
     with pytest.raises(ReservationCreatedInThePastException):
-        crud.reservation.create(db=db, obj_in=reservation_create_dto)
+        services.reservation.create(db=db, obj_in=reservation_create_dto)
 
 
 def test_create_reservation_same_car_one_day_intersection_will_throw2(
@@ -148,13 +148,13 @@ def test_create_reservation_same_car_one_day_intersection_will_throw2(
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date1, end_date1
     )
-    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date2, end_date2
     )
     with pytest.raises(ReservationCollisionException):
-        crud.reservation.create(db=db, obj_in=reservation_create_dto)
+        services.reservation.create(db=db, obj_in=reservation_create_dto)
 
 
 def test_create_reservation_same_car_different_intervals(db: Session) -> None:
@@ -170,12 +170,12 @@ def test_create_reservation_same_car_different_intervals(db: Session) -> None:
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date1, end_date1
     )
-    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date2, end_date2
     )
-    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    services.reservation.create(db=db, obj_in=reservation_create_dto)
 
 
 def test_create_reservation_with_custom_status_will_default_to_new(db: Session) -> None:
@@ -188,7 +188,7 @@ def test_create_reservation_with_custom_status_will_default_to_new(db: Session) 
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date, end_date, status=ReservationStatus.COLLECTED
     )
-    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     assert reservation.id is not None
     assert reservation.start_date == start_date
@@ -208,9 +208,9 @@ def test_get_reservation(db: Session) -> None:
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date, end_date, status=ReservationStatus.COLLECTED
     )
-    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
 
-    stored_reservation = crud.reservation.get(db=db, _id=reservation.id)
+    stored_reservation = services.reservation.get(db=db, _id=reservation.id)
 
     assert stored_reservation
     assert stored_reservation.start_date == reservation_create_dto.start_date
@@ -229,7 +229,7 @@ def test_update_reservation(db: Session) -> None:
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date, end_date, status=ReservationStatus.NEW
     )
-    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     reservation_update_dto = ReservationUpdateDto(
         car_id=reservation.car_id,
@@ -239,7 +239,7 @@ def test_update_reservation(db: Session) -> None:
         status=ReservationStatus.COLLECTED,
     )
 
-    stored_reservation = crud.reservation.update(
+    stored_reservation = services.reservation.update(
         db=db, db_obj=reservation, obj_in=reservation_update_dto
     )
 
@@ -261,7 +261,7 @@ def test_update_reservation_dates_collision_will_throw(db: Session) -> None:
         car, customer, start_date1, end_date1
     )
 
-    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     start_date2 = datetime(2030, 12, 1, 9, tzinfo=pytz.UTC)
     end_date2 = datetime(2030, 12, 2, 12, tzinfo=pytz.UTC)
@@ -269,7 +269,7 @@ def test_update_reservation_dates_collision_will_throw(db: Session) -> None:
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date2, end_date2
     )
-    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     reservation_update_dto = ReservationUpdateDto(
         car_id=reservation.car_id,
@@ -280,7 +280,7 @@ def test_update_reservation_dates_collision_will_throw(db: Session) -> None:
     )
 
     with pytest.raises(ReservationCollisionException):
-        crud.reservation.update(
+        services.reservation.update(
             db=db, db_obj=reservation, obj_in=reservation_update_dto
         )
 
@@ -296,7 +296,7 @@ def test_create_reservation_dates_collision_on_cancelled(db: Session) -> None:
         car, customer, start_date1, end_date1
     )
 
-    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     reservation_update_dto = ReservationUpdateDto(
         car_id=reservation.car_id,
@@ -306,7 +306,7 @@ def test_create_reservation_dates_collision_on_cancelled(db: Session) -> None:
         status=ReservationStatus.CANCELLED,
     )
 
-    crud.reservation.update(db=db, db_obj=reservation, obj_in=reservation_update_dto)
+    services.reservation.update(db=db, db_obj=reservation, obj_in=reservation_update_dto)
 
     start_date2 = datetime(2030, 12, 3, 9, tzinfo=pytz.UTC)
     end_date2 = datetime(2030, 12, 4, 12, tzinfo=pytz.UTC)
@@ -314,7 +314,7 @@ def test_create_reservation_dates_collision_on_cancelled(db: Session) -> None:
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date2, end_date2
     )
-    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
 
 
 def test_update_reservation_cancelled_will_throw(db: Session) -> None:
@@ -328,7 +328,7 @@ def test_update_reservation_cancelled_will_throw(db: Session) -> None:
         car, customer, start_date1, end_date1
     )
 
-    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     reservation_update_dto = ReservationUpdateDto(
         car_id=reservation.car_id,
@@ -338,7 +338,7 @@ def test_update_reservation_cancelled_will_throw(db: Session) -> None:
         status=ReservationStatus.CANCELLED,
     )
 
-    crud.reservation.update(db=db, db_obj=reservation, obj_in=reservation_update_dto)
+    services.reservation.update(db=db, db_obj=reservation, obj_in=reservation_update_dto)
 
     reservation_update_dto = ReservationUpdateDto(
         car_id=reservation.car_id,
@@ -349,7 +349,7 @@ def test_update_reservation_cancelled_will_throw(db: Session) -> None:
     )
 
     with pytest.raises(UpdatingCancelledReservationException):
-        crud.reservation.update(
+        services.reservation.update(
             db=db, db_obj=reservation, obj_in=reservation_update_dto
         )
 
@@ -365,7 +365,7 @@ def test_update_reservation_collected_to_new_will_throw(db: Session) -> None:
         car, customer, start_date1, end_date1
     )
 
-    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     reservation_update_dto = ReservationUpdateDto(
         car_id=reservation.car_id,
@@ -375,7 +375,7 @@ def test_update_reservation_collected_to_new_will_throw(db: Session) -> None:
         status=ReservationStatus.COLLECTED,
     )
 
-    crud.reservation.update(db=db, db_obj=reservation, obj_in=reservation_update_dto)
+    services.reservation.update(db=db, db_obj=reservation, obj_in=reservation_update_dto)
 
     reservation_update_dto = ReservationUpdateDto(
         car_id=reservation.car_id,
@@ -386,7 +386,7 @@ def test_update_reservation_collected_to_new_will_throw(db: Session) -> None:
     )
 
     with pytest.raises(UpdatingCollectedReservationException):
-        crud.reservation.update(
+        services.reservation.update(
             db=db, db_obj=reservation, obj_in=reservation_update_dto
         )
 
@@ -405,14 +405,14 @@ def test_get_active_by_car_id(db: Session) -> None:
     reservation_create_dto = get_test_reservation_create_dto(
         car1, customer, start_date1, end_date1, status=ReservationStatus.NEW
     )
-    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     reservation_create_dto = get_test_reservation_create_dto(
         car2, customer, start_date2, end_date2, status=ReservationStatus.NEW
     )
-    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    services.reservation.create(db=db, obj_in=reservation_create_dto)
 
-    active_reservations = crud.reservation.get_active_by_car_id(db, car2.id)
+    active_reservations = services.reservation.get_active_by_car_id(db, car2.id)
     assert len(active_reservations) == 1
 
 
@@ -426,7 +426,7 @@ def test_get_active_by_car_id_only_active(db: Session) -> None:
     reservation_create_dto = get_test_reservation_create_dto(
         car1, customer, start_date1, end_date1, status=ReservationStatus.NEW
     )
-    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     reservation_update_dto = ReservationUpdateDto(
         car_id=reservation.car_id,
@@ -436,9 +436,9 @@ def test_get_active_by_car_id_only_active(db: Session) -> None:
         status=ReservationStatus.CANCELLED,
     )
 
-    crud.reservation.update(db=db, db_obj=reservation, obj_in=reservation_update_dto)
+    services.reservation.update(db=db, db_obj=reservation, obj_in=reservation_update_dto)
 
-    active_reservations = crud.reservation.get_active_by_car_id(db, car1.id)
+    active_reservations = services.reservation.get_active_by_car_id(db, car1.id)
     assert len(active_reservations) == 0
 
 
@@ -457,19 +457,19 @@ def test_get_active(db: Session) -> None:
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date1, end_date1
     )
-    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date2, end_date2
     )
-    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     reservation_create_dto = get_test_reservation_create_dto(
         car2, customer2, start_date2, end_date2
     )
-    crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    services.reservation.create(db=db, obj_in=reservation_create_dto)
 
-    active_reservations = crud.reservation.get_active(db)
+    active_reservations = services.reservation.get_active(db)
     assert len(active_reservations) >= 3  # there might be other objects in db
 
 
@@ -485,9 +485,9 @@ def test_create_reservation_collision_with_rental_will_throw(db: Session) -> Non
 
     rental_create_dto = get_test_rental_create_dto(car, customer, start_date1, end_date1)
 
-    crud.rental.create(db=db, obj_in=rental_create_dto)
+    services.rental.create(db=db, obj_in=rental_create_dto)
 
     reservation_create_dto = get_test_reservation_create_dto(car, customer, start_date2, end_date2)
 
     with pytest.raises(RentalCollisionException):
-        crud.reservation.create(db=db, obj_in=reservation_create_dto)
+        services.reservation.create(db=db, obj_in=reservation_create_dto)

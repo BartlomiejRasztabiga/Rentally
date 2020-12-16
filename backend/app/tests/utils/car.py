@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from sqlalchemy.orm import Session
 
-from app import crud, models
+from app import services, models
 from app.models.car import AcType, CarType, DriveType, FuelType, GearboxType
 from app.schemas.car import CarCreateDto
 
@@ -24,4 +24,4 @@ def get_test_car_create_dto() -> CarCreateDto:
 
 def create_random_car(db: Session) -> models.Car:
     car_create_dto = get_test_car_create_dto()
-    return crud.car.create(db=db, obj_in=car_create_dto)
+    return services.car.create(db=db, obj_in=car_create_dto)

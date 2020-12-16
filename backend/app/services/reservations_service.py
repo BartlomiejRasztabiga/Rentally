@@ -7,8 +7,8 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
-from app import crud
-from app.crud.base import CRUDBase
+from app import services
+from app.services.base import BaseService
 from app.exceptions.rental import RentalCollisionException
 from app.exceptions.reservation import (
     ReservationCollisionException,
@@ -23,8 +23,8 @@ from app.utils.datetime_utils import datetime_without_seconds
 from app.utils.interval import Interval
 
 
-class CRUDReservation(
-    CRUDBase[Reservation, ReservationCreateDto, ReservationUpdateDto]
+class ReservationService(
+    BaseService[Reservation, ReservationCreateDto, ReservationUpdateDto]
 ):
     @staticmethod
     def validate_dates(start_date: datetime, end_date: datetime) -> None:
@@ -64,7 +64,7 @@ class CRUDReservation(
             if reservation_timeframe.is_intersecting(other_reservation_timeframe):
                 raise ReservationCollisionException()
 
-        rentals_for_this_car = crud.rental.get_active_by_car_id(
+        rentals_for_this_car = services.rental.get_active_by_car_id(
             db=db, car_id=_reservation.car_id
         )
         for other_rental in rentals_for_this_car:
@@ -143,4 +143,4 @@ class CRUDReservation(
         )
 
 
-reservation = CRUDReservation(Reservation)
+reservation = ReservationService(Reservation)

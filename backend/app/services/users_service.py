@@ -3,12 +3,12 @@ from typing import Optional
 from sqlalchemy.orm import Session
 
 from app.core.security import get_password_hash, verify_password
-from app.crud.base import CRUDBase
+from app.services.base import BaseService
 from app.models.user import User
 from app.schemas.user import UserCreateDto, UserUpdateDto
 
 
-class CRUDUser(CRUDBase[User, UserCreateDto, UserUpdateDto]):
+class UserService(BaseService[User, UserCreateDto, UserUpdateDto]):
     def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
         return db.query(User).filter(User.email == email).first()
 
@@ -45,4 +45,4 @@ class CRUDUser(CRUDBase[User, UserCreateDto, UserUpdateDto]):
         return user.is_admin
 
 
-user = CRUDUser(User)
+user = UserService(User)

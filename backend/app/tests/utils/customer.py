@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from app import crud, models
+from app import services, models
 from app.schemas.customer import CustomerCreateDto
 
 
@@ -15,4 +15,4 @@ def get_test_customer_create_dto() -> CustomerCreateDto:
 
 def create_random_customer(db: Session) -> models.Customer:
     customer_create_dto = get_test_customer_create_dto()
-    return crud.customer.create(db=db, obj_in=customer_create_dto)
+    return services.customer.create(db=db, obj_in=customer_create_dto)

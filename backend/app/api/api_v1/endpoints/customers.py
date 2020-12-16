@@ -3,7 +3,7 @@ from typing import Any, List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app import crud, models, schemas
+from app import services, models, schemas
 from app.api import deps
 from app.exceptions.instance_not_found import CustomerNotFoundException
 
@@ -18,7 +18,7 @@ def get_customers(
     """
     Retrieve customers.
     """
-    customers = crud.customer.get_all(db)
+    customers = services.customer.get_all(db)
     return customers
 
 
@@ -31,7 +31,7 @@ def get_customer(
     """
     Get customer by ID.
     """
-    customer = crud.customer.get(db=db, _id=id)
+    customer = services.customer.get(db=db, _id=id)
     if not customer:
         raise CustomerNotFoundException()
 
@@ -48,14 +48,14 @@ def delete_customer(
     """
     Delete a customer.
     """
-    customer = crud.customer.get(db=db, _id=id)
+    customer = services.customer.get(db=db, _id=id)
 
     # TODO check if has relations to rentals/reservations
 
     if not customer:
         raise CustomerNotFoundException()
 
-    customer = crud.customer.remove(db=db, _id=id)
+    customer = services.customer.remove(db=db, _id=id)
     return customer
 
 
@@ -70,7 +70,7 @@ def create_customer(
     Create new customer.
     """
 
-    customer = crud.customer.create(db=db, obj_in=customer_create_dto)
+    customer = services.customer.create(db=db, obj_in=customer_create_dto)
     return customer
 
 
@@ -85,10 +85,10 @@ def update_customer(
     """
     Update a customer.
     """
-    customer = crud.customer.get(db=db, _id=id)
+    customer = services.customer.get(db=db, _id=id)
 
     if not customer:
         raise CustomerNotFoundException()
 
-    customer = crud.customer.update(db=db, db_obj=customer, obj_in=customer_update_dto)
+    customer = services.customer.update(db=db, db_obj=customer, obj_in=customer_update_dto)
     return customer

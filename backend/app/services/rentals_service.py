@@ -6,8 +6,8 @@ import pytz
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
-from app import crud
-from app.crud.base import CRUDBase
+from app import services
+from app.services.base import BaseService
 from app.exceptions.rental import (
     RentalAndReservationDifferenceException,
     RentalCollisionException,
@@ -25,7 +25,7 @@ from app.utils.datetime_utils import datetime_without_seconds
 from app.utils.interval import Interval
 
 
-class CRUDRental(CRUDBase[Rental, RentalCreateDto, RentalUpdateDto]):
+class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
     @staticmethod
     def validate_dates(start_date: datetime, end_date: datetime) -> None:
         delta = end_date - start_date
@@ -45,7 +45,7 @@ class CRUDRental(CRUDBase[Rental, RentalCreateDto, RentalUpdateDto]):
             db: Session, _rental: Union[RentalCreateDto, RentalUpdateDto, Rental]
     ):
         if _rental.reservation_id:
-            _reservation = crud.reservation.get(db=db, _id=_rental.reservation_id)
+            _reservation = services.reservation.get(db=db, _id=_rental.reservation_id)
             # was created from reservation, has to maintain same car_id and customer_id
             # as the reservation it was created from
             if (
@@ -61,7 +61,7 @@ class CRUDRental(CRUDBase[Rental, RentalCreateDto, RentalUpdateDto]):
             _rental: Union[RentalCreateDto, RentalUpdateDto, Rental],
             current_rental_id: int = None,
     ) -> None:
-        reservations_for_this_car = crud.reservation.get_active_by_car_id(
+        reservations_for_this_car = services.reservation.get_active_by_car_id(
             db=db, car_id=_rental.car_id
         )
         rental_timeframe = Interval(_rental.start_date, _rental.end_date)
@@ -138,4 +138,4 @@ class CRUDRental(CRUDBase[Rental, RentalCreateDto, RentalUpdateDto]):
         return db.query(Rental).filter(Rental.status == RentalStatus.IN_PROGRESS, ).all()
 
 
-rental = CRUDRental(Rental)
+rental = RentalService(Rental)

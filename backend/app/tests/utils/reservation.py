@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlalchemy.orm import Session
 
-from app import crud, models
+from app import services, models
 from app.models import Reservation
 from app.models.car import Car
 from app.models.customer import Customer
@@ -31,4 +31,4 @@ def create_random_reservation(
         db: Session, car: Car, customer: Customer, start_date: datetime, end_date: datetime
 ) -> Reservation:
     reservation_create_dto = get_test_reservation_create_dto(car, customer, start_date, end_date)
-    return crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    return services.reservation.create(db=db, obj_in=reservation_create_dto)

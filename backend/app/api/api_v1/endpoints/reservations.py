@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app import crud, models, schemas
+from app import services, models, schemas
 from app.api import deps
 from app.exceptions.instance_not_found import (
     CarNotFoundException,
@@ -17,13 +17,13 @@ router = APIRouter()
 
 
 def _validate_car_id(db: Session, car_id: int) -> None:
-    car = crud.car.get(db=db, _id=car_id)
+    car = services.car.get(db=db, _id=car_id)
     if not car:
         raise CarNotFoundException()
 
 
 def _validate_customer_id(db: Session, customer_id: int) -> None:
-    customer = crud.customer.get(db=db, _id=customer_id)
+    customer = services.customer.get(db=db, _id=customer_id)
     if not customer:
         raise CustomerNotFoundException()
 
@@ -37,7 +37,7 @@ def get_all_reservations(
     Retrieve all active reservations.
     """
 
-    reservations = crud.reservation.get_active(db)
+    reservations = services.reservation.get_active(db)
     return reservations
 
 
@@ -50,7 +50,7 @@ def get_reservation(
     """
     Get reservation by ID.
     """
-    reservation = crud.reservation.get(db=db, _id=id)
+    reservation = services.reservation.get(db=db, _id=id)
     if not reservation:
         raise ReservationNotFoundException()
 
@@ -67,14 +67,14 @@ def delete_reservation(
     """
     Delete a reservation.
     """
-    reservation = crud.reservation.get(db=db, _id=id)
+    reservation = services.reservation.get(db=db, _id=id)
 
     if not reservation:
         raise ReservationNotFoundException()
-    if not crud.user.is_admin(current_user):
+    if not services.user.is_admin(current_user):
         raise NotEnoughPermissionsException()
 
-    reservation = crud.reservation.remove(db=db, _id=id)
+    reservation = services.reservation.remove(db=db, _id=id)
     return reservation
 
 
@@ -93,7 +93,7 @@ def create_reservation(
     _validate_customer_id(db=db, customer_id=reservation_create_dto.customer_id)
 
     reservation_create_dto.status = ReservationStatus.NEW
-    reservation = crud.reservation.create(db=db, obj_in=reservation_create_dto)
+    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
     return reservation
 
 
@@ -108,7 +108,7 @@ def update_reservation(
     """
     Update a reservation.
     """
-    reservation = crud.reservation.get(db=db, _id=id)
+    reservation = services.reservation.get(db=db, _id=id)
 
     if not reservation:
         raise ReservationNotFoundException()
@@ -116,7 +116,7 @@ def update_reservation(
     _validate_car_id(db=db, car_id=reservation_update_dto.car_id)
     _validate_customer_id(db=db, customer_id=reservation_update_dto.customer_id)
 
-    reservation = crud.reservation.update(
+    reservation = services.reservation.update(
         db=db, db_obj=reservation, obj_in=reservation_update_dto
     )
     return reservation
