@@ -8,6 +8,7 @@ from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from app import services
+from app.exceptions.instance_not_found import ReservationNotFoundException
 from app.exceptions.rental import RentalCollisionException
 from app.exceptions.reservation import (
     ReservationCollisionException,
@@ -116,6 +117,20 @@ class ReservationService(
         db.commit()
         db.refresh(db_obj)
         return db_obj
+
+    def mark_collected(self, db: Session, reservation_id: int) -> Reservation:
+        _reservation = self.get(db=db, _id=reservation_id)
+        if not _reservation:
+            raise ReservationNotFoundException()
+
+        reservation_update_dto = ReservationUpdateDto(
+            car_id=_reservation.car_id,
+            customer_id=_reservation.customer_id,
+            start_date=_reservation.start_date,
+            end_date=_reservation.end_date,
+            status=ReservationStatus.COLLECTED,
+        )
+        return self.update(db=db, db_obj=_reservation, obj_in=reservation_update_dto)
 
     def get_active_by_car_id(self, db: Session, car_id: int) -> List[Reservation]:
         return (

@@ -5,6 +5,7 @@ import pytz
 from sqlalchemy.orm import Session
 
 from app import services
+from app.exceptions.instance_not_found import ReservationNotFoundException
 from app.exceptions.rental import RentalCollisionException
 from app.exceptions.reservation import (
     ReservationCollisionException,
@@ -18,7 +19,10 @@ from app.schemas import ReservationUpdateDto
 from app.tests.utils.car import create_random_car
 from app.tests.utils.customer import create_random_customer
 from app.tests.utils.rental import get_test_rental_create_dto
-from app.tests.utils.reservation import get_test_reservation_create_dto
+from app.tests.utils.reservation import (
+    create_random_reservation,
+    get_test_reservation_create_dto,
+)
 
 # TODO extract dates?
 
@@ -502,3 +506,26 @@ def test_create_reservation_collision_with_rental_will_throw(db: Session) -> Non
 
     with pytest.raises(RentalCollisionException):
         services.reservation.create(db=db, obj_in=reservation_create_dto)
+
+
+def test_mark_reservation_collected(db: Session) -> None:
+    car = create_random_car(db)
+    customer = create_random_customer(db)
+
+    start_date1 = datetime(2030, 12, 1, tzinfo=pytz.UTC)
+    end_date1 = datetime(2030, 12, 2, tzinfo=pytz.UTC)
+
+    reservation = create_random_reservation(db, car, customer, start_date1, end_date1)
+
+    services.reservation.mark_collected(db=db, reservation_id=reservation.id)
+
+    updated_reservation = services.reservation.get(db=db, _id=reservation.id)
+
+    assert updated_reservation
+    assert updated_reservation.id == reservation.id
+    assert updated_reservation.status == ReservationStatus.COLLECTED
+
+
+def test_mark_reservation_collected_on_not_existing_will_throw(db: Session) -> None:
+    with pytest.raises(ReservationNotFoundException):
+        services.reservation.mark_collected(db=db, reservation_id=999999999)
