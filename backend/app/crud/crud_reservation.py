@@ -1,9 +1,8 @@
-import pytz
-
 from copy import deepcopy
 from datetime import datetime
 from typing import List, Union
 
+import pytz
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
@@ -13,16 +12,15 @@ from app.crud.base import CRUDBase
 from app.exceptions.rental import RentalCollisionException
 from app.exceptions.reservation import (
     ReservationCollisionException,
+    ReservationCreatedInThePastException,
     StartDateNotBeforeEndDateException,
-    UpdatingCancelledReservationException, UpdatingCollectedReservationException, ReservationCreatedInThePastException,
+    UpdatingCancelledReservationException,
+    UpdatingCollectedReservationException,
 )
 from app.models.reservation import Reservation, ReservationStatus
 from app.schemas.reservation import ReservationCreateDto, ReservationUpdateDto
 from app.utils.datetime_utils import datetime_without_seconds
 from app.utils.interval import Interval
-
-
-
 
 
 class CRUDReservation(
@@ -43,26 +41,35 @@ class CRUDReservation(
             raise ReservationCreatedInThePastException()
 
     def validate_collisions(
-            self,
-            db: Session,
-            _reservation: Union[ReservationCreateDto, ReservationUpdateDto, Reservation],
-            current_reservation_id: int = None,
+        self,
+        db: Session,
+        _reservation: Union[ReservationCreateDto, ReservationUpdateDto, Reservation],
+        current_reservation_id: int = None,
     ) -> None:
         reservations_for_this_car = self.get_active_by_car_id(db, _reservation.car_id)
         reservation_timeframe = Interval(_reservation.start_date, _reservation.end_date)
 
         for other_reservation in reservations_for_this_car:
-            if current_reservation_id and current_reservation_id == other_reservation.id:
+            if (
+                current_reservation_id
+                and current_reservation_id == other_reservation.id
+            ):
                 # collision with the same object is obvious, skip
                 continue
 
-            other_reservation_timeframe = Interval(other_reservation.start_date, other_reservation.end_date)
+            other_reservation_timeframe = Interval(
+                other_reservation.start_date, other_reservation.end_date
+            )
             if reservation_timeframe.is_intersecting(other_reservation_timeframe):
                 raise ReservationCollisionException()
 
-        rentals_for_this_car = crud.rental.get_active_by_car_id(db=db, car_id=_reservation.car_id)
+        rentals_for_this_car = crud.rental.get_active_by_car_id(
+            db=db, car_id=_reservation.car_id
+        )
         for other_rental in rentals_for_this_car:
-            other_rental_timeframe = Interval(other_rental.start_date, other_rental.end_date)
+            other_rental_timeframe = Interval(
+                other_rental.start_date, other_rental.end_date
+            )
             if reservation_timeframe.is_intersecting(other_rental_timeframe):
                 raise RentalCollisionException()
 
@@ -70,7 +77,7 @@ class CRUDReservation(
 
     @staticmethod
     def validate_status(
-            old_status: ReservationStatus, new_status: ReservationStatus
+        old_status: ReservationStatus, new_status: ReservationStatus
     ) -> None:
         if old_status == ReservationStatus.CANCELLED:
             raise UpdatingCancelledReservationException()
@@ -90,7 +97,7 @@ class CRUDReservation(
         return super().create(db=db, obj_in=obj_in)
 
     def update(
-            self, db: Session, *, db_obj: Reservation, obj_in: ReservationUpdateDto
+        self, db: Session, *, db_obj: Reservation, obj_in: ReservationUpdateDto
     ) -> Reservation:
         old_reservation = deepcopy(db_obj)
 
@@ -113,26 +120,26 @@ class CRUDReservation(
     def get_active_by_car_id(self, db: Session, car_id: int) -> List[Reservation]:
         return (
             db.query(Reservation)
-                .filter(
+            .filter(
                 Reservation.car_id == car_id,
                 or_(
                     Reservation.status == ReservationStatus.NEW,
                     Reservation.status == ReservationStatus.COLLECTED,
                 ),
             )
-                .all()
+            .all()
         )
 
     def get_active(self, db: Session) -> List[Reservation]:
         return (
             db.query(Reservation)
-                .filter(
+            .filter(
                 or_(
                     Reservation.status == ReservationStatus.NEW,
                     Reservation.status == ReservationStatus.COLLECTED,
                 )
             )
-                .all()
+            .all()
         )
 
 

@@ -42,5 +42,3 @@ class Reservation(ReservationInDBBase):
 # Additional properties stored in DB
 class ReservationInDB(ReservationInDBBase):
     pass
-
-

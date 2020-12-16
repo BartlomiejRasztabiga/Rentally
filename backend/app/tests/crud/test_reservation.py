@@ -7,8 +7,10 @@ from sqlalchemy.orm import Session
 from app import crud
 from app.exceptions.reservation import (
     ReservationCollisionException,
+    ReservationCreatedInThePastException,
     StartDateNotBeforeEndDateException,
-    UpdatingCancelledReservationException, UpdatingCollectedReservationException, ReservationCreatedInThePastException,
+    UpdatingCancelledReservationException,
+    UpdatingCollectedReservationException,
 )
 from app.models.reservation import ReservationStatus
 from app.schemas import ReservationUpdateDto
@@ -17,6 +19,7 @@ from app.tests.utils.customer import create_random_customer
 from app.tests.utils.reservation import get_test_reservation_create_dto
 
 # TODO extract dates?
+
 
 def test_create_reservation(db: Session) -> None:
     car = create_random_car(db)
@@ -89,7 +92,7 @@ def test_create_reservation_same_car_same_dates_will_throw(db: Session) -> None:
 
 
 def test_create_reservation_same_car_one_day_intersection_will_throw(
-        db: Session,
+    db: Session,
 ) -> None:
     car = create_random_car(db)
     customer = create_random_customer(db)
@@ -112,9 +115,7 @@ def test_create_reservation_same_car_one_day_intersection_will_throw(
         crud.reservation.create(db=db, obj_in=reservation_create_dto)
 
 
-def test_create_reservation_in_the_past_will_throw(
-        db: Session,
-) -> None:
+def test_create_reservation_in_the_past_will_throw(db: Session,) -> None:
     car = create_random_car(db)
     customer = create_random_customer(db)
 
@@ -130,7 +131,7 @@ def test_create_reservation_in_the_past_will_throw(
 
 
 def test_create_reservation_same_car_one_day_intersection_will_throw2(
-        db: Session,
+    db: Session,
 ) -> None:
     car = create_random_car(db)
     customer = create_random_customer(db)
