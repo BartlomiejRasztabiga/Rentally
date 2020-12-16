@@ -28,7 +28,7 @@ import {
 import convertToBase64 from "../../utils/convertToBase64";
 import Loading from "../Loading";
 import ReactJson from "react-json-view";
-import { APP_CARS_URL, APP_RESERVATIONS_URL } from "../../config";
+import { APP_CARS_URL, APP_RENTALS_URL, APP_RESERVATIONS_URL } from "../../config";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 
@@ -77,8 +77,8 @@ const CreateUpdateCarForm = ({ carId }) => {
   useEffect(() => {
     if (isInEditMode) {
       getCarById(carId)
-        .then((car) => {
-          setCar(car);
+        .then((_car) => {
+          setCar(_car);
           setLoadingError(null);
           setLoaded(true);
         })
@@ -128,10 +128,10 @@ const CreateUpdateCarForm = ({ carId }) => {
     }
   };
 
-  const handleUpdateCar = (car) => {
-    updateCar(car)
-      .then((car) => {
-        setCar(car);
+  const handleUpdateCar = (updated_car) => {
+    updateCar(updated_car)
+      .then((_car) => {
+        setCar(_car);
         setPostError(null);
         setSuccessSnackbarOpen(true);
       })
@@ -140,9 +140,9 @@ const CreateUpdateCarForm = ({ carId }) => {
       });
   };
 
-  const handleCreateCar = (car) => {
-    createCar(car)
-      .then((car) => {
+  const handleCreateCar = (_car) => {
+    createCar(_car)
+      .then(() => {
         navigate(APP_CARS_URL, { replace: true });
       })
       .catch((error) => {
@@ -157,12 +157,11 @@ const CreateUpdateCarForm = ({ carId }) => {
   };
 
   const handleReserveCar = () => {
-    // navigate
     navigate(`${APP_RESERVATIONS_URL}/new`, { state: { carId: car.id } });
   };
 
   const handleRentCar = () => {
-    // navigate
+    navigate(`${APP_RENTALS_URL}/new`, { state: { carId: car.id } });
   };
 
   if (loadingError) {

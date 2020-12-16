@@ -13,7 +13,7 @@ const getRentalById = async (rentalId) => {
 };
 
 const createRental = async (rental) => {
-  // rental.status = "NEW";
+  rental.status = "IN_PROGRESS";
   return await axios
     .post(`${RENTALS_URL}/`, cleanupFalsyFields(rental))
     .then((response) => response.data);
