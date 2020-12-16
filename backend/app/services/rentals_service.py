@@ -49,8 +49,8 @@ class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
             # was created from reservation, has to maintain same car_id and customer_id
             # as the reservation it was created from
             if (
-                _rental.car_id != _reservation.car_id
-                or _rental.customer_id != _reservation.customer_id
+                _rental.car_id != _reservation.car_id  # type: ignore
+                or _rental.customer_id != _reservation.customer_id  # type: ignore
             ):
                 raise RentalAndReservationDifferenceException()
 

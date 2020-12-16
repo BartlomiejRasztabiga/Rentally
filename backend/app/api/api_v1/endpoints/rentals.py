@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
@@ -8,7 +8,8 @@ from app.api import deps
 from app.exceptions.instance_not_found import (
     CarNotFoundException,
     CustomerNotFoundException,
-    ReservationNotFoundException, RentalNotFoundException,
+    RentalNotFoundException,
+    ReservationNotFoundException,
 )
 from app.exceptions.not_enough_permissions import NotEnoughPermissionsException
 from app.models import Rental
@@ -29,7 +30,7 @@ def _validate_customer_id(db: Session, customer_id: int) -> None:
         raise CustomerNotFoundException()
 
 
-def _validate_reservation_id(db: Session, reservation_id: int) -> None:
+def _validate_reservation_id(db: Session, reservation_id: Optional[int] = None) -> None:
     if reservation_id:
         reservation = services.reservation.get(db=db, _id=reservation_id)
         if not reservation:
@@ -38,8 +39,8 @@ def _validate_reservation_id(db: Session, reservation_id: int) -> None:
 
 @router.get("/", response_model=List[schemas.Rental])
 def get_all_rentals(
-        db: Session = Depends(deps.get_db),
-        current_user: models.User = Depends(deps.get_current_user),
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_user),
 ) -> List[Rental]:
     """
     Retrieve all rentals.
@@ -51,9 +52,9 @@ def get_all_rentals(
 
 @router.get("/{id}", response_model=schemas.Rental)
 def get_rental(
-        id: int,
-        db: Session = Depends(deps.get_db),
-        current_user: models.User = Depends(deps.get_current_user),
+    id: int,
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_user),
 ) -> Rental:
     """
     Get rental by ID.
@@ -67,10 +68,10 @@ def get_rental(
 
 @router.delete("/{id}", response_model=schemas.Rental)
 def delete_rental(
-        *,
-        db: Session = Depends(deps.get_db),
-        id: int,
-        current_user: models.User = Depends(deps.get_current_active_admin),
+    *,
+    db: Session = Depends(deps.get_db),
+    id: int,
+    current_user: models.User = Depends(deps.get_current_active_admin),
 ) -> Rental:
     """
     Delete a rental.
@@ -88,10 +89,10 @@ def delete_rental(
 
 @router.post("/", response_model=schemas.Rental)
 def create_rental(
-        *,
-        db: Session = Depends(deps.get_db),
-        rental_create_dto: schemas.RentalCreateDto,
-        current_user: models.User = Depends(deps.get_current_user),
+    *,
+    db: Session = Depends(deps.get_db),
+    rental_create_dto: schemas.RentalCreateDto,
+    current_user: models.User = Depends(deps.get_current_user),
 ) -> Rental:
     """
     Create new rental.
@@ -108,11 +109,11 @@ def create_rental(
 
 @router.put("/{id}", response_model=schemas.Rental)
 def update_rental(
-        *,
-        db: Session = Depends(deps.get_db),
-        id: int,
-        rental_update_dto: schemas.RentalUpdateDto,
-        current_user: models.User = Depends(deps.get_current_user),
+    *,
+    db: Session = Depends(deps.get_db),
+    id: int,
+    rental_update_dto: schemas.RentalUpdateDto,
+    current_user: models.User = Depends(deps.get_current_user),
 ) -> Rental:
     """
     Update a rental.
@@ -126,7 +127,5 @@ def update_rental(
     _validate_customer_id(db=db, customer_id=rental_update_dto.customer_id)
     _validate_reservation_id(db=db, reservation_id=rental_update_dto.reservation_id)
 
-    rental = services.rental.update(
-        db=db, db_obj=rental, obj_in=rental_update_dto
-    )
+    rental = services.rental.update(db=db, db_obj=rental, obj_in=rental_update_dto)
     return rental
