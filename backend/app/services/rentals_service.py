@@ -106,6 +106,8 @@ class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
         self.validate_dates_on_create(obj_in.start_date, obj_in.end_date)
         self.validate_sync_with_reservation(db, obj_in)
 
+        # TODO update reservation if applicable
+
         obj_in.status = RentalStatus.IN_PROGRESS
         return super().create(db=db, obj_in=obj_in)
 

@@ -42,5 +42,5 @@ class Rental(RentalInDBBase):
 
 
 # Additional properties stored in DB
-class ReservationInDB(RentalInDBBase):
+class RentalInDB(RentalInDBBase):
     pass

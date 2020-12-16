@@ -19,3 +19,8 @@ class CustomerNotFoundException(InstanceNotFoundException):
 class ReservationNotFoundException(InstanceNotFoundException):
     def __init__(self):
         super().__init__("Reservation")
+
+
+class RentalNotFoundException(InstanceNotFoundException):
+    def __init__(self):
+        super().__init__("Rental")

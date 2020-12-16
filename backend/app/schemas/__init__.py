@@ -6,5 +6,6 @@ from .reservation import (
     ReservationInDB,
     ReservationUpdateDto,
 )
+from .rental import Rental, RentalCreateDto, RentalInDB, RentalUpdateDto
 from .token import Token, TokenPayload
 from .user import User, UserCreateDto, UserInDB, UserUpdateDto

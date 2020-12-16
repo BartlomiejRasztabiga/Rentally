@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.api.api_v1.endpoints import cars, customers, login, reservations, users
+from app.api.api_v1.endpoints import cars, customers, login, reservations, users, rentals
 
 api_router = APIRouter()
 api_router.include_router(login.router, tags=["login"])
@@ -10,3 +10,4 @@ api_router.include_router(customers.router, prefix="/customers", tags=["customer
 api_router.include_router(
     reservations.router, prefix="/reservations", tags=["reservations"]
 )
+api_router.include_router(rentals.router, prefix="/rentals", tags=["rentals"])
