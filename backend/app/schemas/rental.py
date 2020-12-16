@@ -3,30 +3,31 @@ from typing import Optional
 
 from pydantic.main import BaseModel
 
-from app.models.reservation import ReservationStatus
-from app.schemas import Car, Customer
+from app.models.rental import RentalStatus
+from app.schemas import Car, Customer, Reservation
 
 
 # Shared properties
-class ReservationBase(BaseModel):
+class RentalBase(BaseModel):
     car_id: int
     customer_id: int
+    reservation_id: Optional[int]
     start_date: datetime
     end_date: datetime
-    status: ReservationStatus
+    status: RentalStatus
 
 
 # Properties to receive via API on creation
-class ReservationCreateDto(ReservationBase):
+class RentalCreateDto(RentalBase):
     pass
 
 
 # Properties to receive via API on update
-class ReservationUpdateDto(ReservationBase):
+class RentalUpdateDto(RentalBase):
     pass
 
 
-class ReservationInDBBase(ReservationBase):
+class RentalInDBBase(RentalBase):
     id: Optional[int] = None
 
     class Config:
@@ -34,13 +35,12 @@ class ReservationInDBBase(ReservationBase):
 
 
 # Additional properties to return via API
-class Reservation(ReservationInDBBase):
+class Rental(RentalInDBBase):
     car: Optional[Car] = None
     customer: Optional[Customer] = None
+    reservation: Optional[Reservation] = None
 
 
 # Additional properties stored in DB
-class ReservationInDB(ReservationInDBBase):
+class ReservationInDB(RentalInDBBase):
     pass
-
-

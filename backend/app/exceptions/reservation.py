@@ -6,6 +6,11 @@ class StartDateNotBeforeEndDateException(HTTPException):
         super().__init__(400, "Start date has to be before end date")
 
 
+class ReservationCreatedInThePastException(HTTPException):
+    def __init__(self):
+        super().__init__(400, "Reservation cannot be created in the past")
+
+
 class ReservationCollisionException(HTTPException):
     def __init__(self):
         super().__init__(
@@ -20,6 +25,6 @@ class UpdatingCancelledReservationException(HTTPException):
         super().__init__(400, "You cannot update cancelled reservation")
 
 
-class InvalidStatusTransitionReservationException(HTTPException):
+class UpdatingCollectedReservationException(HTTPException):
     def __init__(self):
-        super().__init__(400, "You cannot update this reservations's status")
+        super().__init__(400, "You cannot update collected reservation")

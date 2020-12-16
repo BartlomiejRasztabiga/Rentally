@@ -12,7 +12,6 @@ from app.exceptions.instance_not_found import (
 )
 from app.exceptions.not_enough_permissions import NotEnoughPermissionsException
 from app.models.reservation import Reservation, ReservationStatus
-from app.schemas.reservation import ReservationsQueryCriteria
 
 router = APIRouter()
 
@@ -33,12 +32,10 @@ def _validate_customer_id(db: Session, customer_id: int) -> None:
 def get_all_reservations(
     db: Session = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_current_user),
-    reservations_query_criteria: ReservationsQueryCriteria = None,
 ) -> List[Reservation]:
     """
     Retrieve all active reservations.
     """
-    # TODO handle criteria
 
     reservations = crud.reservation.get_active(db)
     return reservations
