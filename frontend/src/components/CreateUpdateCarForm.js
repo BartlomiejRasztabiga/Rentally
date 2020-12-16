@@ -14,17 +14,12 @@ import {
   Paper,
   Select,
   TextField,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import {
-  createCar,
-  deleteCar,
-  getCarById,
-  updateCar,
-} from "../service/carsService";
+import { createCar, deleteCar, getCarById, updateCar } from "../service/carsService";
 import convertToBase64 from "../utils/convertToBase64";
 import Loading from "./Loading";
 import ReactJson from "react-json-view";
@@ -35,23 +30,30 @@ import Alert from "@material-ui/lab/Alert";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
   },
   link: {
     color: "inherit",
-    textDecoration: "none",
+    textDecoration: "none"
   },
   carDetails: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5),
+    marginBottom: theme.spacing(5)
   },
   uploadImageBox: {
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   errorBox: {
-    margin: theme.spacing(5),
+    margin: theme.spacing(5)
   },
+  reserveRentButtonsBox: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3)
+  },
+  reserveRentButton: {
+    margin: theme.spacing(1)
+  }
 }));
 
 const CreateUpdateCarForm = ({ carId }) => {
@@ -101,7 +103,7 @@ const CreateUpdateCarForm = ({ carId }) => {
   const updateCarField = (fieldName, value) => {
     setCar({
       ...car,
-      [fieldName]: value,
+      [fieldName]: value
     });
   };
 
@@ -147,6 +149,14 @@ const CreateUpdateCarForm = ({ carId }) => {
     deleteCar(carId).then(() => {
       navigate(APP_CARS_URL, { replace: true });
     });
+  };
+
+  const handleReserveCar = () => {
+    // navigate
+  };
+
+  const handleRentCar = () => {
+    // navigate
   };
 
   if (loadingError) {
@@ -217,6 +227,34 @@ const CreateUpdateCarForm = ({ carId }) => {
                 <div color="error" className={classes.errorBox}>
                   <ReactJson src={JSON.parse(postError)} theme="ocean" />
                 </div>
+              )}
+              {isInEditMode && (
+                <Grid
+                  container
+                  className={classes.reserveRentButtonsBox}
+                  justify="flex-end"
+                >
+                  <Grid item md={3}>
+                    <Button
+                      variant="outlined"
+                      component="span"
+                      color="primary"
+                      className={classes.reserveRentButton}
+                      onClick={handleReserveCar}
+                    >
+                      RESERVE
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      component="span"
+                      color="secondary"
+                      className={classes.reserveRentButton}
+                      onClick={handleRentCar}
+                    >
+                      RENT
+                    </Button>
+                  </Grid>
+                </Grid>
               )}
               <form autoComplete="off">
                 <Grid container spacing={3}>
@@ -528,7 +566,7 @@ const CreateUpdateCarForm = ({ carId }) => {
 
 CreateUpdateCarForm.propTypes = {
   className: PropTypes.string,
-  carId: PropTypes.string,
+  carId: PropTypes.string
 };
 
 export default CreateUpdateCarForm;

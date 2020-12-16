@@ -71,16 +71,6 @@ const CarCard = ({ className, car, ...rest }) => {
             {car.model_name}
           </Typography>
           <Button variant="contained" color="primary">
-            <Link className={classes.link} to={APP_CARS_URL}>
-              RENT
-            </Link>
-          </Button>
-          <Button variant="contained" color="secondary">
-            <Link className={classes.link} to={APP_CARS_URL}>
-              RESERVE
-            </Link>
-          </Button>
-          <Button variant="contained">
             <Link className={classes.link} to={`${APP_CARS_URL}/${car.id}`}>
               DETAILS
             </Link>
