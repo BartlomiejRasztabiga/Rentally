@@ -40,6 +40,7 @@ class CRUDReservation(
         if start_date_without_seconds < now_without_seconds:
             raise ReservationCreatedInThePastException()
 
+    # TODO PLEASE REFACTOR
     def validate_collisions(
         self,
         db: Session,

@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from app import crud
 from app.crud.base import CRUDBase
 from app.exceptions.rental import (
+    RentalAndReservationDifferenceException,
     RentalCollisionException,
     RentalCreatedInThePastException,
     UpdatingCompletedRentalException,
@@ -39,29 +40,41 @@ class CRUDRental(CRUDBase[Rental, RentalCreateDto, RentalUpdateDto]):
         if start_date_without_seconds < now_without_seconds:
             raise RentalCreatedInThePastException()
 
+    @staticmethod
+    def validate_sync_with_reservation(
+            db: Session, _rental: Union[RentalCreateDto, RentalUpdateDto, Rental]
+    ):
+        if _rental.reservation_id:
+            _reservation = crud.reservation.get(db=db, _id=_rental.reservation_id)
+            # was created from reservation, has to maintain same car_id and customer_id
+            # as the reservation it was created from
+            if (
+                    _rental.car_id != _reservation.car_id
+                    or _rental.customer_id != _reservation.customer_id
+            ):
+                raise RentalAndReservationDifferenceException()
+
     # TODO PLEASE REFACTOR
     def validate_collisions(
-        self,
-        db: Session,
-        _rental: Union[RentalCreateDto, RentalUpdateDto, Rental],
-        current_rental_id: int = None,
+            self,
+            db: Session,
+            _rental: Union[RentalCreateDto, RentalUpdateDto, Rental],
+            current_rental_id: int = None,
     ) -> None:
         reservations_for_this_car = crud.reservation.get_active_by_car_id(
             db=db, car_id=_rental.car_id
         )
         rental_timeframe = Interval(_rental.start_date, _rental.end_date)
 
-        if _rental.reservation_id:
-            for other_reservation in reservations_for_this_car:
-                if _rental.reservation_id == other_reservation.id:
-                    # collision with the same object is obvious, skip
-                    continue
-
-                other_reservation_timeframe = Interval(
-                    other_reservation.start_date, other_reservation.end_date
-                )
-                if rental_timeframe.is_intersecting(other_reservation_timeframe):
-                    raise ReservationCollisionException()
+        for other_reservation in reservations_for_this_car:
+            if _rental.reservation_id and _rental.reservation_id == other_reservation.id:
+                # collision with the same object is obvious, skip
+                continue
+            other_reservation_timeframe = Interval(
+                other_reservation.start_date, other_reservation.end_date
+            )
+            if rental_timeframe.is_intersecting(other_reservation_timeframe):
+                raise ReservationCollisionException()
 
         rentals_for_this_car = self.get_active_by_car_id(db=db, car_id=_rental.car_id)
         for other_rental in rentals_for_this_car:
@@ -88,8 +101,7 @@ class CRUDRental(CRUDBase[Rental, RentalCreateDto, RentalUpdateDto]):
         self.validate_collisions(db, obj_in)
 
         self.validate_dates_on_create(obj_in.start_date, obj_in.end_date)
-
-        # TODO if reservation_id is present, car_id and custoemr_id have to be the same
+        self.validate_sync_with_reservation(db, obj_in)
 
         obj_in.status = RentalStatus.IN_PROGRESS
         return super().create(db=db, obj_in=obj_in)
@@ -108,8 +120,7 @@ class CRUDRental(CRUDBase[Rental, RentalCreateDto, RentalUpdateDto]):
         self.validate_status(old_rental.status, obj_in.status)  # type: ignore
         self.validate_dates(db_obj.start_date, db_obj.end_date)
         self.validate_collisions(db, db_obj, db_obj.id)
-
-        # TODO if reservation_id is present, car_id and custoemr_id have to be the same
+        self.validate_sync_with_reservation(db, db_obj)
 
         db.add(db_obj)
         db.commit()
@@ -119,12 +130,12 @@ class CRUDRental(CRUDBase[Rental, RentalCreateDto, RentalUpdateDto]):
     def get_active_by_car_id(self, db: Session, car_id: int) -> List[Rental]:
         return (
             db.query(Rental)
-            .filter(Rental.car_id == car_id, Rental.status == RentalStatus.IN_PROGRESS,)
-            .all()
+                .filter(Rental.car_id == car_id, Rental.status == RentalStatus.IN_PROGRESS, )
+                .all()
         )
 
     def get_active(self, db: Session) -> List[Rental]:
-        return db.query(Rental).filter(Rental.status == RentalStatus.IN_PROGRESS,).all()
+        return db.query(Rental).filter(Rental.status == RentalStatus.IN_PROGRESS, ).all()
 
 
 rental = CRUDRental(Rental)
