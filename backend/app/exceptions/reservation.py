@@ -9,7 +9,7 @@ class StartDateNotBeforeEndDateException(HTTPException):
 class ReservationCollisionException(HTTPException):
     def __init__(self):
         super().__init__(
-            400, "There is already a reservation for this car in given time range"
+            400, "There is already a reservation for this car in given time range or this car is unavailable"
         )
 
 
