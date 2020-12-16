@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Box, Button, Container, makeStyles } from "@material-ui/core";
 import history from "history/browser";
-import CreateUpdateCustomerForm from "../../../components/forms/CreateUpdateCustomerForm";
+import CreateUpdateCustomerForm from "../../../components/customers/CreateUpdateCustomerForm";
 
 const useStyles = makeStyles((theme) => ({
   root: {

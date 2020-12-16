@@ -11,7 +11,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import Page from "src/components/Page";
-import CustomersList from "./CustomersList";
+import CustomersList from "../../../components/customers/CustomersList";
 import SearchIcon from "@material-ui/icons/Search";
 import { getCustomers } from "../../../service/customersService";
 import { useNavigate } from "react-router";

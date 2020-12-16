@@ -3,7 +3,7 @@ import { Box, Button, Container, makeStyles } from "@material-ui/core";
 import Page from "src/components/Page";
 import { useNavigate } from "react-router";
 import { getReservations } from "../../../service/reservationsService";
-import ReservationsList from "./ReservationsList";
+import ReservationsList from "../../../components/reservations/ReservationsList";
 import { APP_RESERVATIONS_URL } from "../../../config";
 
 const useStyles = makeStyles((theme) => ({

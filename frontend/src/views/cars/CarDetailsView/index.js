@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Box, Button, Container, makeStyles } from "@material-ui/core";
 import { useParams } from "react-router";
 import history from "history/browser";
-import CreateUpdateCarForm from "../../../components/forms/CreateUpdateCarForm";
+import CreateUpdateCarForm from "../../../components/cars/CreateUpdateCarForm";
 
 const useStyles = makeStyles((theme) => ({
   root: {

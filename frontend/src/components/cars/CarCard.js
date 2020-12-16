@@ -18,7 +18,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import AcUnitIcon from "@material-ui/icons/AcUnit";
 import { Link } from "react-router-dom";
-import { APP_CARS_URL } from "../../../config";
+import { APP_CARS_URL } from "../../config";
 
 const EMPTY_IMG_BASE64 =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";

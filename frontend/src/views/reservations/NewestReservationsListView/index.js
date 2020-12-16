@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import { getReservations } from "../../../service/reservationsService";
-import ReservationsList from "../ReservationsListView/ReservationsList";
+import ReservationsList from "../../../components/reservations/ReservationsList";
 import { Link } from "react-router-dom";
 import { APP_RESERVATIONS_URL } from "../../../config";
 
