@@ -11,7 +11,7 @@ const Page = forwardRef(({ children, ...rest }, ref) => {
 });
 
 Page.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 export default Page;

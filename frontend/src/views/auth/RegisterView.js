@@ -11,7 +11,7 @@ import {
   Link,
   makeStyles,
   TextField,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import Page from "src/components/Page";
 
@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.dark,
     height: "100%",
     paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
-  }
+    paddingTop: theme.spacing(3),
+  },
 }));
 
 const RegisterView = () => {
@@ -43,7 +43,7 @@ const RegisterView = () => {
               firstName: "",
               lastName: "",
               password: "",
-              policy: false
+              policy: false,
             }}
             validationSchema={Yup.object().shape({
               email: Yup.string()
@@ -55,21 +55,21 @@ const RegisterView = () => {
                 .required("First name is required"),
               lastName: Yup.string().max(255).required("Last name is required"),
               password: Yup.string().max(255).required("password is required"),
-              policy: Yup.boolean().oneOf([true], "This field must be checked")
+              policy: Yup.boolean().oneOf([true], "This field must be checked"),
             })}
             onSubmit={() => {
               navigate("/app/dashboard", { replace: true });
             }}
           >
             {({
-                errors,
-                handleBlur,
-                handleChange,
-                handleSubmit,
-                isSubmitting,
-                touched,
-                values
-              }) => (
+              errors,
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              isSubmitting,
+              touched,
+              values,
+            }) => (
               <form onSubmit={handleSubmit}>
                 <Box mb={3}>
                   <Typography color="textPrimary" variant="h2">

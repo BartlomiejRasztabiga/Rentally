@@ -2,19 +2,27 @@ import React from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { Box, Card, makeStyles, Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
+import {
+  Box,
+  Card,
+  makeStyles,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@material-ui/core";
 import CustomerRow from "./CustomerRow";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
-    marginRight: theme.spacing(2)
-  }
+    marginRight: theme.spacing(2),
+  },
 }));
 
 const CustomersList = ({ className, customers, ...rest }) => {
   const classes = useStyles();
-
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
@@ -30,24 +38,20 @@ const CustomersList = ({ className, customers, ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {customers.map((customer) => (
-                <CustomerRow customer={customer} />
+              {customers.map((customer, key) => (
+                <CustomerRow customer={customer} key={key} />
               ))}
             </TableBody>
           </Table>
         </Box>
       </PerfectScrollbar>
-      <Table
-        component="div"
-        count={customers.length}
-      />
     </Card>
   );
 };
 
 CustomersList.propTypes = {
   className: PropTypes.string,
-  customers: PropTypes.array.isRequired
+  customers: PropTypes.array.isRequired,
 };
 
 export default CustomersList;

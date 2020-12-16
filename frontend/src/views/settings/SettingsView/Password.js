@@ -1,23 +1,32 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { Box, Button, Card, CardContent, CardHeader, Divider, makeStyles, TextField } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  makeStyles,
+  TextField,
+} from "@material-ui/core";
 
 const useStyles = makeStyles({
-  root: {}
+  root: {},
 });
 
 const Password = ({ className, ...rest }) => {
   const classes = useStyles();
   const [values, setValues] = useState({
     password: "",
-    confirm: ""
+    confirm: "",
   });
 
   const handleChange = (event) => {
     setValues({
       ...values,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
@@ -60,7 +69,7 @@ const Password = ({ className, ...rest }) => {
 };
 
 Password.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default Password;

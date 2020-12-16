@@ -3,7 +3,15 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "../../service/axios";
 import { Formik } from "formik";
-import { Box, Button, Container, Link, makeStyles, TextField, Typography } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Container,
+  Link,
+  makeStyles,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import Page from "src/components/Page";
 import { ACCESS_TOKEN_URL } from "../../config";
 import { useAuth } from "../../context/auth";
@@ -13,12 +21,12 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.dark,
     height: "100%",
     paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
+    paddingTop: theme.spacing(3),
   },
 
   errorMessage: {
-    color: "red"
-  }
+    color: "red",
+  },
 }));
 
 const LoginView = () => {
@@ -27,7 +35,6 @@ const LoginView = () => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [error, setError] = useState(null);
   const { setAccessToken } = useAuth();
-
 
   const postLogin = (values, actions) => {
     const username = values.email;
@@ -39,11 +46,11 @@ const LoginView = () => {
 
     axios({
       method: "post",
-      url: ACCESS_TOKEN_URL,
+      url: `${ACCESS_TOKEN_URL}/`,
       data: bodyFormData,
-      headers: { "Content-Type": "multipart/form-data" }
+      headers: { "Content-Type": "multipart/form-data" },
     })
-      .then(function(response) {
+      .then(function (response) {
         actions.setSubmitting(false);
         actions.resetForm();
 
@@ -52,7 +59,7 @@ const LoginView = () => {
         setAccessToken(response.data.access_token);
         setLoggedIn(true);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         if (error.response) {
           const errorMsg = error.response.data.detail;
           setError(errorMsg);
@@ -77,28 +84,28 @@ const LoginView = () => {
           <Formik
             initialValues={{
               email: "",
-              password: ""
+              password: "",
             }}
             validationSchema={Yup.object().shape({
               email: Yup.string()
                 .email("Must be a valid email")
                 .max(255)
                 .required("Email is required"),
-              password: Yup.string().max(255).required("Password is required")
+              password: Yup.string().max(255).required("Password is required"),
             })}
             onSubmit={(values, actions) => {
               postLogin(values, actions);
             }}
           >
             {({
-                errors,
-                handleBlur,
-                handleChange,
-                handleSubmit,
-                isSubmitting,
-                touched,
-                values
-              }) => (
+              errors,
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              isSubmitting,
+              touched,
+              values,
+            }) => (
               <form onSubmit={handleSubmit}>
                 <Box mb={3}>
                   <Typography color="textPrimary" variant="h2">
@@ -131,7 +138,9 @@ const LoginView = () => {
                   value={values.password}
                   variant="outlined"
                 />
-                {error ? <div className={classes.errorMessage}>{error}</div> : null}
+                {error ? (
+                  <div className={classes.errorMessage}>{error}</div>
+                ) : null}
                 <Box my={2}>
                   <Button
                     color="primary"

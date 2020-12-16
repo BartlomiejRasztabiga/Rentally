@@ -1,50 +1,70 @@
 import React, { useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Avatar, Box, Divider, Drawer, Hidden, List, makeStyles, Typography } from "@material-ui/core";
-import DriveEtaIcon from '@material-ui/icons/DriveEta';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import DashboardIcon from '@material-ui/icons/Dashboard';
+import {
+  Avatar,
+  Box,
+  Divider,
+  Drawer,
+  Hidden,
+  List,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
+import DriveEtaIcon from "@material-ui/icons/DriveEta";
+import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import AssignmentIcon from "@material-ui/icons/Assignment";
 
 import NavItem from "./NavItem";
+import {
+  APP_CARS_URL,
+  APP_CUSTOMERS_URL,
+  APP_RESERVATIONS_URL,
+} from "../../../config";
 
 const user = {
   avatar: "/static/images/avatars/avatar_1.jpeg",
-  name: "Test Employee"
+  name: "Test Employee",
 };
 
 const items = [
   {
     href: "/app/dashboard",
     icon: DashboardIcon,
-    title: "Dashboard"
+    title: "Dashboard",
   },
   {
-    href: "/app/customers",
+    href: APP_RESERVATIONS_URL,
+    icon: AssignmentIcon,
+    title: "Reservations",
+  },
+  {
+    href: APP_CUSTOMERS_URL,
     icon: SupervisorAccountIcon,
-    title: "Customers"
+    title: "Customers",
   },
   {
-    href: "/app/cars",
+    href: APP_CARS_URL,
     icon: DriveEtaIcon,
-    title: "Cars"
-  }
+    title: "Cars",
+  },
 ];
 
 const useStyles = makeStyles(() => ({
   mobileDrawer: {
-    width: 256
+    width: 256,
   },
   desktopDrawer: {
     width: 256,
     top: 64,
-    height: "calc(100% - 64px)"
+    height: "calc(100% - 64px)",
   },
   avatar: {
     cursor: "pointer",
     width: 64,
-    height: 64
-  }
+    height: 64,
+  },
 }));
 
 const NavBar = ({ onMobileClose, openMobile }) => {
@@ -117,13 +137,12 @@ const NavBar = ({ onMobileClose, openMobile }) => {
 
 NavBar.propTypes = {
   onMobileClose: PropTypes.func,
-  openMobile: PropTypes.bool
+  openMobile: PropTypes.bool,
 };
 
 NavBar.defaultProps = {
-  onMobileClose: () => {
-  },
-  openMobile: false
+  onMobileClose: () => {},
+  openMobile: false,
 };
 
 export default NavBar;

@@ -5,24 +5,19 @@ import { useParams } from "react-router";
 import history from "history/browser";
 import CreateUpdateCustomerForm from "../../../components/CreateUpdateCustomerForm";
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   link: {
     color: "inherit",
-    textDecoration: "none"
+    textDecoration: "none",
   },
-  carDetails: {
+  customerDetails: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5)
+    marginBottom: theme.spacing(5),
   },
-  uploadImageBox: {
-    alignItems: "center",
-    justifyContent: "center"
-  }
 }));
 
 const CustomerDetails = () => {
@@ -33,27 +28,25 @@ const CustomerDetails = () => {
     history.back();
   };
 
-
   return (
     <React.Fragment>
-      <Container maxWidth={false} className={classes.carDetails}>
+      <Container maxWidth={false} className={classes.customerDetails}>
         <Box display="flex" justifyContent="flex-start">
           <Button color="primary" variant="contained" onClick={handleGoBack}>
             Go back
           </Button>
         </Box>
       </Container>
-      <Container className={classes.carDetails}>
+      <Container className={classes.customerDetails}>
         <CreateUpdateCustomerForm customerId={customerId} />
       </Container>
     </React.Fragment>
-
   );
 };
 
 CustomerDetails.propTypes = {
   className: PropTypes.string,
-  customerId: PropTypes.number
+  customerId: PropTypes.number,
 };
 
 export default CustomerDetails;

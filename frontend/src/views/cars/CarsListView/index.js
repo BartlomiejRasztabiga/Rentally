@@ -9,24 +9,25 @@ import {
   InputAdornment,
   makeStyles,
   SvgIcon,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import Page from "src/components/Page";
 import CarCard from "./CarCard";
 import { getCars } from "../../../service/carsService";
 import { useNavigate } from "react-router";
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from "@material-ui/icons/Search";
+import { APP_CARS_URL } from "../../../config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     minHeight: "100%",
     paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
+    paddingTop: theme.spacing(3),
   },
   carCard: {
-    height: "100%"
-  }
+    height: "100%",
+  },
 }));
 
 const CarsList = () => {
@@ -36,14 +37,14 @@ const CarsList = () => {
   const [searchPhrase, setSearchPhrase] = useState("");
 
   useEffect(() => {
-    getCars().then(cars => {
+    getCars().then((cars) => {
       setCars(cars);
     });
   }, []);
 
   const handleAddCar = () => {
-    navigate("/app/cars/new")
-  }
+    navigate(`${APP_CARS_URL}/new`);
+  };
 
   return (
     <Page className={classes.root}>
@@ -61,7 +62,7 @@ const CarsList = () => {
                 <TextField
                   fullWidth
                   value={searchPhrase}
-                  onChange={e => setSearchPhrase(e.target.value)}
+                  onChange={(e) => setSearchPhrase(e.target.value)}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -69,7 +70,7 @@ const CarsList = () => {
                           <SearchIcon />
                         </SvgIcon>
                       </InputAdornment>
-                    )
+                    ),
                   }}
                   placeholder="Search car"
                   variant="outlined"
@@ -80,11 +81,17 @@ const CarsList = () => {
         </Box>
         <Box mt={3}>
           <Grid container spacing={3}>
-            {cars.filter(car => car.model_name.toLowerCase().includes(searchPhrase.toLowerCase())).map((car) => (
-              <Grid item key={car.id} lg={4} md={4} xs={12}>
-                <CarCard className={classes.carCard} car={car} />
-              </Grid>
-            ))}
+            {cars
+              .filter((car) =>
+                car.model_name
+                  .toLowerCase()
+                  .includes(searchPhrase.toLowerCase())
+              )
+              .map((car) => (
+                <Grid item key={car.id} lg={4} md={4} xs={12}>
+                  <CarCard className={classes.carCard} car={car} />
+                </Grid>
+              ))}
           </Grid>
         </Box>
       </Container>

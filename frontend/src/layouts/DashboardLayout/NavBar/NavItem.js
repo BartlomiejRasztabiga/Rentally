@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
   item: {
     display: "flex",
     paddingTop: 0,
-    paddingBottom: 0
+    paddingBottom: 0,
   },
   button: {
     color: theme.palette.text.secondary,
@@ -17,32 +17,26 @@ const useStyles = makeStyles((theme) => ({
     letterSpacing: 0,
     padding: "10px 8px",
     textTransform: "none",
-    width: "100%"
+    width: "100%",
   },
   icon: {
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
   },
   title: {
-    marginRight: "auto"
+    marginRight: "auto",
   },
   active: {
     color: theme.palette.primary.main,
     "& $title": {
-      fontWeight: theme.typography.fontWeightMedium
+      fontWeight: theme.typography.fontWeightMedium,
     },
     "& $icon": {
-      color: theme.palette.primary.main
-    }
-  }
+      color: theme.palette.primary.main,
+    },
+  },
 }));
 
-const NavItem = ({
-                   className,
-                   href,
-                   icon: Icon,
-                   title,
-                   ...rest
-                 }) => {
+const NavItem = ({ className, href, icon: Icon, title, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -57,15 +51,8 @@ const NavItem = ({
         component={RouterLink}
         to={href}
       >
-        {Icon && (
-          <Icon
-            className={classes.icon}
-            size="20"
-          />
-        )}
-        <span className={classes.title}>
-          {title}
-        </span>
+        {Icon && <Icon className={classes.icon} size="20" />}
+        <span className={classes.title}>{title}</span>
       </Button>
     </ListItem>
   );
@@ -75,7 +62,7 @@ NavItem.propTypes = {
   className: PropTypes.string,
   href: PropTypes.string,
   icon: PropTypes.elementType,
-  title: PropTypes.string
+  title: PropTypes.string,
 };
 
 export default NavItem;

@@ -2,6 +2,8 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 import React, { useEffect, useState } from "react";
 import { useRoutes } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import MomentUtils from "@date-io/moment";
 import GlobalStyles from "./components/GlobalStyles";
 import theme from "./theme";
 import routes from "./routes";
@@ -10,7 +12,11 @@ import { getMe } from "./service/usersService";
 
 const App = () => {
   const routing = useRoutes(routes);
-  const [accessToken, setAccessTokenState] = useState(localStorage.getItem("access_token"));
+  const [accessToken, setAccessTokenState] = useState(
+    localStorage.getItem("access_token")
+  );
+
+  // TODO can this be extracted to auth context?
 
   const setAccessToken = (data) => {
     if (!data) {
@@ -37,10 +43,12 @@ const App = () => {
 
   return (
     <AuthContext.Provider value={{ accessToken, setAccessToken }}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        {routing}
-      </ThemeProvider>
+      <MuiPickersUtilsProvider utils={MomentUtils}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyles />
+          {routing}
+        </ThemeProvider>
+      </MuiPickersUtilsProvider>
     </AuthContext.Provider>
   );
 };

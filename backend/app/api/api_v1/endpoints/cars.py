@@ -3,7 +3,7 @@ from typing import Any, List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app import crud, models, schemas
+from app import models, schemas, services
 from app.api import deps
 from app.exceptions.instance_not_found import CarNotFoundException
 from app.exceptions.not_enough_permissions import NotEnoughPermissionsException
@@ -19,7 +19,7 @@ def get_cars(
     """
     Retrieve cars.
     """
-    cars = crud.car.get_all(db)
+    cars = services.car.get_all(db)
     return cars
 
 
@@ -32,7 +32,7 @@ def get_car(
     """
     Get car by ID.
     """
-    car = crud.car.get(db=db, _id=id)
+    car = services.car.get(db=db, _id=id)
     if not car:
         raise CarNotFoundException()
 
@@ -49,14 +49,14 @@ def delete_car(
     """
     Delete a car.
     """
-    car = crud.car.get(db=db, _id=id)
+    car = services.car.get(db=db, _id=id)
 
     if not car:
         raise CarNotFoundException()
-    if not crud.user.is_admin(current_user):
+    if not services.user.is_admin(current_user):
         raise NotEnoughPermissionsException()
 
-    car = crud.car.remove(db=db, _id=id)
+    car = services.car.remove(db=db, _id=id)
     return car
 
 
@@ -70,10 +70,10 @@ def create_car(
     """
     Create new car.
     """
-    if not crud.user.is_admin(current_user):
+    if not services.user.is_admin(current_user):
         raise NotEnoughPermissionsException()
 
-    car = crud.car.create(db=db, obj_in=car_create_dto)
+    car = services.car.create(db=db, obj_in=car_create_dto)
     return car
 
 
@@ -88,12 +88,12 @@ def update_car(
     """
     Update a car.
     """
-    car = crud.car.get(db=db, _id=id)
+    car = services.car.get(db=db, _id=id)
 
     if not car:
         raise CarNotFoundException()
-    if not crud.user.is_admin(current_user):
+    if not services.user.is_admin(current_user):
         raise NotEnoughPermissionsException()
 
-    car = crud.car.update(db=db, db_obj=car, obj_in=car_update_dto)
+    car = services.car.update(db=db, db_obj=car, obj_in=car_update_dto)
     return car

@@ -1,11 +1,6 @@
-from typing import TYPE_CHECKING
-
 from sqlalchemy import Boolean, Column, Integer, String
 
 from app.db.base_class import Base
-
-if TYPE_CHECKING:
-    from .car import Car  # noqa: F401
 
 
 class User(Base):

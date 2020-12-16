@@ -46,6 +46,8 @@ def test_update_customer(
     customer = create_random_customer(db)
 
     data = {
+        "full_name": "Test customer",
+        "address": "ul. Krzewiasta 119, 70-732 Szczecin",
         "phone_number": "123456789",
     }
     response = client.put(

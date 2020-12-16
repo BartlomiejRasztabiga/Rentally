@@ -8,41 +8,44 @@ import {
   InputAdornment,
   makeStyles,
   SvgIcon,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import Page from "src/components/Page";
 import CustomersList from "./CustomersList";
 import SearchIcon from "@material-ui/icons/Search";
 import { getCustomers } from "../../../service/customersService";
 import { useNavigate } from "react-router";
+import { APP_CUSTOMERS_URL } from "../../../config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     minHeight: "100%",
     paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
-  }
+    paddingTop: theme.spacing(3),
+  },
 }));
 
-const CustomerListView = () => {
+const CustomersListView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const [customers, setCustomers] = useState([]);
   const [searchPhrase, setSearchPhrase] = useState("");
 
   useEffect(() => {
-    getCustomers().then(customers => {
+    getCustomers().then((customers) => {
       setCustomers(customers);
     });
   }, []);
 
   const handleAddCustomer = () => {
-    navigate("/app/customers/new");
+    navigate(`${APP_CUSTOMERS_URL}/new`);
   };
 
   const filterCustomersBasedOnSearchPhrase = () => {
-    return customers.filter(customer => customer.full_name.toLowerCase().includes(searchPhrase.toLowerCase()));
+    return customers.filter((customer) =>
+      customer.full_name.toLowerCase().includes(searchPhrase.toLowerCase())
+    );
   };
 
   return (
@@ -51,7 +54,11 @@ const CustomerListView = () => {
         {/*TODO can extract this search box to another component and share state? redux or react context?*/}
         {/*Should share it with CarsListView*/}
         <Box display="flex" justifyContent="flex-end">
-          <Button color="primary" variant="contained" onClick={handleAddCustomer}>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={handleAddCustomer}
+          >
             Add customer
           </Button>
         </Box>
@@ -62,7 +69,7 @@ const CustomerListView = () => {
                 <TextField
                   fullWidth
                   value={searchPhrase}
-                  onChange={e => setSearchPhrase(e.target.value)}
+                  onChange={(e) => setSearchPhrase(e.target.value)}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -70,7 +77,7 @@ const CustomerListView = () => {
                           <SearchIcon />
                         </SvgIcon>
                       </InputAdornment>
-                    )
+                    ),
                   }}
                   placeholder="Search customer"
                   variant="outlined"
@@ -80,12 +87,11 @@ const CustomerListView = () => {
           </Card>
         </Box>
         <Box mt={3}>
-          <CustomersList
-            customers={filterCustomersBasedOnSearchPhrase()} />
+          <CustomersList customers={filterCustomersBasedOnSearchPhrase()} />
         </Box>
       </Container>
     </Page>
   );
 };
 
-export default CustomerListView;
+export default CustomersListView;
