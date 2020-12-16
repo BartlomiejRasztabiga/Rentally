@@ -26,9 +26,9 @@ if TYPE_CHECKING:
 class Reservation(Base):
     id = Column(Integer, primary_key=True, index=True)
     car_id = Column(Integer, ForeignKey("car.id"), nullable=False)
-    car = relationship("Car", back_populates="reservations")
+    car = relationship("Car", back_populates="reservations", lazy=False)
     customer_id = Column(Integer, ForeignKey("customer.id"), nullable=False)
-    customer = relationship("Customer", back_populates="reservations")
+    customer = relationship("Customer", back_populates="reservations", lazy=False)
     start_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)
     end_date = Column(DateTime(timezone=True), default=func.now(), nullable=False)
     status = Column(Enum(ReservationStatus), nullable=False)
