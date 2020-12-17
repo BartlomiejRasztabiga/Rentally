@@ -33,19 +33,19 @@ const sortRentalsByDate = (rentals) => {
   });
 };
 
-const NewestRentalsListView = ({ className, ...rest }) => {
+const ActiveRentalsListView = ({ className, ...rest }) => {
   const classes = useStyles();
   const [rentals, setRentals] = useState([]);
 
   useEffect(() => {
     getRentals().then((_rentals) => {
-      setRentals(_rentals);
+      setRentals(_rentals.filter((rental) => rental.status !== "COMPLETED"));
     });
   }, []);
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
-      <CardHeader title="Newest Rentals" />
+      <CardHeader title="Active Rentals" />
       <Divider />
       <PerfectScrollbar>
         <RentalsList rentals={sortRentalsByDate(rentals).slice(0, 5)} />
@@ -66,8 +66,8 @@ const NewestRentalsListView = ({ className, ...rest }) => {
   );
 };
 
-NewestRentalsListView.propTypes = {
+ActiveRentalsListView.propTypes = {
   className: PropTypes.string,
 };
 
-export default NewestRentalsListView;
+export default ActiveRentalsListView;

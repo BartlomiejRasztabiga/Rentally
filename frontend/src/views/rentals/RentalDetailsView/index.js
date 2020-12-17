@@ -8,16 +8,16 @@ import CreateUpdateRentalForm from "../../../components/rentals/CreateUpdateRent
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   link: {
     color: "inherit",
-    textDecoration: "none"
+    textDecoration: "none",
   },
   rentalDetails: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5)
-  }
+    marginBottom: theme.spacing(5),
+  },
 }));
 
 const RentalDetailsView = () => {
@@ -46,7 +46,7 @@ const RentalDetailsView = () => {
 
 RentalDetailsView.propTypes = {
   className: PropTypes.string,
-  rentalId: PropTypes.number
+  rentalId: PropTypes.number,
 };
 
 export default RentalDetailsView;

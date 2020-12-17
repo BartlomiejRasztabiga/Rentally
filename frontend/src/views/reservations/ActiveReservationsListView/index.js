@@ -39,13 +39,15 @@ const NewestReservations = ({ className, ...rest }) => {
 
   useEffect(() => {
     getReservations().then((reservations) => {
-      setReservations(reservations);
+      setReservations(
+        reservations.filter((reservation) => reservation.status !== "CANCELLED")
+      );
     });
   }, []);
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
-      <CardHeader title="Newest Reservations" />
+      <CardHeader title="Active Reservations" />
       <Divider />
       <PerfectScrollbar>
         <ReservationsList

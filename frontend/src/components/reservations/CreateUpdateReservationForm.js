@@ -25,7 +25,7 @@ import {
   updateReservationStatus,
 } from "../../service/reservationsService";
 
-import { APP_RESERVATIONS_URL } from "../../config";
+import { APP_RENTALS_URL, APP_RESERVATIONS_URL } from "../../config";
 import { DateTimePicker } from "@material-ui/pickers";
 import moment from "moment";
 import { getCars } from "../../service/carsService";
@@ -60,7 +60,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const COLLECTED = "COLLECTED";
 const CANCELLED = "CANCELLED";
 
 const CreateUpdateReservationForm = ({ reservationId, carId }) => {
@@ -178,15 +177,16 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
   };
 
   const handleCollectReservation = () => {
-    updateReservationStatus(reservation, COLLECTED)
-      .then(() => {
-        setReservation(reservation);
-        setPostError(null);
-        setSuccessSnackbarOpen(true);
-      })
-      .catch((error) => {
-        setPostError(JSON.stringify(error.response.data));
-      });
+    navigate(`${APP_RENTALS_URL}/new`, {
+      replace: true,
+      state: {
+        reservationId: reservation.id,
+        carId: reservation.car_id,
+        customerId: reservation.customer_id,
+        startDate: reservation.start_date,
+        endDate: reservation.end_date,
+      },
+    });
   };
 
   const handleCancelReservation = () => {
@@ -250,7 +250,7 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
                       className={classes.changeStatusButton}
                       onClick={handleCollectReservation}
                     >
-                      COLLLECT
+                      COLLLECT (Convert to Rental)
                     </Button>
                     <Button
                       variant="outlined"
@@ -303,6 +303,7 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
                   <Grid item md={6} xs={12}>
                     <DateTimePicker
                       fullWidth
+                      showTodayButton
                       ampm={false}
                       label="Start date"
                       name="start_date"
@@ -315,6 +316,7 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
                   <Grid item md={6} xs={12}>
                     <DateTimePicker
                       fullWidth
+                      showTodayButton
                       ampm={false}
                       label="End date"
                       name="end_date"

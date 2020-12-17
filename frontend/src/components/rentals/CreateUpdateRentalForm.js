@@ -17,15 +17,9 @@ import Loading from "../Loading";
 import ReactJson from "react-json-view";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
-import {
-  createReservation,
-  deleteReservation,
-  getReservationById, getReservations,
-  updateReservation,
-  updateReservationStatus
-} from "../../service/reservationsService";
+import { getReservations } from "../../service/reservationsService";
 
-import { APP_RENTALS_URL, APP_RESERVATIONS_URL } from "../../config";
+import { APP_RENTALS_URL } from "../../config";
 import { DateTimePicker } from "@material-ui/pickers";
 import moment from "moment";
 import { getCars } from "../../service/carsService";
@@ -39,7 +33,7 @@ import {
   deleteRental,
   getRentalById,
   updateRental,
-  updateRentalStatus
+  updateRentalStatus,
 } from "../../service/rentalsService";
 
 const useStyles = makeStyles((theme) => ({
@@ -67,18 +61,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const IN_PROGRESS = "IN_PROGRESS";
 const COMPLETED = "COMPLETED";
 
-const CreateUpdateRentalForm = ({ rentalId, carId, reservationId }) => {
+const CreateUpdateRentalForm = ({
+  rentalId,
+  carId,
+  reservationId,
+  customerId,
+  startDate,
+  endDate,
+}) => {
   const classes = useStyles();
   const navigate = useNavigate();
 
   const [rental, setRental] = useState({
     car_id: carId,
     reservation_id: reservationId,
-    start_date: moment(),
-    end_date: moment().add(1, "days"),
+    customer_id: customerId,
+    start_date: moment(startDate),
+    end_date: moment(endDate),
   });
   const [loaded, setLoaded] = useState(false);
   const [loadingError, setLoadingError] = useState(null);
@@ -122,8 +123,8 @@ const CreateUpdateRentalForm = ({ rentalId, carId, reservationId }) => {
 
     // get available reservations
     getReservations().then((reservations) => {
-      setAvailableReservations(reservations)
-    })
+      setAvailableReservations(reservations);
+    });
   }, []);
 
   const emptyIfNull = (value) => {
@@ -304,6 +305,7 @@ const CreateUpdateRentalForm = ({ rentalId, carId, reservationId }) => {
                         onChange={handleChange}
                         label="Reservation"
                       >
+                        <MenuItem value={null}>EMPTY</MenuItem>
                         {availableReservations.map((reservation, key) => (
                           <MenuItem value={reservation.id} key={key}>
                             {reservation.id}
@@ -315,6 +317,7 @@ const CreateUpdateRentalForm = ({ rentalId, carId, reservationId }) => {
                   <Grid item md={6} xs={12}>
                     <DateTimePicker
                       fullWidth
+                      showTodayButton
                       ampm={false}
                       label="Start date"
                       name="start_date"
@@ -327,6 +330,7 @@ const CreateUpdateRentalForm = ({ rentalId, carId, reservationId }) => {
                   <Grid item md={6} xs={12}>
                     <DateTimePicker
                       fullWidth
+                      showTodayButton
                       ampm={false}
                       label="End date"
                       name="end_date"
@@ -393,7 +397,10 @@ CreateUpdateRentalForm.propTypes = {
   className: PropTypes.string,
   rentalId: PropTypes.string,
   carId: PropTypes.number,
-  reservationId: PropTypes.number
+  reservationId: PropTypes.number,
+  customerId: PropTypes.number,
+  startDate: PropTypes.instanceOf(Date),
+  endDate: PropTypes.instanceOf(Date),
 };
 
 export default CreateUpdateRentalForm;

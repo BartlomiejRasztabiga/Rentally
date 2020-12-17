@@ -8,12 +8,12 @@ import CreateUpdateRentalForm from "../../../components/rentals/CreateUpdateRent
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   rentalDetails: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5)
-  }
+    marginBottom: theme.spacing(5),
+  },
 }));
 
 const CreateRentalView = () => {
@@ -21,7 +21,12 @@ const CreateRentalView = () => {
   const location = useLocation();
 
   const carId = location.state ? location.state.carId : undefined;
-  const reservationId = location.state ? location.state.reservationId : undefined;
+  const customerId = location.state ? location.state.customerId : undefined;
+  const reservationId = location.state
+    ? location.state.reservationId
+    : undefined;
+  const startDate = location.state ? location.state.startDate : undefined;
+  const endDate = location.state ? location.state.endDate : undefined;
 
   const handleGoBack = () => {
     history.back();
@@ -37,14 +42,20 @@ const CreateRentalView = () => {
         </Box>
       </Container>
       <Container className={classes.rentalDetails}>
-        <CreateUpdateRentalForm carId={carId} reservationId={reservationId} />
+        <CreateUpdateRentalForm
+          carId={carId}
+          reservationId={reservationId}
+          customerId={customerId}
+          startDate={startDate}
+          endDate={endDate}
+        />
       </Container>
     </React.Fragment>
   );
 };
 
 CreateRentalView.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default CreateRentalView;
