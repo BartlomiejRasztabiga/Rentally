@@ -25,7 +25,12 @@ import {
   updateReservationStatus,
 } from "../../service/reservationsService";
 
-import { APP_CARS_URL, APP_CUSTOMERS_URL, APP_RENTALS_URL, APP_RESERVATIONS_URL } from "../../config";
+import {
+  APP_CARS_URL,
+  APP_CUSTOMERS_URL,
+  APP_RENTALS_URL,
+  APP_RESERVATIONS_URL,
+} from "../../config";
 import { DateTimePicker } from "@material-ui/pickers";
 import moment from "moment";
 import { getCars } from "../../service/carsService";
@@ -284,16 +289,21 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
                           </MenuItem>
                         ))}
                       </Select>
-                      {reservation.car_id && (<Button
-                        color="primary"
-                        endIcon={<ArrowRightIcon />}
-                        size="small"
-                        variant="text"
-                      >
-                        <Link className={classes.link} to={`${APP_CARS_URL}/${reservation.car_id}`}>
-                          Go to
-                        </Link>
-                      </Button>)}
+                      {reservation.car_id && (
+                        <Button
+                          color="primary"
+                          endIcon={<ArrowRightIcon />}
+                          size="small"
+                          variant="text"
+                        >
+                          <Link
+                            className={classes.link}
+                            to={`${APP_CARS_URL}/${reservation.car_id}`}
+                          >
+                            Go to
+                          </Link>
+                        </Button>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -311,16 +321,21 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
                           </MenuItem>
                         ))}
                       </Select>
-                      {reservation.customer_id && (<Button
-                        color="primary"
-                        endIcon={<ArrowRightIcon />}
-                        size="small"
-                        variant="text"
-                      >
-                        <Link className={classes.link} to={`${APP_CUSTOMERS_URL}/${reservation.customer_id}`}>
-                          Go to
-                        </Link>
-                      </Button>)}
+                      {reservation.customer_id && (
+                        <Button
+                          color="primary"
+                          endIcon={<ArrowRightIcon />}
+                          size="small"
+                          variant="text"
+                        >
+                          <Link
+                            className={classes.link}
+                            to={`${APP_CUSTOMERS_URL}/${reservation.customer_id}`}
+                          >
+                            Go to
+                          </Link>
+                        </Button>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item md={6} xs={12}>
