@@ -10,11 +10,12 @@ from app import services
 from app.exceptions.instance_not_found import ReservationNotFoundException
 from app.exceptions.rental import RentalCollisionException
 from app.exceptions.reservation import (
+    CancelReservationWithRentalException,
     ReservationCollisionException,
     ReservationCreatedInThePastException,
     StartDateNotBeforeEndDateException,
     UpdatingCancelledReservationException,
-    UpdatingCollectedReservationException, CancelReservationWithRentalException,
+    UpdatingCollectedReservationException,
 )
 from app.models.reservation import Reservation, ReservationStatus
 from app.schemas import Rental
@@ -87,8 +88,14 @@ class ReservationService(
             raise UpdatingCollectedReservationException()
 
     @staticmethod
-    def validate_rental_relation(old_status: ReservationStatus, new_status: ReservationStatus, rental: Rental):
-        if rental and old_status != ReservationStatus.CANCELLED and new_status == ReservationStatus.CANCELLED:
+    def validate_rental_relation(
+        old_status: ReservationStatus, new_status: ReservationStatus, rental: Rental
+    ) -> None:
+        if (
+            rental
+            and old_status != ReservationStatus.CANCELLED
+            and new_status == ReservationStatus.CANCELLED
+        ):
             raise CancelReservationWithRentalException()
 
     def create(self, db: Session, *, obj_in: ReservationCreateDto) -> Reservation:
@@ -117,7 +124,7 @@ class ReservationService(
         self.validate_status(old_reservation.status, obj_in.status)  # type: ignore
         self.validate_dates(db_obj.start_date, db_obj.end_date)
         self.validate_collisions(db, db_obj, db_obj.id)
-        self.validate_rental_relation(old_reservation.status, obj_in.status, db_obj.rental)
+        self.validate_rental_relation(old_reservation.status, obj_in.status, db_obj.rental)  # type: ignore
 
         db.add(db_obj)
         db.commit()
