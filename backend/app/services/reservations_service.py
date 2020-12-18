@@ -17,8 +17,8 @@ from app.exceptions.reservation import (
     UpdatingCancelledReservationException,
     UpdatingCollectedReservationException,
 )
+from app.models.rental import Rental
 from app.models.reservation import Reservation, ReservationStatus
-from app.schemas import Rental
 from app.schemas.reservation import ReservationCreateDto, ReservationUpdateDto
 from app.services.base import BaseService
 from app.utils.datetime_utils import datetime_without_seconds
@@ -124,7 +124,11 @@ class ReservationService(
         self.validate_status(old_reservation.status, obj_in.status)  # type: ignore
         self.validate_dates(db_obj.start_date, db_obj.end_date)
         self.validate_collisions(db, db_obj, db_obj.id)
-        self.validate_rental_relation(old_reservation.status, obj_in.status, db_obj.rental)  # type: ignore
+        self.validate_rental_relation(
+            old_reservation.status,  # type: ignore
+            obj_in.status,
+            db_obj.rental,  # type: ignore
+        )
 
         db.add(db_obj)
         db.commit()
