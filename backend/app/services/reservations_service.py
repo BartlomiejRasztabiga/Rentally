@@ -4,7 +4,6 @@ from typing import List, Union
 
 import pytz
 from fastapi.encoders import jsonable_encoder
-from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from app import services
@@ -137,10 +136,7 @@ class ReservationService(
             db.query(Reservation)
             .filter(
                 Reservation.car_id == car_id,
-                or_(
-                    Reservation.status == ReservationStatus.NEW,
-                    Reservation.status == ReservationStatus.COLLECTED,
-                ),
+                Reservation.status == ReservationStatus.NEW,
             )
             .all()
         )
@@ -148,12 +144,7 @@ class ReservationService(
     def get_active(self, db: Session) -> List[Reservation]:
         return (
             db.query(Reservation)
-            .filter(
-                or_(
-                    Reservation.status == ReservationStatus.NEW,
-                    Reservation.status == ReservationStatus.COLLECTED,
-                )
-            )
+            .filter(Reservation.status == ReservationStatus.NEW,)
             .all()
         )
 
