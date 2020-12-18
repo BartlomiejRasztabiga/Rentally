@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Box, Button, Container, makeStyles } from "@material-ui/core";
 import { useParams } from "react-router";
 import history from "history/browser";
-import CreateUpdateCarForm from "../../../components/cars/CreateUpdateCarForm";
+import CreateUpdateRentalForm from "../../../components/rentals/CreateUpdateRentalForm";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,19 +14,15 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
     textDecoration: "none",
   },
-  carDetails: {
+  rentalDetails: {
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(5),
   },
-  uploadImageBox: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
 }));
 
-const CarDetails = () => {
+const RentalDetailsView = () => {
   const classes = useStyles();
-  let { carId } = useParams();
+  let { rentalId } = useParams();
 
   const handleGoBack = () => {
     history.back();
@@ -34,23 +30,23 @@ const CarDetails = () => {
 
   return (
     <React.Fragment>
-      <Container maxWidth={false} className={classes.carDetails}>
+      <Container maxWidth={false} className={classes.rentalDetails}>
         <Box display="flex" justifyContent="flex-start">
           <Button color="primary" variant="contained" onClick={handleGoBack}>
             Go back
           </Button>
         </Box>
       </Container>
-      <Container className={classes.carDetails}>
-        <CreateUpdateCarForm carId={carId} />
+      <Container className={classes.rentalDetails}>
+        <CreateUpdateRentalForm rentalId={rentalId} />
       </Container>
     </React.Fragment>
   );
 };
 
-CarDetails.propTypes = {
+RentalDetailsView.propTypes = {
   className: PropTypes.string,
-  carId: PropTypes.number,
+  rentalId: PropTypes.number,
 };
 
-export default CarDetails;
+export default RentalDetailsView;

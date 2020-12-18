@@ -24,11 +24,15 @@ import {
   deleteCar,
   getCarById,
   updateCar,
-} from "../service/carsService";
-import convertToBase64 from "../utils/convertToBase64";
-import Loading from "./Loading";
+} from "../../service/carsService";
+import convertToBase64 from "../../utils/convertToBase64";
+import Loading from "../Loading";
 import ReactJson from "react-json-view";
-import { APP_CARS_URL } from "../config";
+import {
+  APP_CARS_URL,
+  APP_RENTALS_URL,
+  APP_RESERVATIONS_URL,
+} from "../../config";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 
@@ -52,6 +56,13 @@ const useStyles = makeStyles((theme) => ({
   errorBox: {
     margin: theme.spacing(5),
   },
+  reserveRentButtonsBox: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+  },
+  reserveRentButton: {
+    margin: theme.spacing(1),
+  },
 }));
 
 const CreateUpdateCarForm = ({ carId }) => {
@@ -70,8 +81,8 @@ const CreateUpdateCarForm = ({ carId }) => {
   useEffect(() => {
     if (isInEditMode) {
       getCarById(carId)
-        .then((car) => {
-          setCar(car);
+        .then((_car) => {
+          setCar(_car);
           setLoadingError(null);
           setLoaded(true);
         })
@@ -121,10 +132,10 @@ const CreateUpdateCarForm = ({ carId }) => {
     }
   };
 
-  const handleUpdateCar = (car) => {
-    updateCar(car)
-      .then((car) => {
-        setCar(car);
+  const handleUpdateCar = (updated_car) => {
+    updateCar(updated_car)
+      .then((_car) => {
+        setCar(_car);
         setPostError(null);
         setSuccessSnackbarOpen(true);
       })
@@ -133,9 +144,9 @@ const CreateUpdateCarForm = ({ carId }) => {
       });
   };
 
-  const handleCreateCar = (car) => {
-    createCar(car)
-      .then((car) => {
+  const handleCreateCar = (_car) => {
+    createCar(_car)
+      .then(() => {
         navigate(APP_CARS_URL, { replace: true });
       })
       .catch((error) => {
@@ -147,6 +158,14 @@ const CreateUpdateCarForm = ({ carId }) => {
     deleteCar(carId).then(() => {
       navigate(APP_CARS_URL, { replace: true });
     });
+  };
+
+  const handleReserveCar = () => {
+    navigate(`${APP_RESERVATIONS_URL}/new`, { state: { carId: car.id } });
+  };
+
+  const handleRentCar = () => {
+    navigate(`${APP_RENTALS_URL}/new`, { state: { carId: car.id } });
   };
 
   if (loadingError) {
@@ -217,6 +236,34 @@ const CreateUpdateCarForm = ({ carId }) => {
                 <div color="error" className={classes.errorBox}>
                   <ReactJson src={JSON.parse(postError)} theme="ocean" />
                 </div>
+              )}
+              {isInEditMode && (
+                <Grid
+                  container
+                  className={classes.reserveRentButtonsBox}
+                  justify="flex-end"
+                >
+                  <Grid item md={3}>
+                    <Button
+                      variant="outlined"
+                      component="span"
+                      color="primary"
+                      className={classes.reserveRentButton}
+                      onClick={handleReserveCar}
+                    >
+                      RESERVE
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      component="span"
+                      color="secondary"
+                      className={classes.reserveRentButton}
+                      onClick={handleRentCar}
+                    >
+                      RENT
+                    </Button>
+                  </Grid>
+                </Grid>
               )}
               <form autoComplete="off">
                 <Grid container spacing={3}>

@@ -12,7 +12,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import Page from "src/components/Page";
-import CarCard from "./CarCard";
+import CarCard from "../../../components/cars/CarCard";
 import { getCars } from "../../../service/carsService";
 import { useNavigate } from "react-router";
 import SearchIcon from "@material-ui/icons/Search";

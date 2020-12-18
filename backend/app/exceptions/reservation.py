@@ -28,3 +28,8 @@ class UpdatingCancelledReservationException(HTTPException):
 class UpdatingCollectedReservationException(HTTPException):
     def __init__(self):
         super().__init__(400, "You cannot update collected reservation")
+
+
+class CancelReservationWithRentalException(HTTPException):
+    def __init__(self):
+        super().__init__(400, "You cannot cancel a reservation that has related rental")

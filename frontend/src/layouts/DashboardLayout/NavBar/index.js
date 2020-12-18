@@ -15,11 +15,13 @@ import DriveEtaIcon from "@material-ui/icons/DriveEta";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import AssignmentIcon from "@material-ui/icons/Assignment";
+import LocalAtmIcon from "@material-ui/icons/LocalAtm";
 
 import NavItem from "./NavItem";
 import {
   APP_CARS_URL,
   APP_CUSTOMERS_URL,
+  APP_RENTALS_URL,
   APP_RESERVATIONS_URL,
 } from "../../../config";
 
@@ -38,6 +40,11 @@ const items = [
     href: APP_RESERVATIONS_URL,
     icon: AssignmentIcon,
     title: "Reservations",
+  },
+  {
+    href: APP_RENTALS_URL,
+    icon: LocalAtmIcon,
+    title: "Rentals",
   },
   {
     href: APP_CUSTOMERS_URL,

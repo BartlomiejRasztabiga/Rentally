@@ -17,6 +17,9 @@ import CreateCarView from "./views/cars/CreateCarView";
 import ReservationsListView from "./views/reservations/ReservationsListView";
 import ReservationDetailsView from "./views/reservations/ReservationDetailsView";
 import CreateReservationView from "./views/reservations/CreateReservationView";
+import RentalsListView from "./views/rentals/RentalsListView";
+import CreateRentalView from "./views/rentals/CreateRentalView";
+import RentalDetailsView from "./views/rentals/RentalDetailsView";
 
 const routes = [
   {
@@ -39,6 +42,10 @@ const routes = [
         path: "reservations/:reservationId",
         element: <ReservationDetailsView />,
       },
+
+      { path: "rentals", element: <RentalsListView /> },
+      { path: "rentals/new", element: <CreateRentalView /> },
+      { path: "rentals/:rentalId", element: <RentalDetailsView /> },
 
       { path: "settings", element: <SettingsView /> },
       { path: "*", element: <Navigate to="/404" /> },

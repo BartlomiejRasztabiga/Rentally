@@ -15,7 +15,7 @@ import {
   APP_CARS_URL,
   APP_CUSTOMERS_URL,
   APP_RESERVATIONS_URL,
-} from "../../../config";
+} from "../../config";
 
 const useStyles = makeStyles((theme) => ({
   root: {},

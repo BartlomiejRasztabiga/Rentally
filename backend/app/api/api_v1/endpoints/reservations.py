@@ -34,10 +34,10 @@ def get_all_reservations(
     current_user: models.User = Depends(deps.get_current_user),
 ) -> List[Reservation]:
     """
-    Retrieve all active reservations.
+    Retrieve all reservations.
     """
 
-    reservations = services.reservation.get_active(db)
+    reservations = services.reservation.get_all(db)
     return reservations
 
 

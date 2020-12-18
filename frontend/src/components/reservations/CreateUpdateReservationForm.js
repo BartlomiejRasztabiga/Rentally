@@ -11,9 +11,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import clsx from "clsx";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import Loading from "./Loading";
+import Loading from "../Loading";
 import ReactJson from "react-json-view";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
@@ -23,17 +23,23 @@ import {
   getReservationById,
   updateReservation,
   updateReservationStatus,
-} from "../service/reservationsService";
+} from "../../service/reservationsService";
 
-import { APP_RESERVATIONS_URL } from "../config";
+import {
+  APP_CARS_URL,
+  APP_CUSTOMERS_URL,
+  APP_RENTALS_URL,
+  APP_RESERVATIONS_URL,
+} from "../../config";
 import { DateTimePicker } from "@material-ui/pickers";
 import moment from "moment";
-import { getCars } from "../service/carsService";
-import { getCustomers } from "../service/customersService";
+import { getCars } from "../../service/carsService";
+import { getCustomers } from "../../service/customersService";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,14 +66,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const COLLECTED = "COLLECTED";
 const CANCELLED = "CANCELLED";
 
-const CreateUpdateReservationForm = ({ reservationId }) => {
+const CreateUpdateReservationForm = ({ reservationId, carId }) => {
   const classes = useStyles();
   const navigate = useNavigate();
 
   const [reservation, setReservation] = useState({
+    car_id: carId,
     start_date: moment(),
     end_date: moment().add(1, "days"),
   });
@@ -177,15 +183,16 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
   };
 
   const handleCollectReservation = () => {
-    updateReservationStatus(reservation, COLLECTED)
-      .then(() => {
-        setReservation(reservation);
-        setPostError(null);
-        setSuccessSnackbarOpen(true);
-      })
-      .catch((error) => {
-        setPostError(JSON.stringify(error.response.data));
-      });
+    navigate(`${APP_RENTALS_URL}/new`, {
+      replace: true,
+      state: {
+        reservationId: reservation.id,
+        carId: reservation.car_id,
+        customerId: reservation.customer_id,
+        startDate: reservation.start_date,
+        endDate: reservation.end_date,
+      },
+    });
   };
 
   const handleCancelReservation = () => {
@@ -242,15 +249,17 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
                   justify="flex-end"
                 >
                   <Grid item md={3}>
-                    <Button
-                      variant="outlined"
-                      component="span"
-                      color="primary"
-                      className={classes.changeStatusButton}
-                      onClick={handleCollectReservation}
-                    >
-                      COLLLECT
-                    </Button>
+                    {reservation.status === "NEW" && (
+                      <Button
+                        variant="outlined"
+                        component="span"
+                        color="primary"
+                        className={classes.changeStatusButton}
+                        onClick={handleCollectReservation}
+                      >
+                        COLLLECT (Convert to Rental)
+                      </Button>
+                    )}
                     <Button
                       variant="outlined"
                       component="span"
@@ -280,6 +289,21 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
                           </MenuItem>
                         ))}
                       </Select>
+                      {reservation.car_id && (
+                        <Button
+                          color="primary"
+                          endIcon={<ArrowRightIcon />}
+                          size="small"
+                          variant="text"
+                        >
+                          <Link
+                            className={classes.link}
+                            to={`${APP_CARS_URL}/${reservation.car_id}`}
+                          >
+                            Go to
+                          </Link>
+                        </Button>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -297,11 +321,27 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
                           </MenuItem>
                         ))}
                       </Select>
+                      {reservation.customer_id && (
+                        <Button
+                          color="primary"
+                          endIcon={<ArrowRightIcon />}
+                          size="small"
+                          variant="text"
+                        >
+                          <Link
+                            className={classes.link}
+                            to={`${APP_CUSTOMERS_URL}/${reservation.customer_id}`}
+                          >
+                            Go to
+                          </Link>
+                        </Button>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <DateTimePicker
                       fullWidth
+                      showTodayButton
                       ampm={false}
                       label="Start date"
                       name="start_date"
@@ -314,6 +354,7 @@ const CreateUpdateReservationForm = ({ reservationId }) => {
                   <Grid item md={6} xs={12}>
                     <DateTimePicker
                       fullWidth
+                      showTodayButton
                       ampm={false}
                       label="End date"
                       name="end_date"

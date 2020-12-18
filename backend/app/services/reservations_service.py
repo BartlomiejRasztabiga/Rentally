@@ -4,18 +4,20 @@ from typing import List, Union
 
 import pytz
 from fastapi.encoders import jsonable_encoder
-from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from app import services
+from app.exceptions.instance_not_found import ReservationNotFoundException
 from app.exceptions.rental import RentalCollisionException
 from app.exceptions.reservation import (
+    CancelReservationWithRentalException,
     ReservationCollisionException,
     ReservationCreatedInThePastException,
     StartDateNotBeforeEndDateException,
     UpdatingCancelledReservationException,
     UpdatingCollectedReservationException,
 )
+from app.models.rental import Rental
 from app.models.reservation import Reservation, ReservationStatus
 from app.schemas.reservation import ReservationCreateDto, ReservationUpdateDto
 from app.services.base import BaseService
@@ -85,6 +87,17 @@ class ReservationService(
         if old_status == ReservationStatus.COLLECTED:
             raise UpdatingCollectedReservationException()
 
+    @staticmethod
+    def validate_rental_relation(
+        old_status: ReservationStatus, new_status: ReservationStatus, rental: Rental
+    ) -> None:
+        if (
+            rental
+            and old_status != ReservationStatus.CANCELLED
+            and new_status == ReservationStatus.CANCELLED
+        ):
+            raise CancelReservationWithRentalException()
+
     def create(self, db: Session, *, obj_in: ReservationCreateDto) -> Reservation:
         self.validate_dates(obj_in.start_date, obj_in.end_date)
 
@@ -111,21 +124,37 @@ class ReservationService(
         self.validate_status(old_reservation.status, obj_in.status)  # type: ignore
         self.validate_dates(db_obj.start_date, db_obj.end_date)
         self.validate_collisions(db, db_obj, db_obj.id)
+        self.validate_rental_relation(
+            old_reservation.status,  # type: ignore
+            obj_in.status,
+            db_obj.rental,  # type: ignore
+        )
 
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
         return db_obj
 
+    def mark_collected(self, db: Session, reservation_id: int) -> Reservation:
+        _reservation = self.get(db=db, _id=reservation_id)
+        if not _reservation:
+            raise ReservationNotFoundException()
+
+        reservation_update_dto = ReservationUpdateDto(
+            car_id=_reservation.car_id,
+            customer_id=_reservation.customer_id,
+            start_date=_reservation.start_date,
+            end_date=_reservation.end_date,
+            status=ReservationStatus.COLLECTED,
+        )
+        return self.update(db=db, db_obj=_reservation, obj_in=reservation_update_dto)
+
     def get_active_by_car_id(self, db: Session, car_id: int) -> List[Reservation]:
         return (
             db.query(Reservation)
             .filter(
                 Reservation.car_id == car_id,
-                or_(
-                    Reservation.status == ReservationStatus.NEW,
-                    Reservation.status == ReservationStatus.COLLECTED,
-                ),
+                Reservation.status == ReservationStatus.NEW,
             )
             .all()
         )
@@ -133,12 +162,7 @@ class ReservationService(
     def get_active(self, db: Session) -> List[Reservation]:
         return (
             db.query(Reservation)
-            .filter(
-                or_(
-                    Reservation.status == ReservationStatus.NEW,
-                    Reservation.status == ReservationStatus.COLLECTED,
-                )
-            )
+            .filter(Reservation.status == ReservationStatus.NEW,)
             .all()
         )
 
