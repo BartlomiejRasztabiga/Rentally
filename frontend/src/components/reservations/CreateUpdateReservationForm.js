@@ -243,15 +243,17 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
                   justify="flex-end"
                 >
                   <Grid item md={3}>
-                    <Button
-                      variant="outlined"
-                      component="span"
-                      color="primary"
-                      className={classes.changeStatusButton}
-                      onClick={handleCollectReservation}
-                    >
-                      COLLLECT (Convert to Rental)
-                    </Button>
+                    {reservation.status === "NEW" && (
+                      <Button
+                        variant="outlined"
+                        component="span"
+                        color="primary"
+                        className={classes.changeStatusButton}
+                        onClick={handleCollectReservation}
+                      >
+                        COLLLECT (Convert to Rental)
+                      </Button>
+                    )}
                     <Button
                       variant="outlined"
                       component="span"

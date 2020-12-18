@@ -45,7 +45,7 @@ const ActiveRentalsListView = ({ className, ...rest }) => {
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
-      <CardHeader title="Active Rentals" />
+      <CardHeader title="Rentals in progress" />
       <Divider />
       <PerfectScrollbar>
         <RentalsList rentals={sortRentalsByDate(rentals).slice(0, 5)} />

@@ -33,21 +33,21 @@ const sortReservationsByDate = (reservations) => {
   });
 };
 
-const NewestReservations = ({ className, ...rest }) => {
+const NewestReservationsListView = ({ className, ...rest }) => {
   const classes = useStyles();
   const [reservations, setReservations] = useState([]);
 
   useEffect(() => {
     getReservations().then((reservations) => {
       setReservations(
-        reservations.filter((reservation) => reservation.status !== "CANCELLED")
+        reservations.filter((reservation) => reservation.status === "NEW")
       );
     });
   }, []);
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
-      <CardHeader title="Active Reservations" />
+      <CardHeader title="New Reservations" />
       <Divider />
       <PerfectScrollbar>
         <ReservationsList
@@ -70,8 +70,8 @@ const NewestReservations = ({ className, ...rest }) => {
   );
 };
 
-NewestReservations.propTypes = {
+NewestReservationsListView.propTypes = {
   className: PropTypes.string,
 };
 
-export default NewestReservations;
+export default NewestReservationsListView;
