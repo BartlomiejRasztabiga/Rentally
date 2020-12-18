@@ -14,9 +14,10 @@ from app.exceptions.reservation import (
     ReservationCreatedInThePastException,
     StartDateNotBeforeEndDateException,
     UpdatingCancelledReservationException,
-    UpdatingCollectedReservationException,
+    UpdatingCollectedReservationException, CancelReservationWithRentalException,
 )
 from app.models.reservation import Reservation, ReservationStatus
+from app.schemas import Rental
 from app.schemas.reservation import ReservationCreateDto, ReservationUpdateDto
 from app.services.base import BaseService
 from app.utils.datetime_utils import datetime_without_seconds
@@ -85,6 +86,11 @@ class ReservationService(
         if old_status == ReservationStatus.COLLECTED:
             raise UpdatingCollectedReservationException()
 
+    @staticmethod
+    def validate_rental_relation(old_status: ReservationStatus, new_status: ReservationStatus, rental: Rental):
+        if rental and old_status != ReservationStatus.CANCELLED and new_status == ReservationStatus.CANCELLED:
+            raise CancelReservationWithRentalException()
+
     def create(self, db: Session, *, obj_in: ReservationCreateDto) -> Reservation:
         self.validate_dates(obj_in.start_date, obj_in.end_date)
 
@@ -111,6 +117,7 @@ class ReservationService(
         self.validate_status(old_reservation.status, obj_in.status)  # type: ignore
         self.validate_dates(db_obj.start_date, db_obj.end_date)
         self.validate_collisions(db, db_obj, db_obj.id)
+        self.validate_rental_relation(old_reservation.status, obj_in.status, db_obj.rental)
 
         db.add(db_obj)
         db.commit()
