@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import clsx from "clsx";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import Loading from "../Loading";
 import ReactJson from "react-json-view";
@@ -25,7 +25,7 @@ import {
   updateReservationStatus,
 } from "../../service/reservationsService";
 
-import { APP_RENTALS_URL, APP_RESERVATIONS_URL } from "../../config";
+import { APP_CARS_URL, APP_CUSTOMERS_URL, APP_RENTALS_URL, APP_RESERVATIONS_URL } from "../../config";
 import { DateTimePicker } from "@material-ui/pickers";
 import moment from "moment";
 import { getCars } from "../../service/carsService";
@@ -34,6 +34,7 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -283,6 +284,16 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
                           </MenuItem>
                         ))}
                       </Select>
+                      {reservation.car_id && (<Button
+                        color="primary"
+                        endIcon={<ArrowRightIcon />}
+                        size="small"
+                        variant="text"
+                      >
+                        <Link className={classes.link} to={`${APP_CARS_URL}/${reservation.car_id}`}>
+                          Go to
+                        </Link>
+                      </Button>)}
                     </FormControl>
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -300,6 +311,16 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
                           </MenuItem>
                         ))}
                       </Select>
+                      {reservation.customer_id && (<Button
+                        color="primary"
+                        endIcon={<ArrowRightIcon />}
+                        size="small"
+                        variant="text"
+                      >
+                        <Link className={classes.link} to={`${APP_CUSTOMERS_URL}/${reservation.customer_id}`}>
+                          Go to
+                        </Link>
+                      </Button>)}
                     </FormControl>
                   </Grid>
                   <Grid item md={6} xs={12}>

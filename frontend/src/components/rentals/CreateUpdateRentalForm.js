@@ -8,10 +8,10 @@ import {
   Grid,
   makeStyles,
   TextField,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import clsx from "clsx";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import Loading from "../Loading";
 import ReactJson from "react-json-view";
@@ -19,7 +19,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import { getReservations } from "../../service/reservationsService";
 
-import { APP_RENTALS_URL } from "../../config";
+import { APP_CARS_URL, APP_CUSTOMERS_URL, APP_RENTALS_URL, APP_RESERVATIONS_URL } from "../../config";
 import { DateTimePicker } from "@material-ui/pickers";
 import moment from "moment";
 import { getCars } from "../../service/carsService";
@@ -33,44 +33,45 @@ import {
   deleteRental,
   getRentalById,
   updateRental,
-  updateRentalStatus,
+  updateRentalStatus
 } from "../../service/rentalsService";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
   },
   link: {
     color: "inherit",
-    textDecoration: "none",
+    textDecoration: "none"
   },
   reservationDetails: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5),
+    marginBottom: theme.spacing(5)
   },
   errorBox: {
-    margin: theme.spacing(5),
+    margin: theme.spacing(5)
   },
   changeStatusButtonsBox: {
     marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(3)
   },
   changeStatusButton: {
-    margin: theme.spacing(1),
-  },
+    margin: theme.spacing(1)
+  }
 }));
 
 const COMPLETED = "COMPLETED";
 
 const CreateUpdateRentalForm = ({
-  rentalId,
-  carId,
-  reservationId,
-  customerId,
-  startDate,
-  endDate,
-}) => {
+                                  rentalId,
+                                  carId,
+                                  reservationId,
+                                  customerId,
+                                  startDate,
+                                  endDate
+                                }) => {
   const classes = useStyles();
   const navigate = useNavigate();
 
@@ -79,7 +80,7 @@ const CreateUpdateRentalForm = ({
     reservation_id: reservationId,
     customer_id: customerId,
     start_date: moment(startDate),
-    end_date: moment(endDate),
+    end_date: moment(endDate)
   });
   const [loaded, setLoaded] = useState(false);
   const [loadingError, setLoadingError] = useState(null);
@@ -138,21 +139,21 @@ const CreateUpdateRentalForm = ({
   const handleStartDateChange = (date) => {
     setRental({
       ...rental,
-      start_date: date.format(),
+      start_date: date.format()
     });
   };
 
   const handleEndDateChange = (date) => {
     setRental({
       ...rental,
-      end_date: date.format(),
+      end_date: date.format()
     });
   };
 
   const updateRentalField = (fieldName, value) => {
     setRental({
       ...rental,
-      [fieldName]: value,
+      [fieldName]: value
     });
   };
 
@@ -277,6 +278,17 @@ const CreateUpdateRentalForm = ({
                           </MenuItem>
                         ))}
                       </Select>
+                      {rental.car_id && (<Button
+                        color="primary"
+                        endIcon={<ArrowRightIcon />}
+                        size="small"
+                        variant="text"
+                      >
+                        <Link className={classes.link} to={`${APP_CARS_URL}/${rental.car_id}`}>
+                          Go to
+                        </Link>
+                      </Button>)}
+
                     </FormControl>
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -294,6 +306,16 @@ const CreateUpdateRentalForm = ({
                           </MenuItem>
                         ))}
                       </Select>
+                      {rental.customer_id && (<Button
+                        color="primary"
+                        endIcon={<ArrowRightIcon />}
+                        size="small"
+                        variant="text"
+                      >
+                        <Link className={classes.link} to={`${APP_CUSTOMERS_URL}/${rental.customer_id}`}>
+                          Go to
+                        </Link>
+                      </Button>)}
                     </FormControl>
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -312,6 +334,16 @@ const CreateUpdateRentalForm = ({
                           </MenuItem>
                         ))}
                       </Select>
+                      {rental.reservation_id && (<Button
+                        color="primary"
+                        endIcon={<ArrowRightIcon />}
+                        size="small"
+                        variant="text"
+                      >
+                        <Link className={classes.link} to={`${APP_RESERVATIONS_URL}/${rental.reservation_id}`}>
+                          Go to
+                        </Link>
+                      </Button>)}
                     </FormControl>
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -400,7 +432,7 @@ CreateUpdateRentalForm.propTypes = {
   reservationId: PropTypes.number,
   customerId: PropTypes.number,
   startDate: PropTypes.instanceOf(Date),
-  endDate: PropTypes.instanceOf(Date),
+  endDate: PropTypes.instanceOf(Date)
 };
 
 export default CreateUpdateRentalForm;
