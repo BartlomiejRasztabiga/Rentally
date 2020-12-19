@@ -23,8 +23,6 @@ class Settings(BaseSettings):
             return v
         raise ValueError(v)
 
-    PROJECT_NAME: str
-
     POSTGRES_SERVER: str
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
@@ -43,16 +41,9 @@ class Settings(BaseSettings):
             path=f"/{values.get('POSTGRES_DB') or ''}",
         )
 
-    @validator("PROJECT_NAME")
-    def get_project_name(cls, v: Optional[str], values: Dict[str, Any]) -> str:
-        if not v:
-            return values["PROJECT_NAME"]
-        return v
-
     EMAIL_TEST_USER: EmailStr = "test@example.com"  # type: ignore
     FIRST_SUPERUSER: EmailStr
     FIRST_SUPERUSER_PASSWORD: str
-    USERS_OPEN_REGISTRATION: bool = False
 
     class Config:
         case_sensitive = True
