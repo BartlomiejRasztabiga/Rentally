@@ -27,6 +27,7 @@ ecdsa = "^0.16.1"
 starlette = "0.13.6"
 h11 = "^0.11.0"
 pytz = "^2020.4"
+fastapi-utils = "^0.2.1"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.770"

@@ -136,6 +136,14 @@ class ReservationService(
         return db_obj
 
     def mark_collected(self, db: Session, reservation_id: int) -> Reservation:
+        return self._update_status(db, reservation_id, ReservationStatus.COLLECTED)
+
+    def mark_cancelled(self, db: Session, reservation_id: int) -> Reservation:
+        return self._update_status(db, reservation_id, ReservationStatus.CANCELLED)
+
+    def _update_status(
+        self, db: Session, reservation_id: int, status: ReservationStatus
+    ) -> Reservation:
         _reservation = self.get(db=db, _id=reservation_id)
         if not _reservation:
             raise ReservationNotFoundException()
@@ -145,7 +153,7 @@ class ReservationService(
             customer_id=_reservation.customer_id,
             start_date=_reservation.start_date,
             end_date=_reservation.end_date,
-            status=ReservationStatus.COLLECTED,
+            status=status,
         )
         return self.update(db=db, db_obj=_reservation, obj_in=reservation_update_dto)
 
@@ -165,6 +173,22 @@ class ReservationService(
             .filter(Reservation.status == ReservationStatus.NEW,)
             .all()
         )
+
+    def get_missed_reservations(self, db: Session) -> List[Reservation]:
+        now = datetime.now()
+        return (
+            db.query(Reservation)
+            .filter(
+                Reservation.status == ReservationStatus.NEW,
+                Reservation.start_date < now,
+            )
+            .all()
+        )
+
+    def cancel_missed_reservations(self, db: Session) -> None:
+        missed_reservations = self.get_missed_reservations(db)
+        for _reservation in missed_reservations:
+            self.mark_cancelled(db, _reservation.id)
 
 
 reservation = ReservationService(Reservation)
