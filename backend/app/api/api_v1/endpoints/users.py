@@ -7,7 +7,6 @@ from sqlalchemy.orm import Session
 
 from app import models, schemas, services
 from app.api import deps
-from app.core.config import settings
 
 router = APIRouter()
 
@@ -91,11 +90,6 @@ def create_user_open(
     """
     Create new user without the need to be logged in.
     """
-    if not settings.USERS_OPEN_REGISTRATION:
-        raise HTTPException(
-            status_code=403,
-            detail="Open user registration is forbidden on this server",
-        )
     user = services.user.get_by_email(db, email=email)
     if user:
         raise HTTPException(
