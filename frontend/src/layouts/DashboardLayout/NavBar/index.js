@@ -16,7 +16,7 @@ import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import LocalAtmIcon from "@material-ui/icons/LocalAtm";
-import MoneyOffIcon from '@material-ui/icons/MoneyOff';
+import MoneyOffIcon from "@material-ui/icons/MoneyOff";
 
 import NavItem from "./NavItem";
 import {

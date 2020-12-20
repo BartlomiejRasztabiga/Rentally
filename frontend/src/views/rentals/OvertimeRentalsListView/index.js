@@ -7,10 +7,9 @@ import Page from "../../../components/Page";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    paddingTop: theme.spacing(3)
-  }
+    paddingTop: theme.spacing(3),
+  },
 }));
-
 
 const OvertimeRentalsListView = ({ className, ...rest }) => {
   const classes = useStyles();
@@ -34,7 +33,7 @@ const OvertimeRentalsListView = ({ className, ...rest }) => {
 };
 
 OvertimeRentalsListView.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default OvertimeRentalsListView;
