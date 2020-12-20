@@ -43,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
     textDecoration: "none",
   },
+  carImage: {
+    objectFit: "cover"
+  }
 }));
 
 const CarCard = ({ className, car, ...rest }) => {
@@ -58,6 +61,7 @@ const CarCard = ({ className, car, ...rest }) => {
               alt={car.model_name}
               width="500px"
               height="250px"
+              className={classes.carImage}
             />
           </Paper>
         </Box>

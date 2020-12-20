@@ -63,6 +63,9 @@ const useStyles = makeStyles((theme) => ({
   reserveRentButton: {
     margin: theme.spacing(1),
   },
+  carImage: {
+    objectFit: "contain"
+  }
 }));
 
 const CreateUpdateCarForm = ({ carId }) => {
@@ -214,6 +217,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                       alt={car.model_name}
                       width="500px"
                       height="250px"
+                      className={classes.carImage}
                     />
                   )}
                 </Paper>
