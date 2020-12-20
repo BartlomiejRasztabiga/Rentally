@@ -1,4 +1,4 @@
-from typing import Any, List, Optional
+from typing import Any, List
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
@@ -27,9 +27,9 @@ def get_cars(
 
 @router.post("/query", response_model=List[schemas.Car])
 def get_cars_with_query(
-        cars_search_query: CarsSearchQuery,
-        db: Session = Depends(deps.get_db),
-        current_user: models.User = Depends(deps.get_current_user)
+    cars_search_query: CarsSearchQuery,
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_user),
 ) -> Any:
     """
     Retrieve cars with query.

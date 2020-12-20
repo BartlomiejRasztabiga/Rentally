@@ -59,8 +59,11 @@ class CarsSearchQuery(BaseModel):
             if value is not None:
                 if isinstance(value, RangeCriterion):
                     conditions.append(value.to_condition())
-                elif isinstance(value, AvailabilityDatesRange):
-                    # skip
+                elif isinstance(
+                    value, str
+                ):  # use ilike on str fields instead of exact match
+                    conditions.append(getattr(Car, field_name).ilike(f"%{value}%"))
+                elif isinstance(value, AvailabilityDatesRange):  # skip
                     pass
                 else:
                     conditions.append(getattr(Car, field_name) == value)
