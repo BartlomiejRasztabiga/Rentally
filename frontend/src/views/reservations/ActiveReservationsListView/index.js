@@ -38,9 +38,9 @@ const NewestReservationsListView = ({ className, ...rest }) => {
   const [reservations, setReservations] = useState([]);
 
   useEffect(() => {
-    getReservations().then((reservations) => {
+    getReservations().then((_reservations) => {
       setReservations(
-        reservations.filter((reservation) => reservation.status === "NEW")
+        _reservations.filter((reservation) => reservation.status === "NEW")
       );
     });
   }, []);

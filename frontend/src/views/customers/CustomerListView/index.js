@@ -33,8 +33,8 @@ const CustomersListView = () => {
   const [searchPhrase, setSearchPhrase] = useState("");
 
   useEffect(() => {
-    getCustomers().then((customers) => {
-      setCustomers(customers);
+    getCustomers().then((_customers) => {
+      setCustomers(_customers);
     });
   }, []);
 

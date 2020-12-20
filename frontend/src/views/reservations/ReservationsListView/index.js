@@ -21,8 +21,8 @@ const ReservationsListView = () => {
   const [reservations, setReservations] = useState([]);
 
   useEffect(() => {
-    getReservations().then((reservations) => {
-      setReservations(reservations);
+    getReservations().then((_reservations) => {
+      setReservations(_reservations);
     });
   }, []);
 

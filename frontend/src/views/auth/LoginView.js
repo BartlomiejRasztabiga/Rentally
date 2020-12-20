@@ -59,9 +59,9 @@ const LoginView = () => {
         setAccessToken(response.data.access_token);
         setLoggedIn(true);
       })
-      .catch(function (error) {
-        if (error.response) {
-          const errorMsg = error.response.data.detail;
+      .catch(function (_error) {
+        if (_error.response) {
+          const errorMsg = _error.response.data.detail;
           setError(errorMsg);
         }
         actions.setSubmitting(false);
