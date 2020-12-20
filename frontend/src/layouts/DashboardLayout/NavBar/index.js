@@ -16,6 +16,7 @@ import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import LocalAtmIcon from "@material-ui/icons/LocalAtm";
+import MoneyOffIcon from '@material-ui/icons/MoneyOff';
 
 import NavItem from "./NavItem";
 import {
@@ -45,6 +46,11 @@ const items = [
     href: APP_RENTALS_URL,
     icon: LocalAtmIcon,
     title: "Rentals",
+  },
+  {
+    href: `${APP_RENTALS_URL}/overtime`,
+    icon: MoneyOffIcon,
+    title: "Overtime Rentals",
   },
   {
     href: APP_CUSTOMERS_URL,
