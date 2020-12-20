@@ -91,8 +91,8 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
   useEffect(() => {
     if (isInEditMode) {
       getReservationById(reservationId)
-        .then((reservation) => {
-          setReservation(reservation);
+        .then((_reservation) => {
+          setReservation(_reservation);
           setLoadingError(null);
           setLoaded(true);
         })
@@ -154,10 +154,10 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
     }
   };
 
-  const handleUpdateReservation = (reservation) => {
-    updateReservation(reservation)
-      .then((reservation) => {
-        setReservation(reservation);
+  const handleUpdateReservation = (updated_reservation) => {
+    updateReservation(updated_reservation)
+      .then((_reservation) => {
+        setReservation(_reservation);
         setPostError(null);
         setSuccessSnackbarOpen(true);
       })
@@ -166,9 +166,9 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
       });
   };
 
-  const handleCreateReservation = (reservation) => {
-    createReservation(reservation)
-      .then((reservation) => {
+  const handleCreateReservation = (_reservation) => {
+    createReservation(_reservation)
+      .then(() => {
         navigate(APP_RESERVATIONS_URL, { replace: true });
       })
       .catch((error) => {
