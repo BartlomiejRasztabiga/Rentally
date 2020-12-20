@@ -6,6 +6,12 @@ const getRentals = async () => {
   return await axios.get(`${RENTALS_URL}/`).then((response) => response.data);
 };
 
+const getOvertimeRentals = async () => {
+  return await axios
+    .get(`${RENTALS_URL}/overtime`)
+    .then((response) => response.data);
+};
+
 const getRentalById = async (rentalId) => {
   return await axios
     .get(`${RENTALS_URL}/${rentalId}`)
@@ -43,4 +49,5 @@ export {
   deleteRental,
   createRental,
   updateRentalStatus,
+  getOvertimeRentals,
 };

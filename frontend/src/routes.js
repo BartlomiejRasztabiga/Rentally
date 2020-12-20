@@ -20,6 +20,7 @@ import CreateReservationView from "./views/reservations/CreateReservationView";
 import RentalsListView from "./views/rentals/RentalsListView";
 import CreateRentalView from "./views/rentals/CreateRentalView";
 import RentalDetailsView from "./views/rentals/RentalDetailsView";
+import OvertimeRentalsListView from "./views/rentals/OvertimeRentalsListView";
 
 const routes = [
   {
@@ -45,6 +46,7 @@ const routes = [
 
       { path: "rentals", element: <RentalsListView /> },
       { path: "rentals/new", element: <CreateRentalView /> },
+      { path: "rentals/overtime", element: <OvertimeRentalsListView /> },
       { path: "rentals/:rentalId", element: <RentalDetailsView /> },
 
       { path: "settings", element: <SettingsView /> },

@@ -59,8 +59,8 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
   useEffect(() => {
     if (isInEditMode) {
       getCustomerById(customerId)
-        .then((customer) => {
-          setCustomer(customer);
+        .then((_customer) => {
+          setCustomer(_customer);
           setLoadingError(null);
           setLoaded(true);
         })
@@ -96,10 +96,10 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
     }
   };
 
-  const handleUpdateCustomer = (customer) => {
-    updateCustomer(customer)
-      .then((customer) => {
-        setCustomer(customer);
+  const handleUpdateCustomer = (updated_customer) => {
+    updateCustomer(updated_customer)
+      .then((_customer) => {
+        setCustomer(_customer);
         setPostError(null);
         setSuccessSnackbarOpen(true);
       })
@@ -108,9 +108,9 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
       });
   };
 
-  const handleCreateCustomer = (customer) => {
-    createCustomer(customer)
-      .then((customer) => {
+  const handleCreateCustomer = (_customer) => {
+    createCustomer(_customer)
+      .then(() => {
         navigate(APP_CUSTOMERS_URL, { replace: true });
       })
       .catch((error) => {

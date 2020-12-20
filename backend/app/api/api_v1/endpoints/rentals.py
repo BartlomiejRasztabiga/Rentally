@@ -50,6 +50,19 @@ def get_all_rentals(
     return rentals
 
 
+@router.get("/overtime", response_model=List[schemas.Rental])
+def get_overtime_rentals(
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_user),
+) -> List[Rental]:
+    """
+    Retrieve overtime rentals.
+    """
+
+    rentals = services.rental.get_overtime(db)
+    return rentals
+
+
 @router.get("/{id}", response_model=schemas.Rental)
 def get_rental(
     id: int,

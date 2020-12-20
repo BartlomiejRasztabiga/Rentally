@@ -20,7 +20,7 @@ from app.tests.utils.car import create_random_car
 from app.tests.utils.customer import create_random_customer
 from app.tests.utils.rental import get_test_rental_create_dto
 from app.tests.utils.reservation import (
-    create_random_reservation,
+    create_reservation,
     get_test_reservation_create_dto,
 )
 
@@ -319,7 +319,7 @@ def test_create_reservation_dates_collision_on_cancelled(db: Session) -> None:
     reservation_create_dto = get_test_reservation_create_dto(
         car, customer, start_date2, end_date2
     )
-    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
+    services.reservation.create(db=db, obj_in=reservation_create_dto)
 
 
 def test_update_reservation_cancelled_will_throw(db: Session) -> None:
@@ -515,7 +515,7 @@ def test_mark_reservation_collected(db: Session) -> None:
     start_date1 = datetime(2030, 12, 1, tzinfo=pytz.UTC)
     end_date1 = datetime(2030, 12, 2, tzinfo=pytz.UTC)
 
-    reservation = create_random_reservation(db, car, customer, start_date1, end_date1)
+    reservation = create_reservation(db, car, customer, start_date1, end_date1)
 
     services.reservation.mark_collected(db=db, reservation_id=reservation.id)
 
