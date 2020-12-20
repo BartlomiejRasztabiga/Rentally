@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, List, Optional
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
@@ -7,6 +7,7 @@ from app import models, schemas, services
 from app.api import deps
 from app.exceptions.instance_not_found import CarNotFoundException
 from app.exceptions.not_enough_permissions import NotEnoughPermissionsException
+from app.schemas.cars_search_query import CarsSearchQuery
 
 router = APIRouter()
 
@@ -15,11 +16,16 @@ router = APIRouter()
 def get_cars(
     db: Session = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_current_user),
+    cars_search_query: Optional[CarsSearchQuery] = None,
 ) -> Any:
     """
     Retrieve cars.
     """
-    cars = services.car.get_all(db)
+    if cars_search_query:
+        cars = services.car.get_by_criteria(db, cars_search_query)
+    else:
+        cars = services.car.get_all(db)
+
     return cars
 
 

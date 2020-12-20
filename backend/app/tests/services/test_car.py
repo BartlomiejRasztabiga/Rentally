@@ -4,7 +4,12 @@ from sqlalchemy.orm import Session
 
 from app import services
 from app.models.car import AcType, CarType, DriveType, FuelType, GearboxType
-from app.schemas import CarUpdateDto
+from app.schemas import CarCreateDto, CarUpdateDto
+from app.schemas.cars_search_query import (
+    CarsSearchQuery,
+    NumberOfPassengersRange,
+    PricePerDayRange,
+)
 from app.tests.utils.car import get_test_car_create_dto
 
 
@@ -66,3 +71,110 @@ def test_delete_car(db: Session) -> None:
     assert deleted_car.id == car.id
     assert deleted_car.price_per_day == car_create_dto.price_per_day
     assert deleted_car.model_name == car_create_dto.model_name
+
+
+def test_search_query(db: Session) -> None:
+    car1 = services.car.create(
+        db,
+        obj_in=CarCreateDto(
+            model_name="test",
+            type=CarType.CAR,
+            fuel_type=FuelType.DIESEL,
+            gearbox_type=GearboxType.AUTO,
+            ac_type=AcType.AUTO,
+            number_of_passengers=4,
+            drive_type=DriveType.FRONT,
+            number_of_airbags=8,
+            price_per_day=Decimal("99.99"),
+        ),
+    )
+
+    truck1 = services.car.create(
+        db,
+        obj_in=CarCreateDto(
+            model_name="test",
+            type=CarType.TRUCK,
+            fuel_type=FuelType.DIESEL,
+            gearbox_type=GearboxType.AUTO,
+            ac_type=AcType.AUTO,
+            number_of_passengers=4,
+            drive_type=DriveType.FRONT,
+            number_of_airbags=8,
+            price_per_day=Decimal("99.99"),
+        ),
+    )
+
+    truck2 = services.car.create(
+        db,
+        obj_in=CarCreateDto(
+            model_name="test",
+            type=CarType.TRUCK,
+            fuel_type=FuelType.DIESEL,
+            gearbox_type=GearboxType.AUTO,
+            ac_type=AcType.AUTO,
+            number_of_passengers=12,
+            drive_type=DriveType.FRONT,
+            number_of_airbags=8,
+            price_per_day=Decimal("99.99"),
+        ),
+    )
+
+    truck3 = services.car.create(
+        db,
+        obj_in=CarCreateDto(
+            model_name="test",
+            type=CarType.TRUCK,
+            fuel_type=FuelType.DIESEL,
+            gearbox_type=GearboxType.AUTO,
+            ac_type=AcType.AUTO,
+            number_of_passengers=2,
+            drive_type=DriveType.FRONT,
+            number_of_airbags=8,
+            price_per_day=Decimal("99.99"),
+        ),
+    )
+
+    truck4 = services.car.create(
+        db,
+        obj_in=CarCreateDto(
+            model_name="test",
+            type=CarType.TRUCK,
+            fuel_type=FuelType.DIESEL,
+            gearbox_type=GearboxType.AUTO,
+            ac_type=AcType.AUTO,
+            number_of_passengers=2,
+            drive_type=DriveType.FRONT,
+            number_of_airbags=8,
+            price_per_day=Decimal("99.99"),
+        ),
+    )
+
+    truck5 = services.car.create(
+        db,
+        obj_in=CarCreateDto(
+            model_name="test",
+            type=CarType.TRUCK,
+            fuel_type=FuelType.DIESEL,
+            gearbox_type=GearboxType.AUTO,
+            ac_type=AcType.AUTO,
+            number_of_passengers=2,
+            drive_type=DriveType.FRONT,
+            number_of_airbags=8,
+            price_per_day=Decimal("150"),
+        ),
+    )
+
+    query = CarsSearchQuery()
+    query.type = CarType.TRUCK
+    query.number_of_passengers = NumberOfPassengersRange(start=1, end=5)
+    query.price_per_day = PricePerDayRange(start=50.0, end=100.0)
+
+    found_cars = services.car.get_by_criteria(db, query)
+    found_ids = [car.id for car in found_cars]
+
+    assert truck1.id in found_ids
+    assert truck2.id not in found_ids
+    assert truck3.id in found_ids
+    assert truck4.id in found_ids
+    assert truck5.id not in found_ids
+    assert car1.id not in found_ids

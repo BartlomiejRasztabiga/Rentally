@@ -5,9 +5,8 @@ from sqlalchemy.orm import Session
 
 from app import services
 from app.core.config import settings
-from app.models.user import User
 from app.schemas.user import UserCreateDto, UserUpdateDto
-from app.tests.utils.utils import random_email, random_lower_string
+from app.tests.utils.utils import random_lower_string
 
 
 def user_authentication_headers(
@@ -20,14 +19,6 @@ def user_authentication_headers(
     auth_token = response["access_token"]
     headers = {"Authorization": f"Bearer {auth_token}"}
     return headers
-
-
-def create_random_user(db: Session) -> User:
-    email = random_email()
-    password = random_lower_string()
-    user_in = UserCreateDto(username=email, email=email, password=password)
-    user = services.user.create(db=db, obj_in=user_in)
-    return user
 
 
 def authentication_token_from_email(
