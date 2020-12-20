@@ -146,5 +146,13 @@ class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
     def get_active(self, db: Session) -> List[Rental]:
         return db.query(Rental).filter(Rental.status == RentalStatus.IN_PROGRESS,).all()
 
+    def get_overtime(self, db: Session) -> List[Rental]:
+        now = datetime.now()
+        return (
+            db.query(Rental)
+            .filter(Rental.status == RentalStatus.IN_PROGRESS, Rental.end_date < now,)
+            .all()
+        )
+
 
 rental = RentalService(Rental)
