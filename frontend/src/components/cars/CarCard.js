@@ -44,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
   },
   carImage: {
-    objectFit: "cover"
-  }
+    objectFit: "cover",
+  },
 }));
 
 const CarCard = ({ className, car, ...rest }) => {

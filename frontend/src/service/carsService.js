@@ -11,19 +11,20 @@ const mapAvailabilityDates = (startDate, endDate) => {
 };
 
 const mapSearchQuery = (search_query) => {
-  search_query = cleanupFalsyFields(search_query);
+  let query_data = Object.assign({}, search_query);
+  query_data = cleanupFalsyFields(query_data);
   return {
-    model_name: search_query.model_name,
-    type: search_query.type,
-    fuel_type: search_query.fuel_type,
-    gearbox_type: search_query.gearbox_type,
-    ac_type: search_query.ac_type,
-    drive_type: search_query.drive_type,
-    number_of_passengers: mapRangeCriterion(search_query.number_of_passengers),
-    price_per_day: mapRangeCriterion(search_query.price_per_day),
+    model_name: query_data.model_name,
+    type: query_data.type,
+    fuel_type: query_data.fuel_type,
+    gearbox_type: query_data.gearbox_type,
+    ac_type: query_data.ac_type,
+    drive_type: query_data.drive_type,
+    number_of_passengers: mapRangeCriterion(query_data.number_of_passengers),
+    price_per_day: mapRangeCriterion(query_data.price_per_day),
     availability_dates: mapAvailabilityDates(
-      search_query.start_date,
-      search_query.end_date
+      query_data.start_date,
+      query_data.end_date
     ),
   };
 };

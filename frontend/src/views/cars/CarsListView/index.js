@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 import Page from "src/components/Page";
 import CarCard from "../../../components/cars/CarCard";
-import { getCars } from "../../../service/carsService";
+import { getCars, getCarsWithSearchQuery } from "../../../service/carsService";
 import { useNavigate } from "react-router";
 import { APP_CARS_URL } from "../../../config";
 import Slider from "@material-ui/core/Slider";
@@ -30,7 +30,7 @@ const searchQueryInitialState = {
   ac_type: "",
   drive_type: "",
   number_of_passengers: [0, 100],
-  price_per_day: [0.0, 500.0],
+  price_per_day: [1.0, 500.0],
   start_date: null,
   end_date: null,
 };
@@ -92,9 +92,16 @@ const CarsList = () => {
 
   const handleResetFilter = () => {
     setSearchQuery(searchQueryInitialState);
+    getCars().then((_cars) => {
+      setCars(_cars);
+    });
   };
 
-  const handleFilter = () => {};
+  const handleFilter = () => {
+    getCarsWithSearchQuery(searchQuery).then((_cars) => {
+      setCars(_cars);
+    });
+  };
 
   return (
     <Page className={classes.root}>
@@ -221,7 +228,7 @@ const CarsList = () => {
                       onChange={handlePricePerDayRangeChange}
                       valueLabelDisplay="auto"
                       aria-labelledby="range-slider"
-                      min={0.0}
+                      min={1.0}
                       max={500.0}
                       step={10.0}
                       label="Price per day"

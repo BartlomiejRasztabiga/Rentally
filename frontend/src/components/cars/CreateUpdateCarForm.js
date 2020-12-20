@@ -64,8 +64,8 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
   carImage: {
-    objectFit: "contain"
-  }
+    objectFit: "contain",
+  },
 }));
 
 const CreateUpdateCarForm = ({ carId }) => {
