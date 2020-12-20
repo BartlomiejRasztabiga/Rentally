@@ -16,15 +16,25 @@ router = APIRouter()
 def get_cars(
     db: Session = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_current_user),
-    cars_search_query: Optional[CarsSearchQuery] = None,
 ) -> Any:
     """
     Retrieve cars.
     """
-    if cars_search_query:
-        cars = services.car.get_by_criteria(db, cars_search_query)
-    else:
-        cars = services.car.get_all(db)
+    cars = services.car.get_all(db)
+
+    return cars
+
+
+@router.post("/query", response_model=List[schemas.Car])
+def get_cars_with_query(
+        cars_search_query: CarsSearchQuery,
+        db: Session = Depends(deps.get_db),
+        current_user: models.User = Depends(deps.get_current_user)
+) -> Any:
+    """
+    Retrieve cars with query.
+    """
+    cars = services.car.get_by_criteria(db, cars_search_query)
 
     return cars
 

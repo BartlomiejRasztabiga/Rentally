@@ -4,12 +4,14 @@ import {
   Button,
   Card,
   CardContent,
-  Container, FormControl,
+  Container,
+  FormControl,
   Grid,
   InputLabel,
-  makeStyles, MenuItem,
+  makeStyles,
+  MenuItem,
   Select,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import Page from "src/components/Page";
 import CarCard from "../../../components/cars/CarCard";
@@ -18,40 +20,42 @@ import { useNavigate } from "react-router";
 import { APP_CARS_URL } from "../../../config";
 import Slider from "@material-ui/core/Slider";
 import Typography from "@material-ui/core/Typography";
-import moment from "moment";
+import { DateTimePicker } from "@material-ui/pickers";
+
+const searchQueryInitialState = {
+  model_name: "",
+  type: "",
+  fuel_type: "",
+  gearbox_type: "",
+  ac_type: "",
+  drive_type: "",
+  number_of_passengers: [0, 100],
+  price_per_day: [0.0, 500.0],
+  start_date: null,
+  end_date: null,
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     minHeight: "100%",
     paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
+    paddingTop: theme.spacing(3),
   },
   carCard: {
-    height: "100%"
-  }
+    height: "100%",
+  },
 }));
 
 const CarsList = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const [cars, setCars] = useState([]);
-  const [searchQuery, setSearchQuery] = useState({
-    model_name: "",
-    type: "",
-    fuel_type: "",
-    gearbox_type: "",
-    ac_type: "",
-    drive_type: "",
-    number_of_passengers: [0, 100],
-    price_per_day: [0.0, 500.0],
-    availability_dates: [moment(), moment().add(1, "days")]
-  })
-
+  const [searchQuery, setSearchQuery] = useState(searchQueryInitialState);
 
   useEffect(() => {
-    getCars().then((cars) => {
-      setCars(cars);
+    getCars().then((_cars) => {
+      setCars(_cars);
     });
   }, []);
 
@@ -59,17 +63,25 @@ const CarsList = () => {
     navigate(`${APP_CARS_URL}/new`);
   };
 
-  const handleChangeSearchQuery = event => {
+  const handleChangeSearchQuery = (event) => {
     updateSearchQueryField(event.target.name, event.target.value);
-  }
+  };
 
   const handleNumberOfPassengersRangeChange = (event, newValue) => {
-    updateSearchQueryField("number_of_passengers", newValue)
-  }
+    updateSearchQueryField("number_of_passengers", newValue);
+  };
 
   const handlePricePerDayRangeChange = (event, newValue) => {
-    updateSearchQueryField("price_per_day", newValue)
-  }
+    updateSearchQueryField("price_per_day", newValue);
+  };
+
+  const handleStartDateChange = (date) => {
+    updateSearchQueryField("start_date", date.format());
+  };
+
+  const handleEndDateChange = (date) => {
+    updateSearchQueryField("end_date", date.format());
+  };
 
   const updateSearchQueryField = (fieldName, value) => {
     setSearchQuery({
@@ -77,6 +89,12 @@ const CarsList = () => {
       [fieldName]: value,
     });
   };
+
+  const handleResetFilter = () => {
+    setSearchQuery(searchQueryInitialState);
+  };
+
+  const handleFilter = () => {};
 
   return (
     <Page className={classes.root}>
@@ -211,6 +229,51 @@ const CarsList = () => {
                       variant="outlined"
                     />
                   </Grid>
+                  <Grid item md={3} xs={6}>
+                    <DateTimePicker
+                      fullWidth
+                      showTodayButton
+                      ampm={false}
+                      label="Start date"
+                      name="start_date"
+                      inputVariant="outlined"
+                      disablePast
+                      onChange={handleStartDateChange}
+                      value={searchQuery.start_date}
+                    />
+                  </Grid>
+                  <Grid item md={3} xs={6}>
+                    <DateTimePicker
+                      fullWidth
+                      showTodayButton
+                      ampm={false}
+                      label="End date"
+                      name="end_date"
+                      inputVariant="outlined"
+                      disablePast
+                      onChange={handleEndDateChange}
+                      value={searchQuery.end_date}
+                    />
+                  </Grid>
+                  <Grid item md={3} xs={6}>
+                    <Button
+                      variant="contained"
+                      // component="span"
+                      onClick={handleResetFilter}
+                    >
+                      Reset filter
+                    </Button>
+                  </Grid>
+                  <Grid item md={3} xs={6}>
+                    <Button
+                      variant="contained"
+                      // component="span"
+                      color="primary"
+                      onClick={handleFilter}
+                    >
+                      Filter
+                    </Button>
+                  </Grid>
                 </Grid>
               </form>
             </CardContent>
@@ -218,12 +281,11 @@ const CarsList = () => {
         </Box>
         <Box mt={3}>
           <Grid container spacing={3}>
-            {cars
-              .map((car) => (
-                <Grid item key={car.id} lg={4} md={4} xs={12}>
-                  <CarCard className={classes.carCard} car={car} />
-                </Grid>
-              ))}
+            {cars.map((car) => (
+              <Grid item key={car.id} lg={4} md={4} xs={12}>
+                <CarCard className={classes.carCard} car={car} />
+              </Grid>
+            ))}
           </Grid>
         </Box>
       </Container>
