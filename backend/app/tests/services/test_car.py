@@ -1,16 +1,22 @@
+from datetime import datetime
 from decimal import Decimal
 
+import pytz
 from sqlalchemy.orm import Session
 
 from app import services
 from app.models.car import AcType, CarType, DriveType, FuelType, GearboxType
 from app.schemas import CarCreateDto, CarUpdateDto
 from app.schemas.cars_search_query import (
+    AvailabilityDatesRange,
     CarsSearchQuery,
     NumberOfPassengersRange,
     PricePerDayRange,
 )
-from app.tests.utils.car import get_test_car_create_dto
+from app.tests.utils.car import create_random_car, get_test_car_create_dto
+from app.tests.utils.customer import create_random_customer
+from app.tests.utils.rental import create_rental
+from app.tests.utils.reservation import create_reservation
 
 
 def test_create_car(db: Session) -> None:
@@ -165,6 +171,7 @@ def test_search_query(db: Session) -> None:
     )
 
     query = CarsSearchQuery()
+    query.model_name = "TES"
     query.type = CarType.TRUCK
     query.number_of_passengers = NumberOfPassengersRange(start=1, end=5)
     query.price_per_day = PricePerDayRange(start=50.0, end=100.0)
@@ -178,3 +185,23 @@ def test_search_query(db: Session) -> None:
     assert truck4.id in found_ids
     assert truck5.id not in found_ids
     assert car1.id not in found_ids
+
+
+def test_get_by_criteria_availability(db: Session) -> None:
+    car = create_random_car(db)
+    customer = create_random_customer(db)
+
+    start_date1 = datetime(2030, 12, 1, tzinfo=pytz.UTC)
+    end_date1 = datetime(2030, 12, 2, tzinfo=pytz.UTC)
+
+    start_date2 = datetime(2030, 12, 3, tzinfo=pytz.UTC)
+    end_date2 = datetime(2030, 12, 4, tzinfo=pytz.UTC)
+
+    create_reservation(db, car, customer, start_date1, end_date1)
+    create_rental(db, car, customer, start_date2, end_date2)
+
+    query = CarsSearchQuery()
+    query.availability_dates = AvailabilityDatesRange(start=start_date1, end=end_date2)
+
+    available_cars = services.car.get_by_criteria(db, query)
+    assert car.id not in [car.id for car in available_cars]
