@@ -34,15 +34,15 @@ class UserService(BaseService[User, UserCreateDto, UserUpdateDto]):
         return super().update(db, db_obj=db_obj, obj_in=obj_in)
 
     def authenticate(self, db: Session, *, email: str, password: str) -> Optional[User]:
-        user = self.get_by_email(db, email=email)
-        if not user:
+        _user = self.get_by_email(db, email=email)
+        if not _user:
             return None
-        if not verify_password(password, user.hashed_password):
+        if not verify_password(password, _user.hashed_password):
             return None
-        return user
+        return _user
 
-    def is_admin(self, user: User) -> bool:
-        return user.is_admin
+    def is_admin(self, _user: User) -> bool:
+        return _user.is_admin
 
 
 user = UserService(User)
