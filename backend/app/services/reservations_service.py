@@ -13,7 +13,6 @@ from app.exceptions.reservation import (
     CancelReservationWithRentalException,
     ReservationCollisionException,
     ReservationCreatedInThePastException,
-    StartDateNotBeforeEndDateException,
     UpdatingCancelledReservationException,
     UpdatingCollectedReservationException,
 )
@@ -23,17 +22,12 @@ from app.schemas.reservation import ReservationCreateDto, ReservationUpdateDto
 from app.services.base import BaseService
 from app.utils.datetime_utils import datetime_without_seconds
 from app.utils.interval import Interval
+from app.validators.general import validate_start_date_before_end_date
 
 
 class ReservationService(
     BaseService[Reservation, ReservationCreateDto, ReservationUpdateDto]
 ):
-    @staticmethod
-    def validate_dates(start_date: datetime, end_date: datetime) -> None:
-        delta = end_date - start_date
-        if delta.total_seconds() <= 0:
-            raise StartDateNotBeforeEndDateException()
-
     @staticmethod
     def validate_dates_on_create(start_date: datetime, end_date: datetime) -> None:
         now = datetime.now(tz=pytz.UTC)
@@ -99,7 +93,7 @@ class ReservationService(
             raise CancelReservationWithRentalException()
 
     def create(self, db: Session, *, obj_in: ReservationCreateDto) -> Reservation:
-        self.validate_dates(obj_in.start_date, obj_in.end_date)
+        validate_start_date_before_end_date(obj_in.start_date, obj_in.end_date)
 
         self.validate_collisions(db, obj_in)
 
@@ -122,7 +116,7 @@ class ReservationService(
                 setattr(db_obj, field, update_data[field])
 
         self.validate_status(old_reservation.status, obj_in.status)  # type: ignore
-        self.validate_dates(db_obj.start_date, db_obj.end_date)
+        validate_start_date_before_end_date(db_obj.start_date, db_obj.end_date)
         self.validate_collisions(db, db_obj, db_obj.id)
         self.validate_rental_relation(
             old_reservation.status,  # type: ignore

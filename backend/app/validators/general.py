@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -8,6 +9,7 @@ from app.exceptions.instance_not_found import (
     CustomerNotFoundException,
     ReservationNotFoundException,
 )
+from app.exceptions.reservation import StartDateNotBeforeEndDateException
 
 
 def validate_car_with_id_exists(db: Session, car_id: int) -> None:
@@ -29,3 +31,11 @@ def validate_reservation_with_id_exists(
         reservation = services.reservation.get(db=db, _id=reservation_id)
         if not reservation:
             raise ReservationNotFoundException()
+
+
+def validate_start_date_before_end_date(
+    start_date: datetime, end_date: datetime
+) -> None:
+    delta = end_date - start_date
+    if delta.total_seconds() <= 0:
+        raise StartDateNotBeforeEndDateException()
