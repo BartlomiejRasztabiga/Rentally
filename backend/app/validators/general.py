@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
+import pytz
 from sqlalchemy.orm import Session
 
 from app import services
@@ -10,6 +11,7 @@ from app.exceptions.instance_not_found import (
     ReservationNotFoundException,
 )
 from app.exceptions.reservation import StartDateNotBeforeEndDateException
+from app.utils.datetime_utils import datetime_without_seconds
 
 
 def validate_car_with_id_exists(db: Session, car_id: int) -> None:
@@ -39,3 +41,10 @@ def validate_start_date_before_end_date(
     delta = end_date - start_date
     if delta.total_seconds() <= 0:
         raise StartDateNotBeforeEndDateException()
+
+
+def is_date_in_the_past(date: datetime) -> bool:
+    now = datetime.now(tz=pytz.UTC)
+    now_without_seconds = datetime_without_seconds(now)
+    start_date_without_seconds = datetime_without_seconds(date)
+    return start_date_without_seconds < now_without_seconds
