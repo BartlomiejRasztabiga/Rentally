@@ -5,27 +5,12 @@ from sqlalchemy.orm import Session
 
 from app import models, schemas, services
 from app.api import deps
-from app.exceptions.instance_not_found import (
-    CarNotFoundException,
-    CustomerNotFoundException,
-    ReservationNotFoundException,
-)
+from app.exceptions.instance_not_found import ReservationNotFoundException
 from app.exceptions.not_enough_permissions import NotEnoughPermissionsException
 from app.models.reservation import Reservation, ReservationStatus
+from app.validators import validate_car_with_id_exists, validate_customer_with_id_exists
 
 router = APIRouter()
-
-
-def _validate_car_id(db: Session, car_id: int) -> None:
-    car = services.car.get(db=db, _id=car_id)
-    if not car:
-        raise CarNotFoundException()
-
-
-def _validate_customer_id(db: Session, customer_id: int) -> None:
-    customer = services.customer.get(db=db, _id=customer_id)
-    if not customer:
-        raise CustomerNotFoundException()
 
 
 @router.get("/", response_model=List[schemas.Reservation])
@@ -89,8 +74,10 @@ def create_reservation(
     Create new reservation.
     """
 
-    _validate_car_id(db=db, car_id=reservation_create_dto.car_id)
-    _validate_customer_id(db=db, customer_id=reservation_create_dto.customer_id)
+    validate_car_with_id_exists(db=db, car_id=reservation_create_dto.car_id)
+    validate_customer_with_id_exists(
+        db=db, customer_id=reservation_create_dto.customer_id
+    )
 
     reservation_create_dto.status = ReservationStatus.NEW
     reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
@@ -113,8 +100,10 @@ def update_reservation(
     if not reservation:
         raise ReservationNotFoundException()
 
-    _validate_car_id(db=db, car_id=reservation_update_dto.car_id)
-    _validate_customer_id(db=db, customer_id=reservation_update_dto.customer_id)
+    validate_car_with_id_exists(db=db, car_id=reservation_update_dto.car_id)
+    validate_customer_with_id_exists(
+        db=db, customer_id=reservation_update_dto.customer_id
+    )
 
     reservation = services.reservation.update(
         db=db, db_obj=reservation, obj_in=reservation_update_dto

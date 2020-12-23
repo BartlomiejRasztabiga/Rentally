@@ -50,8 +50,6 @@ def delete_customer(
     """
     customer = services.customer.get(db=db, _id=id)
 
-    # TODO check if has relations to rentals/reservations
-
     if not customer:
         raise CustomerNotFoundException()
 
