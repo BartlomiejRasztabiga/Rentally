@@ -9,7 +9,11 @@ from app.exceptions.instance_not_found import RentalNotFoundException
 from app.exceptions.not_enough_permissions import NotEnoughPermissionsException
 from app.models import Rental
 from app.models.rental import RentalStatus
-from app.validators import validate_car_with_id_exists, validate_customer_with_id_exists, validate_reservation_with_id_exists
+from app.validators import (
+    validate_car_with_id_exists,
+    validate_customer_with_id_exists,
+    validate_reservation_with_id_exists,
+)
 
 router = APIRouter()
 
