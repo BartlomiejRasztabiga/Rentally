@@ -13,6 +13,6 @@ def get_test_customer_create_dto() -> CustomerCreateDto:
     return customer_create_dto
 
 
-def create_random_customer(db: Session) -> models.Customer:
+def create_test_customer(db: Session) -> models.Customer:
     customer_create_dto = get_test_customer_create_dto()
     return services.customer.create(db=db, obj_in=customer_create_dto)

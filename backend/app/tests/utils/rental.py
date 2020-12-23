@@ -27,7 +27,7 @@ def get_test_rental_create_dto(
     return rental_create_dto
 
 
-def create_rental(
+def create_test_rental(
     db: Session, car: Car, customer: Customer, start_date: datetime, end_date: datetime
 ) -> Rental:
     rental_create_dto = get_test_rental_create_dto(car, customer, start_date, end_date)

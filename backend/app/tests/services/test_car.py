@@ -13,10 +13,10 @@ from app.schemas.cars_search_query import (
     NumberOfPassengersRange,
     PricePerDayRange,
 )
-from app.tests.utils.car import create_random_car, get_test_car_create_dto
-from app.tests.utils.customer import create_random_customer
-from app.tests.utils.rental import create_rental
-from app.tests.utils.reservation import create_reservation
+from app.tests.utils.car import create_test_car, get_test_car_create_dto
+from app.tests.utils.customer import create_test_customer
+from app.tests.utils.rental import create_test_rental
+from app.tests.utils.reservation import create_test_reservation
 
 
 def test_create_car(db: Session) -> None:
@@ -188,8 +188,8 @@ def test_search_query(db: Session) -> None:
 
 
 def test_get_by_criteria_availability(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date1 = datetime(2030, 12, 1, tzinfo=pytz.UTC)
     end_date1 = datetime(2030, 12, 2, tzinfo=pytz.UTC)
@@ -197,8 +197,8 @@ def test_get_by_criteria_availability(db: Session) -> None:
     start_date2 = datetime(2030, 12, 3, tzinfo=pytz.UTC)
     end_date2 = datetime(2030, 12, 4, tzinfo=pytz.UTC)
 
-    create_reservation(db, car, customer, start_date1, end_date1)
-    create_rental(db, car, customer, start_date2, end_date2)
+    create_test_reservation(db, car, customer, start_date1, end_date1)
+    create_test_rental(db, car, customer, start_date2, end_date2)
 
     query = CarsSearchQuery()
     query.availability_dates = AvailabilityDatesRange(start=start_date1, end=end_date2)

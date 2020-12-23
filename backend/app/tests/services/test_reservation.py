@@ -16,11 +16,11 @@ from app.exceptions.reservation import (
 )
 from app.models.reservation import ReservationStatus
 from app.schemas import ReservationUpdateDto
-from app.tests.utils.car import create_random_car
-from app.tests.utils.customer import create_random_customer
+from app.tests.utils.car import create_test_car
+from app.tests.utils.customer import create_test_customer
 from app.tests.utils.rental import get_test_rental_create_dto
 from app.tests.utils.reservation import (
-    create_reservation,
+    create_test_reservation,
     get_test_reservation_create_dto,
 )
 
@@ -28,8 +28,8 @@ from app.tests.utils.reservation import (
 
 
 def test_create_reservation(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date = datetime(2030, 12, 1, 9, 0, tzinfo=pytz.UTC)
     end_date = datetime(2030, 12, 2, 12, 0, tzinfo=pytz.UTC)
@@ -48,8 +48,8 @@ def test_create_reservation(db: Session) -> None:
 
 
 def test_create_reservation_wrong_dates(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date = datetime(2030, 12, 2, tzinfo=pytz.UTC)
     end_date = datetime(2030, 12, 1, tzinfo=pytz.UTC)
@@ -62,8 +62,8 @@ def test_create_reservation_wrong_dates(db: Session) -> None:
 
 
 def test_create_reservation_wrong_dates2(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date = datetime(2030, 12, 1, 9, 0, tzinfo=pytz.UTC)
     end_date = datetime(2030, 12, 1, 9, 0, tzinfo=pytz.UTC)
@@ -76,8 +76,8 @@ def test_create_reservation_wrong_dates2(db: Session) -> None:
 
 
 def test_create_reservation_same_car_same_dates_will_throw(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date1 = datetime(2030, 12, 1, 9, tzinfo=pytz.UTC)
     end_date1 = datetime(2030, 12, 2, 12, tzinfo=pytz.UTC)
@@ -100,8 +100,8 @@ def test_create_reservation_same_car_same_dates_will_throw(db: Session) -> None:
 def test_create_reservation_same_car_one_day_intersection_will_throw(
     db: Session,
 ) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date1 = datetime(2030, 12, 1, 9, tzinfo=pytz.UTC)
     end_date1 = datetime(2030, 12, 5, 12, tzinfo=pytz.UTC)
@@ -122,8 +122,8 @@ def test_create_reservation_same_car_one_day_intersection_will_throw(
 
 
 def test_create_reservation_in_the_past_will_throw(db: Session,) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date1 = datetime(2020, 12, 1, 9, tzinfo=pytz.UTC)
     end_date1 = datetime(2020, 12, 5, 12, tzinfo=pytz.UTC)
@@ -139,8 +139,8 @@ def test_create_reservation_in_the_past_will_throw(db: Session,) -> None:
 def test_create_reservation_same_car_one_day_intersection_will_throw2(
     db: Session,
 ) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date1 = datetime(2030, 12, 5, 9, tzinfo=pytz.UTC)
     end_date1 = datetime(2030, 12, 9, 12, tzinfo=pytz.UTC)
@@ -161,8 +161,8 @@ def test_create_reservation_same_car_one_day_intersection_will_throw2(
 
 
 def test_create_reservation_same_car_different_intervals(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date1 = datetime(2030, 12, 5, 9, tzinfo=pytz.UTC)
     end_date1 = datetime(2030, 12, 9, 12, tzinfo=pytz.UTC)
@@ -182,8 +182,8 @@ def test_create_reservation_same_car_different_intervals(db: Session) -> None:
 
 
 def test_create_reservation_with_custom_status_will_default_to_new(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date = datetime(2030, 12, 1, tzinfo=pytz.UTC)
     end_date = datetime(2030, 12, 2, tzinfo=pytz.UTC)
@@ -202,8 +202,8 @@ def test_create_reservation_with_custom_status_will_default_to_new(db: Session) 
 
 
 def test_get_reservation(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date = datetime(2030, 12, 1, tzinfo=pytz.UTC)
     end_date = datetime(2030, 12, 2, tzinfo=pytz.UTC)
@@ -223,8 +223,8 @@ def test_get_reservation(db: Session) -> None:
 
 
 def test_update_reservation(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date = datetime(2030, 12, 1, tzinfo=pytz.UTC)
     end_date = datetime(2030, 12, 2, tzinfo=pytz.UTC)
@@ -254,8 +254,8 @@ def test_update_reservation(db: Session) -> None:
 
 
 def test_update_reservation_dates_collision_will_throw(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date1 = datetime(2030, 12, 3, 9, tzinfo=pytz.UTC)
     end_date1 = datetime(2030, 12, 4, 12, tzinfo=pytz.UTC)
@@ -289,8 +289,8 @@ def test_update_reservation_dates_collision_will_throw(db: Session) -> None:
 
 
 def test_create_reservation_dates_collision_on_cancelled(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date1 = datetime(2030, 12, 3, 9, tzinfo=pytz.UTC)
     end_date1 = datetime(2030, 12, 4, 12, tzinfo=pytz.UTC)
@@ -323,8 +323,8 @@ def test_create_reservation_dates_collision_on_cancelled(db: Session) -> None:
 
 
 def test_update_reservation_cancelled_will_throw(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date1 = datetime(2030, 12, 3, 9, tzinfo=pytz.UTC)
     end_date1 = datetime(2030, 12, 4, 12, tzinfo=pytz.UTC)
@@ -362,8 +362,8 @@ def test_update_reservation_cancelled_will_throw(db: Session) -> None:
 
 
 def test_update_reservation_collected_to_new_will_throw(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date1 = datetime(2030, 12, 3, 9, tzinfo=pytz.UTC)
     end_date1 = datetime(2030, 12, 4, 12, tzinfo=pytz.UTC)
@@ -401,9 +401,9 @@ def test_update_reservation_collected_to_new_will_throw(db: Session) -> None:
 
 
 def test_get_active_by_car_id(db: Session) -> None:
-    car1 = create_random_car(db)
-    car2 = create_random_car(db)
-    customer = create_random_customer(db)
+    car1 = create_test_car(db)
+    car2 = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date1 = datetime(2030, 12, 1, tzinfo=pytz.UTC)
     end_date1 = datetime(2030, 12, 2, tzinfo=pytz.UTC)
@@ -426,8 +426,8 @@ def test_get_active_by_car_id(db: Session) -> None:
 
 
 def test_get_active_by_car_id_only_active(db: Session) -> None:
-    car1 = create_random_car(db)
-    customer = create_random_customer(db)
+    car1 = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date1 = datetime(2030, 12, 1, tzinfo=pytz.UTC)
     end_date1 = datetime(2030, 12, 2, tzinfo=pytz.UTC)
@@ -454,10 +454,10 @@ def test_get_active_by_car_id_only_active(db: Session) -> None:
 
 
 def test_get_active(db: Session) -> None:
-    car = create_random_car(db)
-    car2 = create_random_car(db)
-    customer = create_random_customer(db)
-    customer2 = create_random_customer(db)
+    car = create_test_car(db)
+    car2 = create_test_car(db)
+    customer = create_test_customer(db)
+    customer2 = create_test_customer(db)
 
     start_date1 = datetime(2030, 12, 1, tzinfo=pytz.UTC)
     end_date1 = datetime(2030, 12, 2, tzinfo=pytz.UTC)
@@ -485,8 +485,8 @@ def test_get_active(db: Session) -> None:
 
 
 def test_create_reservation_collision_with_rental_will_throw(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date1 = datetime(2030, 12, 1, tzinfo=pytz.UTC)
     end_date1 = datetime(2030, 12, 2, tzinfo=pytz.UTC)
@@ -509,13 +509,13 @@ def test_create_reservation_collision_with_rental_will_throw(db: Session) -> Non
 
 
 def test_mark_reservation_collected(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date1 = datetime(2030, 12, 1, tzinfo=pytz.UTC)
     end_date1 = datetime(2030, 12, 2, tzinfo=pytz.UTC)
 
-    reservation = create_reservation(db, car, customer, start_date1, end_date1)
+    reservation = create_test_reservation(db, car, customer, start_date1, end_date1)
 
     services.reservation.mark_collected(db=db, reservation_id=reservation.id)
 

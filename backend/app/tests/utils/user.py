@@ -9,7 +9,7 @@ from app.schemas.user import UserCreateDto, UserUpdateDto
 from app.tests.utils.utils import random_lower_string
 
 
-def user_authentication_headers(
+def _user_authentication_headers(
     *, client: TestClient, email: str, password: str
 ) -> Dict[str, str]:
     data = {"username": email, "password": password}
@@ -38,4 +38,4 @@ def authentication_token_from_email(
         user_in_update = UserUpdateDto(password=password)
         services.user.update(db, db_obj=user, obj_in=user_in_update)
 
-    return user_authentication_headers(client=client, email=email, password=password)
+    return _user_authentication_headers(client=client, email=email, password=password)

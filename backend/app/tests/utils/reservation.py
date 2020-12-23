@@ -27,7 +27,7 @@ def get_test_reservation_create_dto(
     return reservation_create_dto
 
 
-def create_reservation(
+def create_test_reservation(
     db: Session, car: Car, customer: Customer, start_date: datetime, end_date: datetime
 ) -> Reservation:
     reservation_create_dto = get_test_reservation_create_dto(
