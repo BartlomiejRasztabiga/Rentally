@@ -1,7 +1,5 @@
-from datetime import datetime
 from decimal import Decimal
 
-import pytz
 from sqlalchemy.orm import Session
 
 from app import services
@@ -17,6 +15,7 @@ from app.tests.utils.car import create_test_car, get_test_car_create_dto
 from app.tests.utils.customer import create_test_customer
 from app.tests.utils.rental import create_test_rental
 from app.tests.utils.reservation import create_test_reservation
+from app.tests.utils.utils import get_datetime
 
 
 def test_create_car(db: Session) -> None:
@@ -30,21 +29,19 @@ def test_create_car(db: Session) -> None:
 
 
 def test_get_car(db: Session) -> None:
-    car_create_dto = get_test_car_create_dto()
-    car = services.car.create(db=db, obj_in=car_create_dto)
+    car = create_test_car(db)
 
     stored_car = services.car.get(db=db, _id=car.id)
 
     assert stored_car
-    assert stored_car.type == car_create_dto.type
-    assert stored_car.price_per_day == car_create_dto.price_per_day
-    assert stored_car.model_name == car_create_dto.model_name
+    assert stored_car.type == car.type
+    assert stored_car.price_per_day == car.price_per_day
+    assert stored_car.model_name == car.model_name
     assert stored_car.id is not None
 
 
 def test_update_car(db: Session) -> None:
-    car_create_dto = get_test_car_create_dto()
-    car = services.car.create(db=db, obj_in=car_create_dto)
+    car = create_test_car(db)
 
     car_update_dto = CarUpdateDto(
         model_name="test",
@@ -67,16 +64,15 @@ def test_update_car(db: Session) -> None:
 
 
 def test_delete_car(db: Session) -> None:
-    car_create_dto = get_test_car_create_dto()
-    car = services.car.create(db=db, obj_in=car_create_dto)
+    car = create_test_car(db)
 
     deleted_car = services.car.remove(db=db, _id=car.id)
     car_after_delete = services.car.get(db=db, _id=car.id)
 
     assert car_after_delete is None
     assert deleted_car.id == car.id
-    assert deleted_car.price_per_day == car_create_dto.price_per_day
-    assert deleted_car.model_name == car_create_dto.model_name
+    assert deleted_car.price_per_day == car.price_per_day
+    assert deleted_car.model_name == car.model_name
 
 
 def test_search_query(db: Session) -> None:
@@ -191,11 +187,11 @@ def test_get_by_criteria_availability(db: Session) -> None:
     car = create_test_car(db)
     customer = create_test_customer(db)
 
-    start_date1 = datetime(2030, 12, 1, tzinfo=pytz.UTC)
-    end_date1 = datetime(2030, 12, 2, tzinfo=pytz.UTC)
+    start_date1 = get_datetime(2030, 12, 1)
+    end_date1 = get_datetime(2030, 12, 2)
 
-    start_date2 = datetime(2030, 12, 3, tzinfo=pytz.UTC)
-    end_date2 = datetime(2030, 12, 4, tzinfo=pytz.UTC)
+    start_date2 = get_datetime(2030, 12, 3)
+    end_date2 = get_datetime(2030, 12, 4)
 
     create_test_reservation(db, car, customer, start_date1, end_date1)
     create_test_rental(db, car, customer, start_date2, end_date2)
