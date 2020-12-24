@@ -7,13 +7,12 @@ from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.tests.utils.car import create_test_car
 from app.tests.utils.customer import create_test_customer
-from app.tests.utils.rental import create_test_rental
 from app.tests.utils.reservation import create_test_reservation
 from app.tests.utils.utils import get_datetime
 
 
 def test_create_reservation(
-        client: TestClient, superuser_token_headers: dict, db: Session
+    client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     car = create_test_car(db)
     customer = create_test_customer(db)
@@ -29,7 +28,9 @@ def test_create_reservation(
         "status": "NEW",
     }
     response = client.post(
-        f"{settings.API_V1_STR}/reservations/", headers=superuser_token_headers, json=data,
+        f"{settings.API_V1_STR}/reservations/",
+        headers=superuser_token_headers,
+        json=data,
     )
     assert response.status_code == 200
     content = response.json()
@@ -37,7 +38,7 @@ def test_create_reservation(
 
 
 def test_create_reservation_with_car_not_existing(
-        client: TestClient, superuser_token_headers: dict, db: Session
+    client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     customer = create_test_customer(db)
 
@@ -52,13 +53,15 @@ def test_create_reservation_with_car_not_existing(
         "status": "NEW",
     }
     response = client.post(
-        f"{settings.API_V1_STR}/reservations/", headers=superuser_token_headers, json=data,
+        f"{settings.API_V1_STR}/reservations/",
+        headers=superuser_token_headers,
+        json=data,
     )
     assert response.status_code == 404
 
 
 def test_create_reservation_with_customer_not_existing(
-        client: TestClient, superuser_token_headers: dict, db: Session
+    client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     car = create_test_car(db)
 
@@ -73,13 +76,15 @@ def test_create_reservation_with_customer_not_existing(
         "status": "NEW",
     }
     response = client.post(
-        f"{settings.API_V1_STR}/reservations/", headers=superuser_token_headers, json=data,
+        f"{settings.API_V1_STR}/reservations/",
+        headers=superuser_token_headers,
+        json=data,
     )
     assert response.status_code == 404
 
 
 def test_get_reservations(
-        client: TestClient, superuser_token_headers: dict, db: Session
+    client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     response = client.get(
         f"{settings.API_V1_STR}/reservations/", headers=superuser_token_headers
@@ -88,7 +93,7 @@ def test_get_reservations(
 
 
 def test_get_reservation_by_id(
-        client: TestClient, superuser_token_headers: dict, db: Session
+    client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     car = create_test_car(db)
     customer = create_test_customer(db)
@@ -99,22 +104,24 @@ def test_get_reservation_by_id(
     reservation = create_test_reservation(db, car, customer, start_date, end_date)
 
     response = client.get(
-        f"{settings.API_V1_STR}/reservations/{reservation.id}", headers=superuser_token_headers
+        f"{settings.API_V1_STR}/reservations/{reservation.id}",
+        headers=superuser_token_headers,
     )
     assert response.status_code == 200
 
 
 def test_get_reservation_by_id_not_existing(
-        client: TestClient, superuser_token_headers: dict, db: Session
+    client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     response = client.get(
-        f"{settings.API_V1_STR}/reservations/9999999999", headers=superuser_token_headers
+        f"{settings.API_V1_STR}/reservations/9999999999",
+        headers=superuser_token_headers,
     )
     assert response.status_code == 404
 
 
 def test_delete_reservation(
-        client: TestClient, superuser_token_headers: dict, db: Session
+    client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     car = create_test_car(db)
     customer = create_test_customer(db)
@@ -125,22 +132,24 @@ def test_delete_reservation(
     reservation = create_test_reservation(db, car, customer, start_date, end_date)
 
     response = client.delete(
-        f"{settings.API_V1_STR}/reservations/{reservation.id}", headers=superuser_token_headers
+        f"{settings.API_V1_STR}/reservations/{reservation.id}",
+        headers=superuser_token_headers,
     )
     assert response.status_code == 200
 
 
 def test_delete_reservation_not_existing(
-        client: TestClient, superuser_token_headers: dict, db: Session
+    client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     response = client.delete(
-        f"{settings.API_V1_STR}/reservations/99999999999", headers=superuser_token_headers
+        f"{settings.API_V1_STR}/reservations/99999999999",
+        headers=superuser_token_headers,
     )
     assert response.status_code == 404
 
 
 def test_update_reservation(
-        client: TestClient, superuser_token_headers: dict, db: Session
+    client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     car = create_test_car(db)
     customer = create_test_customer(db)
@@ -167,7 +176,7 @@ def test_update_reservation(
 
 
 def test_update_reservation_not_existing(
-        client: TestClient, superuser_token_headers: dict, db: Session
+    client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
     data = {
         "car_id": 1,
