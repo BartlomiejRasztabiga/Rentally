@@ -135,7 +135,6 @@ def test_get_rentals(
         f"{settings.API_V1_STR}/rentals/", headers=superuser_token_headers
     )
     assert response.status_code == 200
-    assert len(response.json()) > 0
 
 
 def test_get_overtime_rentals(
