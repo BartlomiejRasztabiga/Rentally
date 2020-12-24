@@ -11,7 +11,6 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import Page from "../../components/Page";
 import { ACCESS_TOKEN_URL } from "../../config";
 import { useAuth } from "../../context/auth";
 
@@ -72,92 +71,91 @@ const LoginView = () => {
   }, [navigate, isLoggedIn]);
 
   return (
-    <Page className={classes.root}>
-      <Box
-        display="flex"
-        flexDirection="column"
-        height="100%"
-        justifyContent="center"
-      >
-        <Container maxWidth="sm">
-          <Formik
-            initialValues={{
-              email: "",
-              password: "",
-            }}
-            validationSchema={Yup.object().shape({
-              email: Yup.string()
-                .email("Must be a valid email")
-                .max(255)
-                .required("Email is required"),
-              password: Yup.string().max(255).required("Password is required"),
-            })}
-            onSubmit={(values, actions) => {
-              postLogin(values, actions);
-            }}
-          >
-            {({
-              errors,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-              isSubmitting,
-              touched,
-              values,
-            }) => (
-              <form onSubmit={handleSubmit}>
-                <Box mb={3}>
-                  <Typography color="textPrimary" variant="h2">
-                    Sign in
-                  </Typography>
-                </Box>
-                <TextField
-                  error={Boolean(touched.email && errors.email)}
+    <Box
+      display="flex"
+      flexDirection="column"
+      height="100%"
+      justifyContent="center"
+      className={classes.root}
+    >
+      <Container maxWidth="sm">
+        <Formik
+          initialValues={{
+            email: "",
+            password: "",
+          }}
+          validationSchema={Yup.object().shape({
+            email: Yup.string()
+              .email("Must be a valid email")
+              .max(255)
+              .required("Email is required"),
+            password: Yup.string().max(255).required("Password is required"),
+          })}
+          onSubmit={(values, actions) => {
+            postLogin(values, actions);
+          }}
+        >
+          {({
+            errors,
+            handleBlur,
+            handleChange,
+            handleSubmit,
+            isSubmitting,
+            touched,
+            values,
+          }) => (
+            <form onSubmit={handleSubmit}>
+              <Box mb={3}>
+                <Typography color="textPrimary" variant="h2">
+                  Sign in
+                </Typography>
+              </Box>
+              <TextField
+                error={Boolean(touched.email && errors.email)}
+                fullWidth
+                helperText={touched.email && errors.email}
+                label="Email Address"
+                margin="normal"
+                name="email"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                type="email"
+                value={values.email}
+                variant="outlined"
+              />
+              <TextField
+                error={Boolean(touched.password && errors.password)}
+                fullWidth
+                helperText={touched.password && errors.password}
+                label="Password"
+                margin="normal"
+                name="password"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                type="password"
+                value={values.password}
+                variant="outlined"
+              />
+              {error ? (
+                <div className={classes.errorMessage}>{error}</div>
+              ) : null}
+              <Box my={2}>
+                <Button
+                  color="primary"
+                  disabled={isSubmitting}
                   fullWidth
-                  helperText={touched.email && errors.email}
-                  label="Email Address"
-                  margin="normal"
-                  name="email"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  type="email"
-                  value={values.email}
-                  variant="outlined"
-                />
-                <TextField
-                  error={Boolean(touched.password && errors.password)}
-                  fullWidth
-                  helperText={touched.password && errors.password}
-                  label="Password"
-                  margin="normal"
-                  name="password"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  type="password"
-                  value={values.password}
-                  variant="outlined"
-                />
-                {error ? (
-                  <div className={classes.errorMessage}>{error}</div>
-                ) : null}
-                <Box my={2}>
-                  <Button
-                    color="primary"
-                    disabled={isSubmitting}
-                    fullWidth
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                  >
-                    Sign in
-                  </Button>
-                </Box>
-              </form>
-            )}
-          </Formik>
-        </Container>
-      </Box>
-    </Page>
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                >
+                  Sign in
+                </Button>
+              </Box>
+            </form>
+          )}
+        </Formik>
+      </Container>
+    </Box>
   );
 };
 

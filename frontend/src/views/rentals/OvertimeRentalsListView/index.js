@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Box, Container, makeStyles } from "@material-ui/core";
 import { getOvertimeRentals } from "../../../service/rentalsService";
 import RentalsList from "../../../components/rentals/RentalsList";
-import Page from "../../../components/Page";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,13 +20,11 @@ const OvertimeRentalsListView = () => {
   }, []);
 
   return (
-    <Page className={classes.root}>
-      <Container maxWidth={false}>
-        <Box dmt={3}>
-          <RentalsList rentals={rentals} />
-        </Box>
-      </Container>
-    </Page>
+    <Container maxWidth={false} className={classes.root}>
+      <Box dmt={3}>
+        <RentalsList rentals={rentals} />
+      </Box>
+    </Container>
   );
 };
 
