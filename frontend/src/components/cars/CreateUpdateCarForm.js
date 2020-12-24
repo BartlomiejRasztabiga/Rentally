@@ -188,7 +188,6 @@ const CreateUpdateCarForm = ({ carId }) => {
     <React.Fragment>
       {loaded || isInCreateMode ? (
         <Container className={classes.carDetails}>
-          {/*TODO Can extract snackbar to another component? */}
           <Snackbar
             open={successSnackbarOpen}
             autoHideDuration={3000}

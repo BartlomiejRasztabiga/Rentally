@@ -49,7 +49,6 @@ const CustomersListView = () => {
 
   return (
     <Container maxWidth={false} className={classes.root}>
-      {/*TODO can extract this search box to another component and share state? redux or react context?*/}
       <Box display="flex" justifyContent="flex-end">
         <Button color="primary" variant="contained" onClick={handleAddCustomer}>
           Add customer
