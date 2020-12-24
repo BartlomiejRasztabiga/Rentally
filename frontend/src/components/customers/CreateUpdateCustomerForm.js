@@ -30,10 +30,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
   },
-  link: {
-    color: "inherit",
-    textDecoration: "none",
-  },
   customerDetails: {
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(5),

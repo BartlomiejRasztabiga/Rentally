@@ -51,10 +51,6 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
     textDecoration: "none",
   },
-  reservationDetails: {
-    marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5),
-  },
   errorBox: {
     margin: theme.spacing(5),
   },

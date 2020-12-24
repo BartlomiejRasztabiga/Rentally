@@ -16,9 +16,6 @@ import CustomerRow from "./CustomerRow";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
-  avatar: {
-    marginRight: theme.spacing(2),
-  },
 }));
 
 const CustomersList = ({ className, customers, ...rest }) => {
