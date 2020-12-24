@@ -41,6 +41,7 @@ import {
   updateRentalStatus,
 } from "../../service/rentalsService";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+import ErrorBox from "../utils/ErrorBox";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -237,11 +238,7 @@ const CreateUpdateRentalForm = ({
           </Snackbar>
           <Card className={clsx(classes.root)}>
             <CardContent>
-              {postError && (
-                <div color="error" className={classes.errorBox}>
-                  <ReactJson src={JSON.parse(postError)} theme="ocean" />
-                </div>
-              )}
+              {postError && <ErrorBox error={JSON.parse(postError)} />}
               {isInEditMode && (
                 <Grid
                   container

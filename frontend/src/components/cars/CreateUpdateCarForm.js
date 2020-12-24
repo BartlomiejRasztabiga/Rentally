@@ -35,6 +35,7 @@ import {
 } from "../../config";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+import ErrorBox from "../utils/ErrorBox";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -231,11 +232,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                   </Button>
                 </label>
               </Box>
-              {postError && (
-                <div color="error" className={classes.errorBox}>
-                  <ReactJson src={JSON.parse(postError)} theme="ocean" />
-                </div>
-              )}
+              {postError && <ErrorBox error={JSON.parse(postError)} />}
               {isInEditMode && (
                 <Grid
                   container

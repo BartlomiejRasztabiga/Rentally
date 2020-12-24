@@ -40,6 +40,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+import ErrorBox from "../utils/ErrorBox";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -232,11 +233,7 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
           </Snackbar>
           <Card className={clsx(classes.root)}>
             <CardContent>
-              {postError && (
-                <div color="error" className={classes.errorBox}>
-                  <ReactJson src={JSON.parse(postError)} theme="ocean" />
-                </div>
-              )}
+              {postError && <ErrorBox error={JSON.parse(postError)} />}
               {isInEditMode && (
                 <Grid
                   container
