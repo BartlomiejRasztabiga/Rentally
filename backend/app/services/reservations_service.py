@@ -156,7 +156,7 @@ class ReservationService(
             .all()
         )
 
-    def get_missed_reservations(self, db: Session) -> List[Reservation]:
+    def get_missed(self, db: Session) -> List[Reservation]:
         now = datetime.now()
         return (
             db.query(Reservation)
@@ -168,7 +168,7 @@ class ReservationService(
         )
 
     def cancel_missed_reservations(self, db: Session) -> None:
-        missed_reservations = self.get_missed_reservations(db)
+        missed_reservations = self.get_missed(db)
         for _reservation in missed_reservations:
             self.mark_cancelled(db, _reservation.id)
 

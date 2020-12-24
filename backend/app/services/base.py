@@ -14,7 +14,7 @@ UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     def __init__(self, model: Type[ModelType]):
         """
-        base service object with default methods to Create, Read, Update, Delete (CRUD).
+        Base service object with default methods to Create, Read, Update, Delete (CRUD).
 
         **Parameters**
 
