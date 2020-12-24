@@ -28,9 +28,14 @@ def get_test_reservation_create_dto(
 
 
 def create_test_reservation(
-    db: Session, car: Car, customer: Customer, start_date: datetime, end_date: datetime
+    db: Session,
+    car: Car,
+    customer: Customer,
+    start_date: datetime,
+    end_date: datetime,
+    status: ReservationStatus = ReservationStatus.NEW,
 ) -> Reservation:
     reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date, end_date
+        car, customer, start_date, end_date, status
     )
     return services.reservation.create(db=db, obj_in=reservation_create_dto)

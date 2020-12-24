@@ -17,11 +17,8 @@ from app.models.reservation import ReservationStatus
 from app.schemas import ReservationUpdateDto
 from app.tests.utils.car import create_test_car
 from app.tests.utils.customer import create_test_customer
-from app.tests.utils.rental import get_test_rental_create_dto
-from app.tests.utils.reservation import (
-    create_test_reservation,
-    get_test_reservation_create_dto,
-)
+from app.tests.utils.rental import create_test_rental
+from app.tests.utils.reservation import create_test_reservation
 from app.tests.utils.utils import get_datetime
 
 
@@ -32,10 +29,7 @@ def test_create_reservation(db: Session) -> None:
     start_date = get_datetime(2030, 12, 1, 9, 0)
     end_date = get_datetime(2030, 12, 2, 12, 0)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date, end_date
-    )
-    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
+    reservation = create_test_reservation(db, car, customer, start_date, end_date)
 
     assert reservation.id is not None
     assert reservation.start_date == start_date
@@ -52,11 +46,8 @@ def test_create_reservation_wrong_dates(db: Session) -> None:
     start_date = get_datetime(2030, 12, 2)
     end_date = get_datetime(2030, 12, 1)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date, end_date
-    )
     with pytest.raises(StartDateNotBeforeEndDateException):
-        services.reservation.create(db=db, obj_in=reservation_create_dto)
+        create_test_reservation(db, car, customer, start_date, end_date)
 
 
 def test_create_reservation_wrong_dates2(db: Session) -> None:
@@ -66,11 +57,8 @@ def test_create_reservation_wrong_dates2(db: Session) -> None:
     start_date = get_datetime(2030, 12, 1, 9, 0)
     end_date = get_datetime(2030, 12, 1, 9, 0)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date, end_date
-    )
     with pytest.raises(StartDateNotBeforeEndDateException):
-        services.reservation.create(db=db, obj_in=reservation_create_dto)
+        create_test_reservation(db, car, customer, start_date, end_date)
 
 
 def test_create_reservation_same_car_same_dates_will_throw(db: Session) -> None:
@@ -83,16 +71,10 @@ def test_create_reservation_same_car_same_dates_will_throw(db: Session) -> None:
     start_date2 = get_datetime(2030, 12, 1, 11)
     end_date2 = get_datetime(2030, 12, 2, 15)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date1, end_date1
-    )
-    services.reservation.create(db=db, obj_in=reservation_create_dto)
+    create_test_reservation(db, car, customer, start_date1, end_date1)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date2, end_date2
-    )
     with pytest.raises(ReservationCollisionException):
-        services.reservation.create(db=db, obj_in=reservation_create_dto)
+        create_test_reservation(db, car, customer, start_date2, end_date2)
 
 
 def test_create_reservation_same_car_one_day_intersection_will_throw(
@@ -107,31 +89,21 @@ def test_create_reservation_same_car_one_day_intersection_will_throw(
     start_date2 = get_datetime(2030, 12, 5, 17)
     end_date2 = get_datetime(2030, 12, 7, 15)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date1, end_date1
-    )
-    services.reservation.create(db=db, obj_in=reservation_create_dto)
+    create_test_reservation(db, car, customer, start_date1, end_date1)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date2, end_date2
-    )
     with pytest.raises(ReservationCollisionException):
-        services.reservation.create(db=db, obj_in=reservation_create_dto)
+        create_test_reservation(db, car, customer, start_date2, end_date2)
 
 
 def test_create_reservation_in_the_past_will_throw(db: Session,) -> None:
     car = create_test_car(db)
     customer = create_test_customer(db)
 
-    start_date1 = get_datetime(2020, 12, 1, 9)
-    end_date1 = get_datetime(2020, 12, 5, 12)
-
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date1, end_date1
-    )
+    start_date = get_datetime(2020, 12, 1, 9)
+    end_date = get_datetime(2020, 12, 5, 12)
 
     with pytest.raises(ReservationCreatedInThePastException):
-        services.reservation.create(db=db, obj_in=reservation_create_dto)
+        create_test_reservation(db, car, customer, start_date, end_date)
 
 
 def test_create_reservation_same_car_one_day_intersection_will_throw2(
@@ -146,16 +118,10 @@ def test_create_reservation_same_car_one_day_intersection_will_throw2(
     start_date2 = get_datetime(2030, 12, 2, 9)
     end_date2 = get_datetime(2030, 12, 5, 7)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date1, end_date1
-    )
-    services.reservation.create(db=db, obj_in=reservation_create_dto)
+    create_test_reservation(db, car, customer, start_date1, end_date1)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date2, end_date2
-    )
     with pytest.raises(ReservationCollisionException):
-        services.reservation.create(db=db, obj_in=reservation_create_dto)
+        create_test_reservation(db, car, customer, start_date2, end_date2)
 
 
 def test_create_reservation_same_car_different_intervals(db: Session) -> None:
@@ -168,15 +134,9 @@ def test_create_reservation_same_car_different_intervals(db: Session) -> None:
     start_date2 = get_datetime(2030, 12, 10, 3)
     end_date2 = get_datetime(2030, 12, 15, 7)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date1, end_date1
-    )
-    services.reservation.create(db=db, obj_in=reservation_create_dto)
+    create_test_reservation(db, car, customer, start_date1, end_date1)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date2, end_date2
-    )
-    services.reservation.create(db=db, obj_in=reservation_create_dto)
+    create_test_reservation(db, car, customer, start_date2, end_date2)
 
 
 def test_create_reservation_with_custom_status_will_default_to_new(db: Session) -> None:
@@ -186,10 +146,9 @@ def test_create_reservation_with_custom_status_will_default_to_new(db: Session) 
     start_date = get_datetime(2030, 12, 1)
     end_date = get_datetime(2030, 12, 2)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date, end_date, status=ReservationStatus.COLLECTED
+    reservation = create_test_reservation(
+        db, car, customer, start_date, end_date, status=ReservationStatus.COLLECTED
     )
-    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     assert reservation.id is not None
     assert reservation.start_date == start_date
@@ -206,17 +165,16 @@ def test_get_reservation(db: Session) -> None:
     start_date = get_datetime(2030, 12, 1)
     end_date = get_datetime(2030, 12, 2)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date, end_date, status=ReservationStatus.COLLECTED
+    reservation = create_test_reservation(
+        db, car, customer, start_date, end_date, status=ReservationStatus.COLLECTED
     )
-    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     stored_reservation = services.reservation.get(db=db, _id=reservation.id)
 
     assert stored_reservation
-    assert stored_reservation.start_date == reservation_create_dto.start_date
-    assert stored_reservation.end_date == reservation_create_dto.end_date
-    assert stored_reservation.status == reservation_create_dto.status
+    assert stored_reservation.start_date == reservation.start_date
+    assert stored_reservation.end_date == reservation.end_date
+    assert stored_reservation.status == reservation.status
     assert stored_reservation.id is not None
 
 
@@ -227,10 +185,9 @@ def test_update_reservation(db: Session) -> None:
     start_date = get_datetime(2030, 12, 1)
     end_date = get_datetime(2030, 12, 2)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date, end_date, status=ReservationStatus.NEW
+    reservation = create_test_reservation(
+        db, car, customer, start_date, end_date, status=ReservationStatus.NEW
     )
-    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     reservation_update_dto = ReservationUpdateDto(
         car_id=reservation.car_id,
@@ -245,8 +202,8 @@ def test_update_reservation(db: Session) -> None:
     )
 
     assert stored_reservation
-    assert stored_reservation.start_date == reservation_create_dto.start_date
-    assert stored_reservation.end_date == reservation_create_dto.end_date
+    assert stored_reservation.start_date == reservation.start_date
+    assert stored_reservation.end_date == reservation.end_date
     assert stored_reservation.status == ReservationStatus.COLLECTED
     assert stored_reservation.id is not None
 
@@ -258,19 +215,12 @@ def test_update_reservation_dates_collision_will_throw(db: Session) -> None:
     start_date1 = get_datetime(2030, 12, 3, 9)
     end_date1 = get_datetime(2030, 12, 4, 12)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date1, end_date1
-    )
-
-    services.reservation.create(db=db, obj_in=reservation_create_dto)
+    create_test_reservation(db, car, customer, start_date1, end_date1)
 
     start_date2 = get_datetime(2030, 12, 1, 9)
     end_date2 = get_datetime(2030, 12, 2, 12)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date2, end_date2
-    )
-    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
+    reservation = create_test_reservation(db, car, customer, start_date2, end_date2)
 
     reservation_update_dto = ReservationUpdateDto(
         car_id=reservation.car_id,
@@ -293,11 +243,7 @@ def test_create_reservation_dates_collision_on_cancelled(db: Session) -> None:
     start_date1 = get_datetime(2030, 12, 3, 9)
     end_date1 = get_datetime(2030, 12, 4, 12)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date1, end_date1
-    )
-
-    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
+    reservation = create_test_reservation(db, car, customer, start_date1, end_date1)
 
     reservation_update_dto = ReservationUpdateDto(
         car_id=reservation.car_id,
@@ -314,10 +260,7 @@ def test_create_reservation_dates_collision_on_cancelled(db: Session) -> None:
     start_date2 = get_datetime(2030, 12, 3, 9)
     end_date2 = get_datetime(2030, 12, 4, 12)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date2, end_date2
-    )
-    services.reservation.create(db=db, obj_in=reservation_create_dto)
+    create_test_reservation(db, car, customer, start_date2, end_date2)
 
 
 def test_update_reservation_cancelled_will_throw(db: Session) -> None:
@@ -327,11 +270,7 @@ def test_update_reservation_cancelled_will_throw(db: Session) -> None:
     start_date1 = get_datetime(2030, 12, 3, 9)
     end_date1 = get_datetime(2030, 12, 4, 12)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date1, end_date1
-    )
-
-    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
+    reservation = create_test_reservation(db, car, customer, start_date1, end_date1)
 
     reservation_update_dto = ReservationUpdateDto(
         car_id=reservation.car_id,
@@ -366,11 +305,7 @@ def test_update_reservation_collected_to_new_will_throw(db: Session) -> None:
     start_date1 = get_datetime(2030, 12, 3, 9)
     end_date1 = get_datetime(2030, 12, 4, 12)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date1, end_date1
-    )
-
-    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
+    reservation = create_test_reservation(db, car, customer, start_date1, end_date1)
 
     reservation_update_dto = ReservationUpdateDto(
         car_id=reservation.car_id,
@@ -409,15 +344,13 @@ def test_get_active_by_car_id(db: Session) -> None:
     start_date2 = get_datetime(2030, 12, 3)
     end_date2 = get_datetime(2030, 12, 4)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car1, customer, start_date1, end_date1, status=ReservationStatus.NEW
+    create_test_reservation(
+        db, car1, customer, start_date1, end_date1, status=ReservationStatus.NEW
     )
-    services.reservation.create(db=db, obj_in=reservation_create_dto)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car2, customer, start_date2, end_date2, status=ReservationStatus.NEW
+    create_test_reservation(
+        db, car2, customer, start_date2, end_date2, status=ReservationStatus.NEW
     )
-    services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     active_reservations = services.reservation.get_active_by_car_id(db, car2.id)
     assert len(active_reservations) == 1
@@ -430,10 +363,9 @@ def test_get_active_by_car_id_only_active(db: Session) -> None:
     start_date1 = get_datetime(2030, 12, 1)
     end_date1 = get_datetime(2030, 12, 2)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car1, customer, start_date1, end_date1, status=ReservationStatus.NEW
+    reservation = create_test_reservation(
+        db, car1, customer, start_date1, end_date1, status=ReservationStatus.NEW
     )
-    reservation = services.reservation.create(db=db, obj_in=reservation_create_dto)
 
     reservation_update_dto = ReservationUpdateDto(
         car_id=reservation.car_id,
@@ -463,20 +395,11 @@ def test_get_active(db: Session) -> None:
     start_date2 = get_datetime(2030, 12, 3)
     end_date2 = get_datetime(2030, 12, 4)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date1, end_date1
-    )
-    services.reservation.create(db=db, obj_in=reservation_create_dto)
+    create_test_reservation(db, car, customer, start_date1, end_date1)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date2, end_date2
-    )
-    services.reservation.create(db=db, obj_in=reservation_create_dto)
+    create_test_reservation(db, car, customer, start_date2, end_date2)
 
-    reservation_create_dto = get_test_reservation_create_dto(
-        car2, customer2, start_date2, end_date2
-    )
-    services.reservation.create(db=db, obj_in=reservation_create_dto)
+    create_test_reservation(db, car2, customer2, start_date2, end_date2)
 
     active_reservations = services.reservation.get_active(db)
     assert len(active_reservations) >= 3  # there might be other objects in db
@@ -492,18 +415,10 @@ def test_create_reservation_collision_with_rental_will_throw(db: Session) -> Non
     start_date2 = get_datetime(2030, 12, 1)
     end_date2 = get_datetime(2030, 12, 2)
 
-    rental_create_dto = get_test_rental_create_dto(
-        car, customer, start_date1, end_date1
-    )
-
-    services.rental.create(db=db, obj_in=rental_create_dto)
-
-    reservation_create_dto = get_test_reservation_create_dto(
-        car, customer, start_date2, end_date2
-    )
+    create_test_rental(db, car, customer, start_date1, end_date1)
 
     with pytest.raises(RentalCollisionException):
-        services.reservation.create(db=db, obj_in=reservation_create_dto)
+        create_test_reservation(db, car, customer, start_date2, end_date2)
 
 
 def test_mark_reservation_collected(db: Session) -> None:
