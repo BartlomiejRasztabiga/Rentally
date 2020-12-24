@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Container, makeStyles } from "@material-ui/core";
-import Page from "src/components/Page";
+import Page from "../../../components/Page";
 import { useNavigate } from "react-router";
 import { APP_RENTALS_URL } from "../../../config";
 import { getRentals } from "../../../service/rentalsService";

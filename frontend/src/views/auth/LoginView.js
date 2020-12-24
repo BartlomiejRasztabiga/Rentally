@@ -12,7 +12,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import Page from "src/components/Page";
+import Page from "../../components/Page";
 import { ACCESS_TOKEN_URL } from "../../config";
 import { useAuth } from "../../context/auth";
 

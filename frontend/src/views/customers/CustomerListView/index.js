@@ -10,7 +10,7 @@ import {
   SvgIcon,
   TextField,
 } from "@material-ui/core";
-import Page from "src/components/Page";
+import Page from "../../../components/Page";
 import CustomersList from "../../../components/customers/CustomersList";
 import SearchIcon from "@material-ui/icons/Search";
 import { getCustomers } from "../../../service/customersService";

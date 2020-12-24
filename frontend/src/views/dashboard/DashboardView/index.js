@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Grid, makeStyles } from "@material-ui/core";
-import Page from "src/components/Page";
+import Page from "../../../components/Page";
 import NewestReservationsListView from "../../reservations/ActiveReservationsListView";
 import ActiveRentalsListView from "../../rentals/ActiveRentalsListView";
 
