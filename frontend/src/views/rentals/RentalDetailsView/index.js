@@ -10,10 +10,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
   },
-  link: {
-    color: "inherit",
-    textDecoration: "none",
-  },
   rentalDetails: {
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(5),
@@ -45,7 +41,6 @@ const RentalDetailsView = () => {
 };
 
 RentalDetailsView.propTypes = {
-  className: PropTypes.string,
   rentalId: PropTypes.number,
 };
 

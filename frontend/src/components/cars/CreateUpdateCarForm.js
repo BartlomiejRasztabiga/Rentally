@@ -25,7 +25,7 @@ import {
   getCarById,
   updateCar,
 } from "../../service/carsService";
-import convertToBase64 from "../../utils/convertToBase64";
+import convertFileToBase64 from "../../utils/convertFileToBase64";
 import Loading from "../Loading";
 import ReactJson from "react-json-view";
 import {
@@ -104,7 +104,7 @@ const CreateUpdateCarForm = ({ carId }) => {
 
   const handleFileRead = async (event) => {
     const file = event.target.files[0];
-    const base64 = await convertToBase64(file);
+    const base64 = await convertFileToBase64(file);
     updateCarField("image_base64", base64);
   };
 

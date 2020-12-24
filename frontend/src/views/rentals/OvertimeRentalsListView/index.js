@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { Box, Container, makeStyles } from "@material-ui/core";
 import { getOvertimeRentals } from "../../../service/rentalsService";
 import RentalsList from "../../../components/rentals/RentalsList";
@@ -11,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const OvertimeRentalsListView = ({ className, ...rest }) => {
+const OvertimeRentalsListView = () => {
   const classes = useStyles();
   const [rentals, setRentals] = useState([]);
 
@@ -30,10 +29,6 @@ const OvertimeRentalsListView = ({ className, ...rest }) => {
       </Container>
     </Page>
   );
-};
-
-OvertimeRentalsListView.propTypes = {
-  className: PropTypes.string,
 };
 
 export default OvertimeRentalsListView;

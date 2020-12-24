@@ -6,21 +6,9 @@ import history from "history/browser";
 import CreateUpdateCarForm from "../../../components/cars/CreateUpdateCarForm";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  link: {
-    color: "inherit",
-    textDecoration: "none",
-  },
   carDetails: {
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(5),
-  },
-  uploadImageBox: {
-    alignItems: "center",
-    justifyContent: "center",
   },
 }));
 
@@ -49,7 +37,6 @@ const CarDetails = () => {
 };
 
 CarDetails.propTypes = {
-  className: PropTypes.string,
   carId: PropTypes.number,
 };
 

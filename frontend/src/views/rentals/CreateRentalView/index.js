@@ -54,8 +54,4 @@ const CreateRentalView = () => {
   );
 };
 
-CreateRentalView.propTypes = {
-  className: PropTypes.string,
-};
-
 export default CreateRentalView;

@@ -18,9 +18,6 @@ import { APP_RESERVATIONS_URL } from "../../../config";
 
 const useStyles = makeStyles(() => ({
   root: {},
-  actions: {
-    justifyContent: "flex-end",
-  },
   link: {
     color: "inherit",
     textDecoration: "none",
@@ -33,15 +30,17 @@ const sortReservationsByDate = (reservations) => {
   });
 };
 
+const filterActiveReservations = (_reservations) => {
+  return _reservations.filter((reservation) => reservation.status === "NEW");
+};
+
 const NewestReservationsListView = ({ className, ...rest }) => {
   const classes = useStyles();
   const [reservations, setReservations] = useState([]);
 
   useEffect(() => {
     getReservations().then((_reservations) => {
-      setReservations(
-        _reservations.filter((reservation) => reservation.status === "NEW")
-      );
+      setReservations(filterActiveReservations(_reservations));
     });
   }, []);
 

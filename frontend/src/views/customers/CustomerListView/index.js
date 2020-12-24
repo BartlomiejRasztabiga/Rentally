@@ -52,7 +52,6 @@ const CustomersListView = () => {
     <Page className={classes.root}>
       <Container maxWidth={false}>
         {/*TODO can extract this search box to another component and share state? redux or react context?*/}
-        {/*Should share it with CarsListView*/}
         <Box display="flex" justifyContent="flex-end">
           <Button
             color="primary"

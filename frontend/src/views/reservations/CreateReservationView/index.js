@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Box, Button, Container, makeStyles } from "@material-ui/core";
 import history from "history/browser";
 import CreateUpdateReservationForm from "../../../components/reservations/CreateUpdateReservationForm";
@@ -40,10 +39,6 @@ const CreateReservationView = () => {
       </Container>
     </React.Fragment>
   );
-};
-
-CreateReservationView.propTypes = {
-  className: PropTypes.string,
 };
 
 export default CreateReservationView;

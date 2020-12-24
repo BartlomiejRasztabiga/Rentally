@@ -33,13 +33,17 @@ const sortRentalsByDate = (rentals) => {
   });
 };
 
+const filterActiveRentals = (_rentals) => {
+  return _rentals.filter((rental) => rental.status !== "COMPLETED");
+};
+
 const ActiveRentalsListView = ({ className, ...rest }) => {
   const classes = useStyles();
   const [rentals, setRentals] = useState([]);
 
   useEffect(() => {
     getRentals().then((_rentals) => {
-      setRentals(_rentals.filter((rental) => rental.status !== "COMPLETED"));
+      setRentals(filterActiveRentals(_rentals));
     });
   }, []);
 

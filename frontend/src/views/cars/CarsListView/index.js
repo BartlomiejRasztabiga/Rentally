@@ -263,11 +263,7 @@ const CarsList = () => {
                     />
                   </Grid>
                   <Grid item md={3} xs={6}>
-                    <Button
-                      variant="contained"
-                      // component="span"
-                      onClick={handleResetFilter}
-                    >
+                    <Button variant="contained" onClick={handleResetFilter}>
                       Reset filter
                     </Button>
                   </Grid>

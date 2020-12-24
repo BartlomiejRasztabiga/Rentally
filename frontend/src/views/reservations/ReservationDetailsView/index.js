@@ -45,7 +45,6 @@ const ReservationDetails = () => {
 };
 
 ReservationDetails.propTypes = {
-  className: PropTypes.string,
   reservationId: PropTypes.number,
 };
 
