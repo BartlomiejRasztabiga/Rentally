@@ -101,12 +101,10 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
   }, [isInEditMode, reservationId]);
 
   useEffect(() => {
-    // get available cars
     getCars().then((cars) => {
       setAvailableCars(cars);
     });
 
-    // get available customers
     getCustomers().then((customers) => {
       setAvailableCustomers(customers);
     });

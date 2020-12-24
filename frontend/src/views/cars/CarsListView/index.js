@@ -268,7 +268,6 @@ const CarsList = () => {
                 <Grid item md={3} xs={6}>
                   <Button
                     variant="contained"
-                    // component="span"
                     color="primary"
                     onClick={handleFilter}
                   >

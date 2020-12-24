@@ -112,17 +112,14 @@ const CreateUpdateRentalForm = ({
   }, [isInEditMode, rentalId]);
 
   useEffect(() => {
-    // get available cars
     getCars().then((cars) => {
       setAvailableCars(cars);
     });
 
-    // get available customers
     getCustomers().then((customers) => {
       setAvailableCustomers(customers);
     });
 
-    // get available reservations
     getReservations().then((reservations) => {
       setAvailableReservations(reservations);
     });
