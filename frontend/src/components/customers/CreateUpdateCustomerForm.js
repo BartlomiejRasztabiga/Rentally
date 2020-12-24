@@ -14,7 +14,6 @@ import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import Loading from "../Loading";
-import ReactJson from "react-json-view";
 import {
   createCustomer,
   deleteCustomer,
@@ -22,8 +21,6 @@ import {
   updateCustomer,
 } from "../../service/customersService";
 import { APP_CUSTOMERS_URL } from "../../config";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
 import ErrorBox from "../utils/ErrorBox";
 import SuccessSnackbar from "../utils/SuccessSnackbar";
 

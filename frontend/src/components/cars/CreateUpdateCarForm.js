@@ -27,14 +27,11 @@ import {
 } from "../../service/carsService";
 import convertFileToBase64 from "../../utils/convertFileToBase64";
 import Loading from "../Loading";
-import ReactJson from "react-json-view";
 import {
   APP_CARS_URL,
   APP_RENTALS_URL,
   APP_RESERVATIONS_URL,
 } from "../../config";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
 import ErrorBox from "../utils/ErrorBox";
 import SuccessSnackbar from "../utils/SuccessSnackbar";
 

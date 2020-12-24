@@ -14,9 +14,6 @@ import clsx from "clsx";
 import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import Loading from "../Loading";
-import ReactJson from "react-json-view";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
 import { getReservations } from "../../service/reservationsService";
 
 import {
