@@ -16,6 +16,10 @@ from app.models.rental import RentalStatus
 from app.schemas.rental import RentalCreateDto, RentalUpdateDto
 from app.services.base import BaseService
 from app.utils.interval import Interval
+from app.validators.availability import (
+    is_colliding_with_other_rentals,
+    is_colliding_with_other_reservations,
+)
 from app.validators.general import (
     is_date_in_the_past,
     validate_start_date_before_end_date,
@@ -23,10 +27,7 @@ from app.validators.general import (
 
 
 class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
-
-    def validate_start_date_in_future(
-        self, start_date: datetime
-    ) -> None:
+    def validate_start_date_in_future(self, start_date: datetime) -> None:
         """
         Start date has to be in the future
         """
@@ -49,48 +50,35 @@ class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
             ):
                 raise RentalAndReservationDifferenceException()
 
-    # TODO PLEASE REFACTOR
-    def validate_collisions(
-        self,
-        db: Session,
-        _rental: Union[RentalCreateDto, RentalUpdateDto, Rental],
-        current_rental_id: int = None,
+    def validate_availability_on_create(
+        self, db: Session, _rental: RentalCreateDto
     ) -> None:
-        reservations_for_this_car = services.reservation.get_active_by_car_id(
-            db=db, car_id=_rental.car_id
-        )
         rental_timeframe = Interval(_rental.start_date, _rental.end_date)
 
-        for other_reservation in reservations_for_this_car:
-            if (
-                _rental.reservation_id
-                and _rental.reservation_id == other_reservation.id
-            ):
-                # collision with the same object is obvious, skip
-                continue
-            other_reservation_timeframe = Interval(
-                other_reservation.start_date, other_reservation.end_date
-            )
-            if rental_timeframe.is_intersecting(other_reservation_timeframe):
-                raise ReservationCollisionException()
+        if is_colliding_with_other_reservations(
+            db, _rental.car_id, rental_timeframe, _rental.reservation_id
+        ):
+            raise ReservationCollisionException()
 
-        rentals_for_this_car = self.get_active_by_car_id(db=db, car_id=_rental.car_id)
-        for other_rental in rentals_for_this_car:
-            if current_rental_id and current_rental_id == other_rental.id:
-                # collision with the same object is obvious, skip
-                continue
+        if is_colliding_with_other_rentals(db, _rental.car_id, rental_timeframe):
+            raise RentalCollisionException()
 
-            other_rental_timeframe = Interval(
-                other_rental.start_date, other_rental.end_date
-            )
-            if rental_timeframe.is_intersecting(other_rental_timeframe):
-                raise RentalCollisionException()
-
-        # TODO probably move to other module since this will be used in many places
-
-    def validate_old_status_on_update(
-        self, old_status: RentalStatus
+    def validate_availability_on_update(
+        self, db: Session, _rental: RentalUpdateDto, current_rental_id: int = None,
     ) -> None:
+        rental_timeframe = Interval(_rental.start_date, _rental.end_date)
+
+        if is_colliding_with_other_reservations(
+            db, _rental.car_id, rental_timeframe, _rental.reservation_id
+        ):
+            raise ReservationCollisionException()
+
+        if is_colliding_with_other_rentals(
+            db, _rental.car_id, rental_timeframe, current_rental_id
+        ):
+            raise RentalCollisionException()
+
+    def validate_old_status_on_update(self, old_status: RentalStatus) -> None:
         """
         Cannot update rental that is completed
         """
@@ -99,7 +87,7 @@ class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
 
     def create(self, db: Session, *, obj_in: RentalCreateDto) -> Rental:
         validate_start_date_before_end_date(obj_in.start_date, obj_in.end_date)
-        self.validate_collisions(db, obj_in)
+        self.validate_availability_on_create(db, obj_in)
         self.validate_start_date_in_future(obj_in.start_date)
         self.validate_in_sync_with_reservation(db, obj_in)
 
@@ -115,7 +103,7 @@ class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
     def update(self, db: Session, *, db_obj: Rental, obj_in: RentalUpdateDto) -> Rental:
         self.validate_old_status_on_update(db_obj.status)  # type: ignore
         validate_start_date_before_end_date(obj_in.start_date, obj_in.end_date)
-        self.validate_collisions(db, obj_in, db_obj.id)
+        self.validate_availability_on_update(db, obj_in, db_obj.id)
         self.validate_in_sync_with_reservation(db, obj_in)
 
         return super().update(db=db, db_obj=db_obj, obj_in=obj_in)
