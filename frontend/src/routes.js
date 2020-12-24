@@ -10,7 +10,6 @@ import DashboardView from "./views/dashboard/DashboardView";
 import LoginView from "./views/auth/LoginView";
 import NotFoundView from "./views/errors/NotFoundView";
 import CarsListView from "./views/cars/CarsListView";
-import RegisterView from "./views/auth/RegisterView";
 import CarDetailsView from "./views/cars/CarDetailsView";
 import CreateCarView from "./views/cars/CreateCarView";
 import ReservationsListView from "./views/reservations/ReservationsListView";
@@ -56,7 +55,6 @@ const routes = [
     element: <MainLayout />,
     children: [
       { path: "login", element: <LoginView /> },
-      { path: "register", element: <RegisterView /> },
       { path: "404", element: <NotFoundView /> },
       { path: "/", element: <Navigate to="/app/dashboard" /> },
       { path: "*", element: <Navigate to="/404" /> },
