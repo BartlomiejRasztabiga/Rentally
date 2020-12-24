@@ -12,7 +12,7 @@ import {
 import clsx from "clsx";
 import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import Loading from "../Loading";
+import Loading from "../utils/Loading";
 import { getReservations } from "../../service/reservationsService";
 
 import {

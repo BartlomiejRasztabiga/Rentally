@@ -25,7 +25,7 @@ import {
   updateCar,
 } from "../../service/carsService";
 import convertFileToBase64 from "../../utils/convertFileToBase64";
-import Loading from "../Loading";
+import Loading from "../utils/Loading";
 import {
   APP_CARS_URL,
   APP_RENTALS_URL,
