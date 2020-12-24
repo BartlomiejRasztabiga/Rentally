@@ -4,7 +4,6 @@ import {
   Box,
   Divider,
   Drawer,
-  Hidden,
   List,
   makeStyles,
   Typography,
@@ -103,16 +102,14 @@ const NavBar = () => {
   );
 
   return (
-    <Hidden mdDown>
-      <Drawer
-        anchor="left"
-        classes={{ paper: classes.desktopDrawer }}
-        open
-        variant="persistent"
-      >
-        {content}
-      </Drawer>
-    </Hidden>
+    <Drawer
+      anchor="left"
+      classes={{ paper: classes.desktopDrawer }}
+      open
+      variant="persistent"
+    >
+      {content}
+    </Drawer>
   );
 };
 

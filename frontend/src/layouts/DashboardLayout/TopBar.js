@@ -6,12 +6,10 @@ import {
   AppBar,
   Badge,
   Box,
-  Hidden,
   IconButton,
   makeStyles,
   Toolbar,
 } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/NotificationsOutlined";
 import InputIcon from "@material-ui/icons/Input";
 import Logo from "../../components/Logo";
@@ -41,32 +39,25 @@ const TopBar = ({ className, ...rest }) => {
           <Logo />
         </RouterLink>
         <Box flexGrow={1} />
-        <Hidden mdDown>
-          <IconButton color="inherit">
-            <Badge
-              badgeContent={notifications.length}
-              color="primary"
-              variant="dot"
-            >
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <IconButton color="inherit" onClick={logout}>
-            <InputIcon />
-          </IconButton>
-        </Hidden>
-        <Hidden lgUp>
-          <IconButton color="inherit">
-            <MenuIcon />
-          </IconButton>
-        </Hidden>
+        <IconButton color="inherit">
+          <Badge
+            badgeContent={notifications.length}
+            color="primary"
+            variant="dot"
+          >
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
+        <IconButton color="inherit" onClick={logout}>
+          <InputIcon />
+        </IconButton>
       </Toolbar>
     </AppBar>
   );
 };
 
 TopBar.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default TopBar;
