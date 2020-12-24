@@ -1,40 +1,21 @@
-from typing import List, Optional
+from typing import List
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app import models, schemas, services
 from app.api import deps
-from app.exceptions.instance_not_found import (
-    CarNotFoundException,
-    CustomerNotFoundException,
-    RentalNotFoundException,
-    ReservationNotFoundException,
-)
+from app.exceptions.instance_not_found import RentalNotFoundException
 from app.exceptions.not_enough_permissions import NotEnoughPermissionsException
 from app.models import Rental
 from app.models.rental import RentalStatus
+from app.validators import (
+    validate_car_with_id_exists,
+    validate_customer_with_id_exists,
+    validate_reservation_with_id_exists,
+)
 
 router = APIRouter()
-
-
-def _validate_car_id(db: Session, car_id: int) -> None:
-    car = services.car.get(db=db, _id=car_id)
-    if not car:
-        raise CarNotFoundException()
-
-
-def _validate_customer_id(db: Session, customer_id: int) -> None:
-    customer = services.customer.get(db=db, _id=customer_id)
-    if not customer:
-        raise CustomerNotFoundException()
-
-
-def _validate_reservation_id(db: Session, reservation_id: Optional[int] = None) -> None:
-    if reservation_id:
-        reservation = services.reservation.get(db=db, _id=reservation_id)
-        if not reservation:
-            raise ReservationNotFoundException()
 
 
 @router.get("/", response_model=List[schemas.Rental])
@@ -111,9 +92,11 @@ def create_rental(
     Create new rental.
     """
 
-    _validate_car_id(db=db, car_id=rental_create_dto.car_id)
-    _validate_customer_id(db=db, customer_id=rental_create_dto.customer_id)
-    _validate_reservation_id(db=db, reservation_id=rental_create_dto.reservation_id)
+    validate_car_with_id_exists(db=db, car_id=rental_create_dto.car_id)
+    validate_customer_with_id_exists(db=db, customer_id=rental_create_dto.customer_id)
+    validate_reservation_with_id_exists(
+        db=db, reservation_id=rental_create_dto.reservation_id
+    )
 
     rental_create_dto.status = RentalStatus.IN_PROGRESS
     rental = services.rental.create(db=db, obj_in=rental_create_dto)
@@ -136,9 +119,11 @@ def update_rental(
     if not rental:
         raise RentalNotFoundException()
 
-    _validate_car_id(db=db, car_id=rental_update_dto.car_id)
-    _validate_customer_id(db=db, customer_id=rental_update_dto.customer_id)
-    _validate_reservation_id(db=db, reservation_id=rental_update_dto.reservation_id)
+    validate_car_with_id_exists(db=db, car_id=rental_update_dto.car_id)
+    validate_customer_with_id_exists(db=db, customer_id=rental_update_dto.customer_id)
+    validate_reservation_with_id_exists(
+        db=db, reservation_id=rental_update_dto.reservation_id
+    )
 
     rental = services.rental.update(db=db, db_obj=rental, obj_in=rental_update_dto)
     return rental

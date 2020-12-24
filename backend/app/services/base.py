@@ -14,7 +14,7 @@ UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     def __init__(self, model: Type[ModelType]):
         """
-        base service object with default methods to Create, Read, Update, Delete (CRUD).
+        Base service object with default methods to Create, Read, Update, Delete (CRUD).
 
         **Parameters**
 
@@ -40,7 +40,6 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     def update(
         self, db: Session, *, db_obj: ModelType, obj_in: UpdateSchemaType
     ) -> ModelType:
-        # TODO extract
         obj_data = jsonable_encoder(db_obj)
         update_data = obj_in.dict(exclude_unset=True)
         for field in obj_data:

@@ -1,10 +1,16 @@
 import random
 import string
+from datetime import datetime
 from typing import Dict
 
+import pytz
 from fastapi.testclient import TestClient
 
 from app.core.config import settings
+
+
+def get_datetime(year, month, day, hour=0, minute=0):
+    return datetime(year, month, day, hour=hour, minute=minute, tzinfo=pytz.UTC)
 
 
 def random_lower_string() -> str:

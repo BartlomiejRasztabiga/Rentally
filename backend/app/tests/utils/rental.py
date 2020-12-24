@@ -27,8 +27,16 @@ def get_test_rental_create_dto(
     return rental_create_dto
 
 
-def create_rental(
-    db: Session, car: Car, customer: Customer, start_date: datetime, end_date: datetime
+def create_test_rental(
+    db: Session,
+    car: Car,
+    customer: Customer,
+    start_date: datetime,
+    end_date: datetime,
+    status: RentalStatus = RentalStatus.IN_PROGRESS,
+    reservation: Reservation = None,
 ) -> Rental:
-    rental_create_dto = get_test_rental_create_dto(car, customer, start_date, end_date)
+    rental_create_dto = get_test_rental_create_dto(
+        car, customer, start_date, end_date, status, reservation
+    )
     return services.rental.create(db=db, obj_in=rental_create_dto)

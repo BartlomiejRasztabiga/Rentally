@@ -17,22 +17,21 @@ from app.exceptions.reservation import (
 )
 from app.models.rental import RentalStatus
 from app.schemas.rental import RentalUpdateDto
-from app.tests.utils.car import create_random_car
-from app.tests.utils.customer import create_random_customer
-from app.tests.utils.rental import create_rental, get_test_rental_create_dto
-from app.tests.utils.reservation import create_reservation
+from app.tests.utils.car import create_test_car
+from app.tests.utils.customer import create_test_customer
+from app.tests.utils.rental import create_test_rental
+from app.tests.utils.reservation import create_test_reservation
+from app.tests.utils.utils import get_datetime
 
 
 def test_create_standalone_rental(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
-    start_date = datetime(2030, 12, 1, 9, 0, tzinfo=pytz.UTC)
-    end_date = datetime(2030, 12, 2, 12, 0, tzinfo=pytz.UTC)
+    start_date = get_datetime(2030, 12, 1, 9, 0)
+    end_date = get_datetime(2030, 12, 2, 12, 0)
 
-    rental_create_dto = get_test_rental_create_dto(car, customer, start_date, end_date)
-
-    rental = services.rental.create(db=db, obj_in=rental_create_dto)
+    rental = create_test_rental(db, car, customer, start_date, end_date)
 
     assert rental.id is not None
     assert rental.start_date == start_date
@@ -44,19 +43,17 @@ def test_create_standalone_rental(db: Session) -> None:
 
 
 def test_create_rental_with_reservation(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
-    start_date = datetime(2030, 12, 1, 9, 0, tzinfo=pytz.UTC)
-    end_date = datetime(2030, 12, 2, 12, 0, tzinfo=pytz.UTC)
+    start_date = get_datetime(2030, 12, 1, 9, 0)
+    end_date = get_datetime(2030, 12, 2, 12, 0)
 
-    reservation = create_reservation(db, car, customer, start_date, end_date)
+    reservation = create_test_reservation(db, car, customer, start_date, end_date)
 
-    rental_create_dto = get_test_rental_create_dto(
-        car, customer, start_date, end_date, reservation=reservation
+    rental = create_test_rental(
+        db, car, customer, start_date, end_date, reservation=reservation
     )
-
-    rental = services.rental.create(db=db, obj_in=rental_create_dto)
 
     assert rental.id is not None
     assert rental.start_date == start_date
@@ -70,21 +67,19 @@ def test_create_rental_with_reservation(db: Session) -> None:
 def test_update_rental_with_reservation_change_carid_customerid_will_throw(
     db: Session,
 ) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
-    car1 = create_random_car(db)
-    customer2 = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
+    car1 = create_test_car(db)
+    customer2 = create_test_customer(db)
 
-    start_date = datetime(2030, 12, 1, 9, 0, tzinfo=pytz.UTC)
-    end_date = datetime(2030, 12, 2, 12, 0, tzinfo=pytz.UTC)
+    start_date = get_datetime(2030, 12, 1, 9, 0)
+    end_date = get_datetime(2030, 12, 2, 12, 0)
 
-    reservation = create_reservation(db, car, customer, start_date, end_date)
+    reservation = create_test_reservation(db, car, customer, start_date, end_date)
 
-    rental_create_dto = get_test_rental_create_dto(
-        car, customer, start_date, end_date, reservation=reservation
+    rental = create_test_rental(
+        db, car, customer, start_date, end_date, reservation=reservation
     )
-
-    rental = services.rental.create(db=db, obj_in=rental_create_dto)
 
     rental_update_dto = RentalUpdateDto(
         car_id=car1.id,
@@ -100,15 +95,13 @@ def test_update_rental_with_reservation_change_carid_customerid_will_throw(
 
 
 def test_update_completed_rental_will_throw(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
-    start_date = datetime(2030, 12, 1, 9, 0, tzinfo=pytz.UTC)
-    end_date = datetime(2030, 12, 2, 12, 0, tzinfo=pytz.UTC)
+    start_date = get_datetime(2030, 12, 1, 9, 0)
+    end_date = get_datetime(2030, 12, 2, 12, 0)
 
-    rental_create_dto = get_test_rental_create_dto(car, customer, start_date, end_date)
-
-    rental = services.rental.create(db=db, obj_in=rental_create_dto)
+    rental = create_test_rental(db, car, customer, start_date, end_date)
 
     rental_update_dto = RentalUpdateDto(
         car_id=rental.car_id,
@@ -133,41 +126,35 @@ def test_update_completed_rental_will_throw(db: Session) -> None:
 
 
 def test_create_rental_in_the_past_will_throw(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
-    start_date = datetime(2020, 12, 1, 9, 0, tzinfo=pytz.UTC)
-    end_date = datetime(2020, 12, 2, 12, 0, tzinfo=pytz.UTC)
-
-    rental_create_dto = get_test_rental_create_dto(car, customer, start_date, end_date)
+    start_date = get_datetime(2020, 12, 1, 9, 0)
+    end_date = get_datetime(2020, 12, 2, 12, 0)
 
     with pytest.raises(RentalCreatedInThePastException):
-        services.rental.create(db=db, obj_in=rental_create_dto)
+        create_test_rental(db, car, customer, start_date, end_date)
 
 
 def test_create_rental_end_before_start_will_throw(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
-    start_date = datetime(2030, 12, 2, 9, 0, tzinfo=pytz.UTC)
-    end_date = datetime(2030, 12, 1, 12, 0, tzinfo=pytz.UTC)
-
-    rental_create_dto = get_test_rental_create_dto(car, customer, start_date, end_date)
+    start_date = get_datetime(2030, 12, 2, 9, 0)
+    end_date = get_datetime(2030, 12, 1, 12, 0)
 
     with pytest.raises(StartDateNotBeforeEndDateException):
-        services.rental.create(db=db, obj_in=rental_create_dto)
+        create_test_rental(db, car, customer, start_date, end_date)
 
 
 def test_get_active(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
-    start_date = datetime(2030, 12, 1, 12, 0, tzinfo=pytz.UTC)
-    end_date = datetime(2030, 12, 2, 9, 0, tzinfo=pytz.UTC)
+    start_date = get_datetime(2030, 12, 1, 12, 0)
+    end_date = get_datetime(2030, 12, 2, 9, 0)
 
-    rental_create_dto = get_test_rental_create_dto(car, customer, start_date, end_date)
-
-    rental = services.rental.create(db=db, obj_in=rental_create_dto)
+    rental = create_test_rental(db, car, customer, start_date, end_date)
 
     rental_update_dto = RentalUpdateDto(
         car_id=rental.car_id,
@@ -187,67 +174,52 @@ def test_get_active(db: Session) -> None:
 
 
 def test_create_rental_collision_with_another_rental_will_throw(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
-    start_date1 = datetime(2030, 12, 1, tzinfo=pytz.UTC)
-    end_date1 = datetime(2030, 12, 2, tzinfo=pytz.UTC)
+    start_date = get_datetime(2030, 12, 1)
+    end_date = get_datetime(2030, 12, 2)
 
-    start_date2 = datetime(2030, 12, 1, tzinfo=pytz.UTC)
-    end_date2 = datetime(2030, 12, 2, tzinfo=pytz.UTC)
-
-    rental_create_dto = get_test_rental_create_dto(
-        car, customer, start_date1, end_date1
-    )
-
-    services.rental.create(db=db, obj_in=rental_create_dto)
-
-    rental_create_dto = get_test_rental_create_dto(
-        car, customer, start_date2, end_date2
-    )
+    create_test_rental(db, car, customer, start_date, end_date)
 
     with pytest.raises(RentalCollisionException):
-        services.rental.create(db=db, obj_in=rental_create_dto)
+        create_test_rental(db, car, customer, start_date, end_date)
 
 
 def test_create_rental_collision_with_reservation_will_throw(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
-    start_date1 = datetime(2030, 12, 1, tzinfo=pytz.UTC)
-    end_date1 = datetime(2030, 12, 2, tzinfo=pytz.UTC)
+    start_date = get_datetime(2030, 12, 1)
+    end_date = get_datetime(2030, 12, 2)
 
-    create_reservation(db, car, customer, start_date1, end_date1)
-
-    rental_create_dto = get_test_rental_create_dto(
-        car, customer, start_date1, end_date1
-    )
+    create_test_reservation(db, car, customer, start_date, end_date)
 
     with pytest.raises(ReservationCollisionException):
-        services.rental.create(db=db, obj_in=rental_create_dto)
+        create_test_rental(db, car, customer, start_date, end_date)
 
 
 def test_get_overtime_rentals(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date1 = datetime.now(tz=pytz.UTC)
     end_date1 = datetime.now(tz=pytz.UTC) + timedelta(milliseconds=1)
 
-    rental = create_rental(db, car, customer, start_date1, end_date1)
+    rental = create_test_rental(db, car, customer, start_date1, end_date1)
 
     overtime = services.rental.get_overtime(db)
     assert rental.id in [rental.id for rental in overtime]
 
 
 def test_get_overtime_rentals_no_overtime(db: Session) -> None:
-    car = create_random_car(db)
-    customer = create_random_customer(db)
+    car = create_test_car(db)
+    customer = create_test_customer(db)
 
     start_date1 = datetime.now(tz=pytz.UTC)
     end_date1 = datetime.now(tz=pytz.UTC) + timedelta(days=1)
 
-    rental = create_rental(db, car, customer, start_date1, end_date1)
+    rental = create_test_rental(db, car, customer, start_date1, end_date1)
 
     overtime = services.rental.get_overtime(db)
     assert rental.id not in [rental.id for rental in overtime]

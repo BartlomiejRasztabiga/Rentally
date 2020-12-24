@@ -22,6 +22,6 @@ def get_test_car_create_dto() -> CarCreateDto:
     return car_create_dto
 
 
-def create_random_car(db: Session) -> models.Car:
+def create_test_car(db: Session) -> models.Car:
     car_create_dto = get_test_car_create_dto()
     return services.car.create(db=db, obj_in=car_create_dto)

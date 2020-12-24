@@ -2,7 +2,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.tests.utils.customer import create_random_customer
+from app.tests.utils.customer import create_test_customer
 
 
 def test_create_customer(
@@ -27,7 +27,7 @@ def test_create_customer(
 def test_get_customer_by_id(
     client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
-    customer = create_random_customer(db)
+    customer = create_test_customer(db)
     response = client.get(
         f"{settings.API_V1_STR}/customers/{customer.id}",
         headers=superuser_token_headers,
@@ -43,7 +43,7 @@ def test_get_customer_by_id(
 def test_update_customer(
     client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
-    customer = create_random_customer(db)
+    customer = create_test_customer(db)
 
     data = {
         "full_name": "Test customer",
@@ -66,7 +66,7 @@ def test_update_customer(
 def test_delete_customer(
     client: TestClient, superuser_token_headers: dict, db: Session
 ) -> None:
-    customer = create_random_customer(db)
+    customer = create_test_customer(db)
 
     response = client.delete(
         f"{settings.API_V1_STR}/customers/{customer.id}",
