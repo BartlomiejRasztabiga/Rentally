@@ -8,7 +8,6 @@ import {
   Grid,
   makeStyles,
   TextField,
-  Typography,
 } from "@material-ui/core";
 import clsx from "clsx";
 import { Link, useNavigate } from "react-router-dom";
@@ -39,6 +38,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ErrorBox from "../utils/ErrorBox";
 import SuccessSnackbar from "../utils/SuccessSnackbar";
+import LoadingError from "../utils/LoadingError";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -201,20 +201,7 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
   };
 
   if (loadingError) {
-    return (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: "100vh" }}
-      >
-        <Grid item xs={3}>
-          <Typography variant="h2">{loadingError}</Typography>
-        </Grid>
-      </Grid>
-    );
+    return <LoadingError loadingError={loadingError} />;
   }
 
   return (

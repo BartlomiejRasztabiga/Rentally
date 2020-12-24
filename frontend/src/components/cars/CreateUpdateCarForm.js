@@ -14,7 +14,6 @@ import {
   Paper,
   Select,
   TextField,
-  Typography,
 } from "@material-ui/core";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
@@ -34,6 +33,7 @@ import {
 } from "../../config";
 import ErrorBox from "../utils/ErrorBox";
 import SuccessSnackbar from "../utils/SuccessSnackbar";
+import LoadingError from "../utils/LoadingError";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -167,20 +167,7 @@ const CreateUpdateCarForm = ({ carId }) => {
   };
 
   if (loadingError) {
-    return (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: "100vh" }}
-      >
-        <Grid item xs={3}>
-          <Typography variant="h2">{loadingError}</Typography>
-        </Grid>
-      </Grid>
-    );
+    return <LoadingError loadingError={loadingError} />;
   }
 
   return (
