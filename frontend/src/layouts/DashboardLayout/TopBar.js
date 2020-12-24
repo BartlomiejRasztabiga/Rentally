@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
+const TopBar = ({ className, ...rest }) => {
   const classes = useStyles();
   const [notifications] = useState([]);
   const { setAccessToken } = useAuth();
@@ -56,7 +56,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
           </IconButton>
         </Hidden>
         <Hidden lgUp>
-          <IconButton color="inherit" onClick={onMobileNavOpen}>
+          <IconButton color="inherit">
             <MenuIcon />
           </IconButton>
         </Hidden>
@@ -66,8 +66,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
 };
 
 TopBar.propTypes = {
-  className: PropTypes.string,
-  onMobileNavOpen: PropTypes.func,
+  className: PropTypes.string
 };
 
 export default TopBar;
