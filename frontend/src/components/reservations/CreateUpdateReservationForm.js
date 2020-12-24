@@ -14,9 +14,6 @@ import clsx from "clsx";
 import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import Loading from "../Loading";
-import ReactJson from "react-json-view";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
 import {
   createReservation,
   deleteReservation,
@@ -41,6 +38,7 @@ import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ErrorBox from "../utils/ErrorBox";
+import SuccessSnackbar from "../utils/SuccessSnackbar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -223,14 +221,10 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
     <React.Fragment>
       {loaded || isInCreateMode ? (
         <Container className={classes.customerDetails}>
-          <Snackbar
-            open={successSnackbarOpen}
-            autoHideDuration={3000}
-            onClose={() => setSuccessSnackbarOpen(false)}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-          >
-            <Alert severity="success">Successfully saved!</Alert>
-          </Snackbar>
+          <SuccessSnackbar
+            successSnackbarOpen={successSnackbarOpen}
+            setSuccessSnackbarOpen={setSuccessSnackbarOpen}
+          />
           <Card className={clsx(classes.root)}>
             <CardContent>
               {postError && <ErrorBox error={JSON.parse(postError)} />}
