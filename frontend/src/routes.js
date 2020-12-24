@@ -11,7 +11,6 @@ import LoginView from "./views/auth/LoginView";
 import NotFoundView from "./views/errors/NotFoundView";
 import CarsListView from "./views/cars/CarsListView";
 import RegisterView from "./views/auth/RegisterView";
-import SettingsView from "./views/settings/SettingsView";
 import CarDetailsView from "./views/cars/CarDetailsView";
 import CreateCarView from "./views/cars/CreateCarView";
 import ReservationsListView from "./views/reservations/ReservationsListView";
@@ -49,7 +48,6 @@ const routes = [
       { path: "rentals/overtime", element: <OvertimeRentalsListView /> },
       { path: "rentals/:rentalId", element: <RentalDetailsView /> },
 
-      { path: "settings", element: <SettingsView /> },
       { path: "*", element: <Navigate to="/404" /> },
     ],
   },
