@@ -124,7 +124,7 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
   }
 
   return (
-    <React.Fragment>
+    <>
       {loaded || isInCreateMode ? (
         <Container className={classes.customerDetails}>
           <SuccessSnackbar
@@ -204,7 +204,7 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
       ) : (
         <Loading />
       )}
-    </React.Fragment>
+    </>
   );
 };
 

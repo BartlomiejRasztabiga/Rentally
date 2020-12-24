@@ -32,7 +32,7 @@ const CreateRentalView = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Container maxWidth={false} className={classes.rentalDetails}>
         <Box display="flex" justifyContent="flex-start">
           <Button color="primary" variant="contained" onClick={handleGoBack}>
@@ -49,7 +49,7 @@ const CreateRentalView = () => {
           endDate={endDate}
         />
       </Container>
-    </React.Fragment>
+    </>
   );
 };
 

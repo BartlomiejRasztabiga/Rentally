@@ -171,7 +171,7 @@ const CreateUpdateCarForm = ({ carId }) => {
   }
 
   return (
-    <React.Fragment>
+    <>
       {loaded || isInCreateMode ? (
         <Container className={classes.carDetails}>
           <SuccessSnackbar
@@ -546,7 +546,7 @@ const CreateUpdateCarForm = ({ carId }) => {
       ) : (
         <Loading />
       )}
-    </React.Fragment>
+    </>
   );
 };
 

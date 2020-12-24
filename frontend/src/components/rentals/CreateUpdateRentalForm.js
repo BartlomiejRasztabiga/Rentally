@@ -210,7 +210,7 @@ const CreateUpdateRentalForm = ({
   }
 
   return (
-    <React.Fragment>
+    <>
       {loaded || isInCreateMode ? (
         <Container className={classes.customerDetails}>
           <SuccessSnackbar
@@ -413,7 +413,7 @@ const CreateUpdateRentalForm = ({
       ) : (
         <Loading />
       )}
-    </React.Fragment>
+    </>
   );
 };
 

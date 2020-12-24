@@ -21,7 +21,7 @@ const CarDetails = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Container maxWidth={false} className={classes.carDetails}>
         <Box display="flex" justifyContent="flex-start">
           <Button color="primary" variant="contained" onClick={handleGoBack}>
@@ -32,7 +32,7 @@ const CarDetails = () => {
       <Container className={classes.carDetails}>
         <CreateUpdateCarForm carId={carId} />
       </Container>
-    </React.Fragment>
+    </>
   );
 };
 

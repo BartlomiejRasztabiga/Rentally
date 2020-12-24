@@ -29,7 +29,7 @@ const ReservationDetails = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Container maxWidth={false} className={classes.reservationDetails}>
         <Box display="flex" justifyContent="flex-start">
           <Button color="primary" variant="contained" onClick={handleGoBack}>
@@ -40,7 +40,7 @@ const ReservationDetails = () => {
       <Container className={classes.reservationDetails}>
         <CreateUpdateReservationForm reservationId={reservationId} />
       </Container>
-    </React.Fragment>
+    </>
   );
 };
 

@@ -205,7 +205,7 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
   }
 
   return (
-    <React.Fragment>
+    <>
       {loaded || isInCreateMode ? (
         <Container className={classes.customerDetails}>
           <SuccessSnackbar
@@ -386,7 +386,7 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
       ) : (
         <Loading />
       )}
-    </React.Fragment>
+    </>
   );
 };
 

@@ -25,7 +25,7 @@ const RentalDetailsView = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Container maxWidth={false} className={classes.rentalDetails}>
         <Box display="flex" justifyContent="flex-start">
           <Button color="primary" variant="contained" onClick={handleGoBack}>
@@ -36,7 +36,7 @@ const RentalDetailsView = () => {
       <Container className={classes.rentalDetails}>
         <CreateUpdateRentalForm rentalId={rentalId} />
       </Container>
-    </React.Fragment>
+    </>
   );
 };
 
