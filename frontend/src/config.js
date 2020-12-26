@@ -6,6 +6,7 @@ const CUSTOMERS_URL = API_URL + "/customers";
 const RESERVATIONS_URL = API_URL + "/reservations";
 const RENTALS_URL = API_URL + "/rentals";
 
+const APP_DASHBOARD_URL = "/app/dashboard";
 const APP_CARS_URL = "/app/cars";
 const APP_CUSTOMERS_URL = "/app/customers";
 const APP_RESERVATIONS_URL = "/app/reservations";
@@ -22,5 +23,6 @@ export {
   APP_CUSTOMERS_URL,
   APP_RESERVATIONS_URL,
   APP_RENTALS_URL,
+  APP_DASHBOARD_URL,
   RENTALS_URL,
 };
