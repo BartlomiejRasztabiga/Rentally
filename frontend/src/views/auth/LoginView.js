@@ -46,7 +46,6 @@ const LoginView = () => {
   };
 
   const handleSubmit = () => {
-    console.log("test");
     setIsSubmitting(true);
 
     getAccessToken(email, password)
