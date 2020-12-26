@@ -6,14 +6,6 @@ import history from "history/browser";
 import CreateUpdateCustomerForm from "../../../components/customers/CreateUpdateCustomerForm";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  link: {
-    color: "inherit",
-    textDecoration: "none",
-  },
   customerDetails: {
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(5),
@@ -29,7 +21,7 @@ const CustomerDetails = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Container maxWidth={false} className={classes.customerDetails}>
         <Box display="flex" justifyContent="flex-start">
           <Button color="primary" variant="contained" onClick={handleGoBack}>
@@ -40,12 +32,11 @@ const CustomerDetails = () => {
       <Container className={classes.customerDetails}>
         <CreateUpdateCustomerForm customerId={customerId} />
       </Container>
-    </React.Fragment>
+    </>
   );
 };
 
 CustomerDetails.propTypes = {
-  className: PropTypes.string,
   customerId: PropTypes.number,
 };
 

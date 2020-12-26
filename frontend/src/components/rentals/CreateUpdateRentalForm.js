@@ -8,15 +8,11 @@ import {
   Grid,
   makeStyles,
   TextField,
-  Typography,
 } from "@material-ui/core";
 import clsx from "clsx";
 import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import Loading from "../Loading";
-import ReactJson from "react-json-view";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
+import Loading from "../utils/Loading";
 import { getReservations } from "../../service/reservationsService";
 
 import {
@@ -41,6 +37,9 @@ import {
   updateRentalStatus,
 } from "../../service/rentalsService";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+import ErrorBox from "../utils/ErrorBox";
+import SuccessSnackbar from "../utils/SuccessSnackbar";
+import LoadingError from "../utils/LoadingError";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,10 +49,6 @@ const useStyles = makeStyles((theme) => ({
   link: {
     color: "inherit",
     textDecoration: "none",
-  },
-  reservationDetails: {
-    marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5),
   },
   errorBox: {
     margin: theme.spacing(5),
@@ -117,17 +112,14 @@ const CreateUpdateRentalForm = ({
   }, [isInEditMode, rentalId]);
 
   useEffect(() => {
-    // get available cars
     getCars().then((cars) => {
       setAvailableCars(cars);
     });
 
-    // get available customers
     getCustomers().then((customers) => {
       setAvailableCustomers(customers);
     });
 
-    // get available reservations
     getReservations().then((reservations) => {
       setAvailableReservations(reservations);
     });
@@ -142,17 +134,11 @@ const CreateUpdateRentalForm = ({
   };
 
   const handleStartDateChange = (date) => {
-    setRental({
-      ...rental,
-      start_date: date.format(),
-    });
+    updateRentalField("start_date", date.format());
   };
 
   const handleEndDateChange = (date) => {
-    setRental({
-      ...rental,
-      end_date: date.format(),
-    });
+    updateRentalField("end_date", date.format());
   };
 
   const updateRentalField = (fieldName, value) => {
@@ -211,42 +197,20 @@ const CreateUpdateRentalForm = ({
   };
 
   if (loadingError) {
-    return (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: "100vh" }}
-      >
-        <Grid item xs={3}>
-          <Typography variant="h2">{loadingError}</Typography>
-        </Grid>
-      </Grid>
-    );
+    return <LoadingError loadingError={loadingError} />;
   }
 
   return (
-    <React.Fragment>
+    <>
       {loaded || isInCreateMode ? (
         <Container className={classes.customerDetails}>
-          {/*TODO Can extract snackbar to another component? */}
-          <Snackbar
-            open={successSnackbarOpen}
-            autoHideDuration={3000}
-            onClose={() => setSuccessSnackbarOpen(false)}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-          >
-            <Alert severity="success">Successfully saved!</Alert>
-          </Snackbar>
+          <SuccessSnackbar
+            successSnackbarOpen={successSnackbarOpen}
+            setSuccessSnackbarOpen={setSuccessSnackbarOpen}
+          />
           <Card className={clsx(classes.root)}>
             <CardContent>
-              {postError && (
-                <div color="error" className={classes.errorBox}>
-                  <ReactJson src={JSON.parse(postError)} theme="ocean" />
-                </div>
-              )}
+              {postError && <ErrorBox error={JSON.parse(postError)} />}
               {isInEditMode && (
                 <Grid
                   container
@@ -440,7 +404,7 @@ const CreateUpdateRentalForm = ({
       ) : (
         <Loading />
       )}
-    </React.Fragment>
+    </>
   );
 };
 

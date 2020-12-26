@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Container, makeStyles } from "@material-ui/core";
-import Page from "src/components/Page";
 import { useNavigate } from "react-router";
 import { getReservations } from "../../../service/reservationsService";
 import ReservationsList from "../../../components/reservations/ReservationsList";
@@ -31,22 +30,20 @@ const ReservationsListView = () => {
   };
 
   return (
-    <Page className={classes.root}>
-      <Container maxWidth={false}>
-        <Box display="flex" justifyContent="flex-end">
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={handleAddReservation}
-          >
-            Add reservation
-          </Button>
-        </Box>
-        <Box mt={3}>
-          <ReservationsList reservations={reservations} />
-        </Box>
-      </Container>
-    </Page>
+    <Container maxWidth={false} className={classes.root}>
+      <Box display="flex" justifyContent="flex-end">
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={handleAddReservation}
+        >
+          Add reservation
+        </Button>
+      </Box>
+      <Box mt={3}>
+        <ReservationsList reservations={reservations} />
+      </Box>
+    </Container>
   );
 };
 

@@ -8,13 +8,11 @@ import {
   Grid,
   makeStyles,
   TextField,
-  Typography,
 } from "@material-ui/core";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import Loading from "../Loading";
-import ReactJson from "react-json-view";
+import Loading from "../utils/Loading";
 import {
   createCustomer,
   deleteCustomer,
@@ -22,17 +20,14 @@ import {
   updateCustomer,
 } from "../../service/customersService";
 import { APP_CUSTOMERS_URL } from "../../config";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
+import ErrorBox from "../utils/ErrorBox";
+import SuccessSnackbar from "../utils/SuccessSnackbar";
+import LoadingError from "../utils/LoadingError";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "column",
-  },
-  link: {
-    color: "inherit",
-    textDecoration: "none",
   },
   customerDetails: {
     marginTop: theme.spacing(5),
@@ -125,42 +120,20 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
   };
 
   if (loadingError) {
-    return (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: "100vh" }}
-      >
-        <Grid item xs={3}>
-          <Typography variant="h2">{loadingError}</Typography>
-        </Grid>
-      </Grid>
-    );
+    return <LoadingError loadingError={loadingError} />;
   }
 
   return (
-    <React.Fragment>
+    <>
       {loaded || isInCreateMode ? (
         <Container className={classes.customerDetails}>
-          {/*TODO Can extract snackbar to another component? */}
-          <Snackbar
-            open={successSnackbarOpen}
-            autoHideDuration={3000}
-            onClose={() => setSuccessSnackbarOpen(false)}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-          >
-            <Alert severity="success">Successfully saved!</Alert>
-          </Snackbar>
+          <SuccessSnackbar
+            successSnackbarOpen={successSnackbarOpen}
+            setSuccessSnackbarOpen={setSuccessSnackbarOpen}
+          />
           <Card className={clsx(classes.root)}>
             <CardContent>
-              {postError && (
-                <div color="error" className={classes.errorBox}>
-                  <ReactJson src={JSON.parse(postError)} theme="ocean" />
-                </div>
-              )}
+              {postError && <ErrorBox error={JSON.parse(postError)} />}
               <form autoComplete="off">
                 <Grid container spacing={3}>
                   <Grid item md={6} xs={12}>
@@ -231,7 +204,7 @@ const CreateUpdateCustomerForm = ({ customerId }) => {
       ) : (
         <Loading />
       )}
-    </React.Fragment>
+    </>
   );
 };
 

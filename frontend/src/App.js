@@ -1,4 +1,3 @@
-import "react-perfect-scrollbar/dist/css/styles.css";
 import React, { useEffect, useState } from "react";
 import { useRoutes } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core";
@@ -15,8 +14,6 @@ const App = () => {
   const [accessToken, setAccessTokenState] = useState(
     localStorage.getItem("access_token")
   );
-
-  // TODO can this be extracted to auth context?
 
   const setAccessToken = (data) => {
     if (!data) {

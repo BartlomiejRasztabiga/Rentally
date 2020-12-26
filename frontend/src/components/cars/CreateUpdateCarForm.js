@@ -14,7 +14,6 @@ import {
   Paper,
   Select,
   TextField,
-  Typography,
 } from "@material-ui/core";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
@@ -25,25 +24,21 @@ import {
   getCarById,
   updateCar,
 } from "../../service/carsService";
-import convertToBase64 from "../../utils/convertToBase64";
-import Loading from "../Loading";
-import ReactJson from "react-json-view";
+import convertFileToBase64 from "../../utils/convertFileToBase64";
+import Loading from "../utils/Loading";
 import {
   APP_CARS_URL,
   APP_RENTALS_URL,
   APP_RESERVATIONS_URL,
 } from "../../config";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
+import ErrorBox from "../utils/ErrorBox";
+import SuccessSnackbar from "../utils/SuccessSnackbar";
+import LoadingError from "../utils/LoadingError";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "column",
-  },
-  link: {
-    color: "inherit",
-    textDecoration: "none",
   },
   carDetails: {
     marginTop: theme.spacing(5),
@@ -104,7 +99,7 @@ const CreateUpdateCarForm = ({ carId }) => {
 
   const handleFileRead = async (event) => {
     const file = event.target.files[0];
-    const base64 = await convertToBase64(file);
+    const base64 = await convertFileToBase64(file);
     updateCarField("image_base64", base64);
   };
 
@@ -172,35 +167,17 @@ const CreateUpdateCarForm = ({ carId }) => {
   };
 
   if (loadingError) {
-    return (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: "100vh" }}
-      >
-        <Grid item xs={3}>
-          <Typography variant="h2">{loadingError}</Typography>
-        </Grid>
-      </Grid>
-    );
+    return <LoadingError loadingError={loadingError} />;
   }
 
   return (
-    <React.Fragment>
+    <>
       {loaded || isInCreateMode ? (
         <Container className={classes.carDetails}>
-          {/*TODO Can extract snackbar to another component? */}
-          <Snackbar
-            open={successSnackbarOpen}
-            autoHideDuration={3000}
-            onClose={() => setSuccessSnackbarOpen(false)}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-          >
-            <Alert severity="success">Successfully saved!</Alert>
-          </Snackbar>
+          <SuccessSnackbar
+            successSnackbarOpen={successSnackbarOpen}
+            setSuccessSnackbarOpen={setSuccessSnackbarOpen}
+          />
           <Card className={clsx(classes.root)}>
             <CardContent>
               <Box
@@ -236,11 +213,7 @@ const CreateUpdateCarForm = ({ carId }) => {
                   </Button>
                 </label>
               </Box>
-              {postError && (
-                <div color="error" className={classes.errorBox}>
-                  <ReactJson src={JSON.parse(postError)} theme="ocean" />
-                </div>
-              )}
+              {postError && <ErrorBox error={JSON.parse(postError)} />}
               {isInEditMode && (
                 <Grid
                   container
@@ -573,7 +546,7 @@ const CreateUpdateCarForm = ({ carId }) => {
       ) : (
         <Loading />
       )}
-    </React.Fragment>
+    </>
   );
 };
 

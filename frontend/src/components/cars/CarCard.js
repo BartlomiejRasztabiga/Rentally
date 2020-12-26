@@ -28,16 +28,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
   },
-  statsItem: {
+  detailsItem: {
     alignItems: "center",
     display: "flex",
-  },
-  statsIcon: {
-    marginRight: theme.spacing(1),
-  },
-  large: {
-    width: theme.spacing(20),
-    height: theme.spacing(20),
   },
   link: {
     color: "inherit",
@@ -85,19 +78,19 @@ const CarCard = ({ className, car, ...rest }) => {
       <Divider />
       <Box p={2}>
         <Grid container justify="space-between" spacing={2}>
-          <Grid className={classes.statsItem} item lg={3} md={3}>
+          <Grid className={classes.detailsItem} item lg={3} md={3}>
             <LocalGasStationIcon />
             <Typography color="textPrimary" variant="h6">
               {car.fuel_type}
             </Typography>
           </Grid>
-          <Grid className={classes.statsItem} item lg={3} md={3}>
+          <Grid className={classes.detailsItem} item lg={3} md={3}>
             <SettingsIcon />
             <Typography color="textPrimary" variant="h6">
               {car.gearbox_type}
             </Typography>
           </Grid>
-          <Grid className={classes.statsItem} item lg={4} md={4}>
+          <Grid className={classes.detailsItem} item lg={4} md={4}>
             <AttachMoneyIcon />
             <Typography color="textPrimary" variant="h5">
               {car.price_per_day} PLN / day
@@ -105,19 +98,19 @@ const CarCard = ({ className, car, ...rest }) => {
           </Grid>
         </Grid>
         <Grid container justify="space-between" spacing={2}>
-          <Grid className={classes.statsItem} item lg={3} md={3}>
+          <Grid className={classes.detailsItem} item lg={3} md={3}>
             <AcUnitIcon />
             <Typography color="textPrimary" variant="h6">
               {car.ac_type}
             </Typography>
           </Grid>
-          <Grid className={classes.statsItem} item lg={3} md={3}>
+          <Grid className={classes.detailsItem} item lg={3} md={3}>
             <PersonIcon />
             <Typography color="textPrimary" variant="h6">
               {car.number_of_passengers}
             </Typography>
           </Grid>
-          <Grid className={classes.statsItem} item lg={4} md={4}>
+          <Grid className={classes.detailsItem} item lg={4} md={4}>
             <AttachMoneyIcon />
             <Typography color="textPrimary" variant="h6">
               {car.deposit_amount

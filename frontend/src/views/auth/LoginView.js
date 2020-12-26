@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import * as Yup from "yup";
-import axios from "../../service/axios";
-import { Formik } from "formik";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
   Container,
-  Link,
   makeStyles,
   TextField,
   Typography,
 } from "@material-ui/core";
-import Page from "src/components/Page";
-import { ACCESS_TOKEN_URL } from "../../config";
 import { useAuth } from "../../context/auth";
+import { getAccessToken } from "../../service/authService";
+import { APP_DASHBOARD_URL } from "../../config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,139 +28,99 @@ const useStyles = makeStyles((theme) => ({
 const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const [isLoggedIn, setLoggedIn] = useState(false);
-  const [error, setError] = useState(null);
   const { setAccessToken } = useAuth();
 
-  const postLogin = (values, actions) => {
-    const username = values.email;
-    const password = values.password;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const bodyFormData = new FormData();
-    bodyFormData.append("username", username);
-    bodyFormData.append("password", password);
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
-    axios({
-      method: "post",
-      url: `${ACCESS_TOKEN_URL}/`,
-      data: bodyFormData,
-      headers: { "Content-Type": "multipart/form-data" },
-    })
-      .then(function (response) {
-        actions.setSubmitting(false);
-        actions.resetForm();
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
 
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    setIsSubmitting(true);
+
+    getAccessToken(email, password)
+      .then((response) => {
+        setIsSubmitting(false);
         setError(null);
 
         setAccessToken(response.data.access_token);
         setLoggedIn(true);
       })
-      .catch(function (_error) {
+      .catch((_error) => {
         if (_error.response) {
           const errorMsg = _error.response.data.detail;
           setError(errorMsg);
         }
-        actions.setSubmitting(false);
+        setIsSubmitting(false);
       });
   };
 
   useEffect(() => {
-    if (isLoggedIn) navigate("/app/dashboard", { replace: true });
+    if (isLoggedIn) navigate(APP_DASHBOARD_URL, { replace: true });
   }, [navigate, isLoggedIn]);
 
   return (
-    <Page className={classes.root}>
-      <Box
-        display="flex"
-        flexDirection="column"
-        height="100%"
-        justifyContent="center"
-      >
-        <Container maxWidth="sm">
-          <Formik
-            initialValues={{
-              email: "",
-              password: "",
-            }}
-            validationSchema={Yup.object().shape({
-              email: Yup.string()
-                .email("Must be a valid email")
-                .max(255)
-                .required("Email is required"),
-              password: Yup.string().max(255).required("Password is required"),
-            })}
-            onSubmit={(values, actions) => {
-              postLogin(values, actions);
-            }}
-          >
-            {({
-              errors,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-              isSubmitting,
-              touched,
-              values,
-            }) => (
-              <form onSubmit={handleSubmit}>
-                <Box mb={3}>
-                  <Typography color="textPrimary" variant="h2">
-                    Sign in
-                  </Typography>
-                </Box>
-                <TextField
-                  error={Boolean(touched.email && errors.email)}
-                  fullWidth
-                  helperText={touched.email && errors.email}
-                  label="Email Address"
-                  margin="normal"
-                  name="email"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  type="email"
-                  value={values.email}
-                  variant="outlined"
-                />
-                <TextField
-                  error={Boolean(touched.password && errors.password)}
-                  fullWidth
-                  helperText={touched.password && errors.password}
-                  label="Password"
-                  margin="normal"
-                  name="password"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  type="password"
-                  value={values.password}
-                  variant="outlined"
-                />
-                {error ? (
-                  <div className={classes.errorMessage}>{error}</div>
-                ) : null}
-                <Box my={2}>
-                  <Button
-                    color="primary"
-                    disabled={isSubmitting}
-                    fullWidth
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                  >
-                    Sign in
-                  </Button>
-                </Box>
-                <Typography color="textSecondary" variant="body1">
-                  Don&apos;t have an account?{" "}
-                  <Link component={RouterLink} to="/register" variant="h6">
-                    Sign up
-                  </Link>
-                </Typography>
-              </form>
-            )}
-          </Formik>
-        </Container>
-      </Box>
-    </Page>
+    <Box
+      display="flex"
+      flexDirection="column"
+      height="100%"
+      justifyContent="center"
+      className={classes.root}
+    >
+      <Container maxWidth="sm">
+        <form onSubmit={handleSubmit}>
+          <Box mb={3}>
+            <Typography color="textPrimary" variant="h2">
+              Sign in
+            </Typography>
+          </Box>
+          <TextField
+            fullWidth
+            label="Email Address"
+            margin="normal"
+            name="email"
+            onChange={handleEmailChange}
+            type="email"
+            value={email}
+            variant="outlined"
+          />
+          <TextField
+            fullWidth
+            label="Password"
+            margin="normal"
+            name="password"
+            onChange={handlePasswordChange}
+            type="password"
+            value={password}
+            variant="outlined"
+          />
+          {error ? <div className={classes.errorMessage}>{error}</div> : null}
+          <Box my={2}>
+            <Button
+              color="primary"
+              disabled={isSubmitting}
+              fullWidth
+              size="large"
+              type="submit"
+              variant="contained"
+              onClick={handleSubmit}
+            >
+              Sign in
+            </Button>
+          </Box>
+        </form>
+      </Container>
+    </Box>
   );
 };
 

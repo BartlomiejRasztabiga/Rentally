@@ -51,7 +51,7 @@ const NavItem = ({ className, href, icon: Icon, title, ...rest }) => {
         component={RouterLink}
         to={href}
       >
-        {Icon && <Icon className={classes.icon} size="20" />}
+        <Icon className={classes.icon} size="20" />
         <span className={classes.title}>{title}</span>
       </Button>
     </ListItem>

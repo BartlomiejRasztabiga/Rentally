@@ -6,21 +6,9 @@ import history from "history/browser";
 import CreateUpdateCarForm from "../../../components/cars/CreateUpdateCarForm";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  link: {
-    color: "inherit",
-    textDecoration: "none",
-  },
   carDetails: {
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(5),
-  },
-  uploadImageBox: {
-    alignItems: "center",
-    justifyContent: "center",
   },
 }));
 
@@ -33,7 +21,7 @@ const CarDetails = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Container maxWidth={false} className={classes.carDetails}>
         <Box display="flex" justifyContent="flex-start">
           <Button color="primary" variant="contained" onClick={handleGoBack}>
@@ -44,12 +32,11 @@ const CarDetails = () => {
       <Container className={classes.carDetails}>
         <CreateUpdateCarForm carId={carId} />
       </Container>
-    </React.Fragment>
+    </>
   );
 };
 
 CarDetails.propTypes = {
-  className: PropTypes.string,
   carId: PropTypes.number,
 };
 

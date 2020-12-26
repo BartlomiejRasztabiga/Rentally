@@ -8,15 +8,11 @@ import {
   Grid,
   makeStyles,
   TextField,
-  Typography,
 } from "@material-ui/core";
 import clsx from "clsx";
 import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import Loading from "../Loading";
-import ReactJson from "react-json-view";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
+import Loading from "../utils/Loading";
 import {
   createReservation,
   deleteReservation,
@@ -40,6 +36,9 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+import ErrorBox from "../utils/ErrorBox";
+import SuccessSnackbar from "../utils/SuccessSnackbar";
+import LoadingError from "../utils/LoadingError";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,10 +48,6 @@ const useStyles = makeStyles((theme) => ({
   link: {
     color: "inherit",
     textDecoration: "none",
-  },
-  reservationDetails: {
-    marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5),
   },
   errorBox: {
     margin: theme.spacing(5),
@@ -106,12 +101,10 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
   }, [isInEditMode, reservationId]);
 
   useEffect(() => {
-    // get available cars
     getCars().then((cars) => {
       setAvailableCars(cars);
     });
 
-    // get available customers
     getCustomers().then((customers) => {
       setAvailableCustomers(customers);
     });
@@ -126,17 +119,11 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
   };
 
   const handleStartDateChange = (date) => {
-    setReservation({
-      ...reservation,
-      start_date: date.format(),
-    });
+    updateReservationField("start_date", date.format());
   };
 
   const handleEndDateChange = (date) => {
-    setReservation({
-      ...reservation,
-      end_date: date.format(),
-    });
+    updateReservationField("end_date", date.format());
   };
 
   const updateReservationField = (fieldName, value) => {
@@ -206,42 +193,20 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
   };
 
   if (loadingError) {
-    return (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: "100vh" }}
-      >
-        <Grid item xs={3}>
-          <Typography variant="h2">{loadingError}</Typography>
-        </Grid>
-      </Grid>
-    );
+    return <LoadingError loadingError={loadingError} />;
   }
 
   return (
-    <React.Fragment>
+    <>
       {loaded || isInCreateMode ? (
         <Container className={classes.customerDetails}>
-          {/*TODO Can extract snackbar to another component? */}
-          <Snackbar
-            open={successSnackbarOpen}
-            autoHideDuration={3000}
-            onClose={() => setSuccessSnackbarOpen(false)}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-          >
-            <Alert severity="success">Successfully saved!</Alert>
-          </Snackbar>
+          <SuccessSnackbar
+            successSnackbarOpen={successSnackbarOpen}
+            setSuccessSnackbarOpen={setSuccessSnackbarOpen}
+          />
           <Card className={clsx(classes.root)}>
             <CardContent>
-              {postError && (
-                <div color="error" className={classes.errorBox}>
-                  <ReactJson src={JSON.parse(postError)} theme="ocean" />
-                </div>
-              )}
+              {postError && <ErrorBox error={JSON.parse(postError)} />}
               {isInEditMode && (
                 <Grid
                   container
@@ -413,7 +378,7 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
       ) : (
         <Loading />
       )}
-    </React.Fragment>
+    </>
   );
 };
 

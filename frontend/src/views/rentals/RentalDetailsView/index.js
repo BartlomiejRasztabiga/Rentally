@@ -10,10 +10,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
   },
-  link: {
-    color: "inherit",
-    textDecoration: "none",
-  },
   rentalDetails: {
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(5),
@@ -29,7 +25,7 @@ const RentalDetailsView = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Container maxWidth={false} className={classes.rentalDetails}>
         <Box display="flex" justifyContent="flex-start">
           <Button color="primary" variant="contained" onClick={handleGoBack}>
@@ -40,12 +36,11 @@ const RentalDetailsView = () => {
       <Container className={classes.rentalDetails}>
         <CreateUpdateRentalForm rentalId={rentalId} />
       </Container>
-    </React.Fragment>
+    </>
   );
 };
 
 RentalDetailsView.propTypes = {
-  className: PropTypes.string,
   rentalId: PropTypes.number,
 };
 

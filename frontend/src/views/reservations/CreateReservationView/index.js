@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Box, Button, Container, makeStyles } from "@material-ui/core";
 import history from "history/browser";
 import CreateUpdateReservationForm from "../../../components/reservations/CreateUpdateReservationForm";
@@ -27,7 +26,7 @@ const CreateReservationView = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Container maxWidth={false} className={classes.reservationDetails}>
         <Box display="flex" justifyContent="flex-start">
           <Button color="primary" variant="contained" onClick={handleGoBack}>
@@ -38,12 +37,8 @@ const CreateReservationView = () => {
       <Container className={classes.reservationDetails}>
         <CreateUpdateReservationForm carId={carId} />
       </Container>
-    </React.Fragment>
+    </>
   );
-};
-
-CreateReservationView.propTypes = {
-  className: PropTypes.string,
 };
 
 export default CreateReservationView;

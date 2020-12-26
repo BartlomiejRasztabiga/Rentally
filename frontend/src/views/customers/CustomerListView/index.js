@@ -10,7 +10,6 @@ import {
   SvgIcon,
   TextField,
 } from "@material-ui/core";
-import Page from "src/components/Page";
 import CustomersList from "../../../components/customers/CustomersList";
 import SearchIcon from "@material-ui/icons/Search";
 import { getCustomers } from "../../../service/customersService";
@@ -49,48 +48,40 @@ const CustomersListView = () => {
   };
 
   return (
-    <Page className={classes.root}>
-      <Container maxWidth={false}>
-        {/*TODO can extract this search box to another component and share state? redux or react context?*/}
-        {/*Should share it with CarsListView*/}
-        <Box display="flex" justifyContent="flex-end">
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={handleAddCustomer}
-          >
-            Add customer
-          </Button>
-        </Box>
-        <Box mt={3}>
-          <Card>
-            <CardContent>
-              <Box maxWidth={500}>
-                <TextField
-                  fullWidth
-                  value={searchPhrase}
-                  onChange={(e) => setSearchPhrase(e.target.value)}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SvgIcon fontSize="small" color="action">
-                          <SearchIcon />
-                        </SvgIcon>
-                      </InputAdornment>
-                    ),
-                  }}
-                  placeholder="Search customer"
-                  variant="outlined"
-                />
-              </Box>
-            </CardContent>
-          </Card>
-        </Box>
-        <Box mt={3}>
-          <CustomersList customers={filterCustomersBasedOnSearchPhrase()} />
-        </Box>
-      </Container>
-    </Page>
+    <Container maxWidth={false} className={classes.root}>
+      <Box display="flex" justifyContent="flex-end">
+        <Button color="primary" variant="contained" onClick={handleAddCustomer}>
+          Add customer
+        </Button>
+      </Box>
+      <Box mt={3}>
+        <Card>
+          <CardContent>
+            <Box maxWidth={500}>
+              <TextField
+                fullWidth
+                value={searchPhrase}
+                onChange={(e) => setSearchPhrase(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SvgIcon fontSize="small" color="action">
+                        <SearchIcon />
+                      </SvgIcon>
+                    </InputAdornment>
+                  ),
+                }}
+                placeholder="Search customer"
+                variant="outlined"
+              />
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
+      <Box mt={3}>
+        <CustomersList customers={filterCustomersBasedOnSearchPhrase()} />
+      </Box>
+    </Container>
   );
 };
 

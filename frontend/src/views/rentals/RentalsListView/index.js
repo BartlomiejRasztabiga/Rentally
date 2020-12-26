@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Container, makeStyles } from "@material-ui/core";
-import Page from "src/components/Page";
 import { useNavigate } from "react-router";
 import { APP_RENTALS_URL } from "../../../config";
 import { getRentals } from "../../../service/rentalsService";
@@ -31,18 +30,16 @@ const RentalsListView = () => {
   };
 
   return (
-    <Page className={classes.root}>
-      <Container maxWidth={false}>
-        <Box display="flex" justifyContent="flex-end">
-          <Button color="primary" variant="contained" onClick={handleAddRental}>
-            Add rental
-          </Button>
-        </Box>
-        <Box mt={3}>
-          <RentalsList rentals={rentals} />
-        </Box>
-      </Container>
-    </Page>
+    <Container maxWidth={false} className={classes.root}>
+      <Box display="flex" justifyContent="flex-end">
+        <Button color="primary" variant="contained" onClick={handleAddRental}>
+          Add rental
+        </Button>
+      </Box>
+      <Box mt={3}>
+        <RentalsList rentals={rentals} />
+      </Box>
+    </Container>
   );
 };
 

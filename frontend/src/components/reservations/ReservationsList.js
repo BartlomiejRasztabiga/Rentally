@@ -1,7 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import PerfectScrollbar from "react-perfect-scrollbar";
 import {
   Box,
   Card,
@@ -23,28 +22,26 @@ const ReservationsList = ({ className, reservations, ...rest }) => {
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
-      <PerfectScrollbar>
-        <Box minWidth={1050}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Car</TableCell>
-                <TableCell>Customer</TableCell>
-                <TableCell>Start date</TableCell>
-                <TableCell>End date</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell />
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {reservations.map((reservation, key) => (
-                <ReservationRow reservation={reservation} key={key} />
-              ))}
-            </TableBody>
-          </Table>
-        </Box>
-      </PerfectScrollbar>
+      <Box minWidth={1050}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>Car</TableCell>
+              <TableCell>Customer</TableCell>
+              <TableCell>Start date</TableCell>
+              <TableCell>End date</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {reservations.map((reservation, key) => (
+              <ReservationRow reservation={reservation} key={key} />
+            ))}
+          </TableBody>
+        </Table>
+      </Box>
     </Card>
   );
 };

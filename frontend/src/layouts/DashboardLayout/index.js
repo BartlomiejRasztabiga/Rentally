@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import { useAuth } from "../../context/auth";
@@ -37,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
 const DashboardLayout = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const [isMobileNavOpen, setMobileNavOpen] = useState(false);
   const { accessToken } = useAuth();
 
   useEffect(() => {
@@ -47,11 +46,8 @@ const DashboardLayout = () => {
   return (
     <div>
       <div className={classes.root}>
-        <TopBar onMobileNavOpen={() => setMobileNavOpen(true)} />
-        <NavBar
-          onMobileClose={() => setMobileNavOpen(false)}
-          openMobile={isMobileNavOpen}
-        />
+        <TopBar />
+        <NavBar />
         <div className={classes.wrapper}>
           <div className={classes.contentContainer}>
             <div className={classes.content}>

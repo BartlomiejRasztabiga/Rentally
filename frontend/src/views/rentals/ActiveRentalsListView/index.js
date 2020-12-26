@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
 import {
   Box,
@@ -33,13 +32,17 @@ const sortRentalsByDate = (rentals) => {
   });
 };
 
+const filterActiveRentals = (_rentals) => {
+  return _rentals.filter((rental) => rental.status !== "COMPLETED");
+};
+
 const ActiveRentalsListView = ({ className, ...rest }) => {
   const classes = useStyles();
   const [rentals, setRentals] = useState([]);
 
   useEffect(() => {
     getRentals().then((_rentals) => {
-      setRentals(_rentals.filter((rental) => rental.status !== "COMPLETED"));
+      setRentals(filterActiveRentals(_rentals));
     });
   }, []);
 
@@ -47,9 +50,7 @@ const ActiveRentalsListView = ({ className, ...rest }) => {
     <Card className={clsx(classes.root, className)} {...rest}>
       <CardHeader title="Rentals in progress" />
       <Divider />
-      <PerfectScrollbar>
-        <RentalsList rentals={sortRentalsByDate(rentals).slice(0, 5)} />
-      </PerfectScrollbar>
+      <RentalsList rentals={sortRentalsByDate(rentals).slice(0, 5)} />
       <Box display="flex" justifyContent="flex-end" p={2}>
         <Button
           color="primary"
