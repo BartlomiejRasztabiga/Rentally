@@ -134,17 +134,11 @@ const CreateUpdateRentalForm = ({
   };
 
   const handleStartDateChange = (date) => {
-    setRental({
-      ...rental,
-      start_date: date.format(),
-    });
+    updateRentalField("start_date", date.format())
   };
 
   const handleEndDateChange = (date) => {
-    setRental({
-      ...rental,
-      end_date: date.format(),
-    });
+    updateRentalField("end_date", date.format())
   };
 
   const updateRentalField = (fieldName, value) => {

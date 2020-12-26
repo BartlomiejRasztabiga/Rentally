@@ -119,17 +119,11 @@ const CreateUpdateReservationForm = ({ reservationId, carId }) => {
   };
 
   const handleStartDateChange = (date) => {
-    setReservation({
-      ...reservation,
-      start_date: date.format(),
-    });
+    updateReservationField("start_date", date.format())
   };
 
   const handleEndDateChange = (date) => {
-    setReservation({
-      ...reservation,
-      end_date: date.format(),
-    });
+    updateReservationField("end_date", date.format())
   };
 
   const updateReservationField = (fieldName, value) => {
