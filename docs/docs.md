@@ -167,7 +167,7 @@ const API_URL = "http://localhost:8080/api/v1";
 
 &nbsp;
 
-## Ważniejsze przykłady kodu
+## Wybrane przykłady kodu
 
 ### Backend
 
