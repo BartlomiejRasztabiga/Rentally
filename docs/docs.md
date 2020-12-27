@@ -31,6 +31,14 @@ Aplikacja webowa zbudowana przy użyciu biblioteki React.js oraz bibliotek pomoc
 
 ## Jak uruchomić aplikację/testy
 
+### Wymagania:
+- Docker
+- Docker-compose
+- Node + npm
+- Poetry
+- Baza PostgreSQL (tylko jeżeli chcemy uruchomić backend bez Dockera)
+- Przeglądarka internetowa oparta o Chromium, np. Google Chrome, Opera, Microsoft Edge (z powodów mi jeszcze nie znanych aplikacja webowa nie działa w przeglądarce Firefox)
+
 ### Backend (testy)
 Aby uruchomić testy, najlepiej uruchomić skrypt scripts/test-docker.sh, który tworzy 2 kontenery Dockera przy pomocy docker-compose (backend + baza danych PostgreSQL) na podstawie zmiennych środowiskowych zawartych w pliku .env
 
@@ -41,6 +49,8 @@ sudo chmod +x ./scripts/test-docker.sh
 ```
 
 Można też uruchomić testy w standardowy sposób, jednak wymaga to działającej instancji bazy danych PostgreSQL, zainicjalizowania środowiska wirtualnego aplikacji oraz uruchomienia skryptów prestart.sh i tests-start.sh.
+
+Aktualne pokrycie testami backendu wynosi około 96%.
 
 ### Backend (aplikacja)
 Aby uruchomić aplikację należy najpierw zainstalować jej zależności oraz zainicjalizować środowisko wirtualne. Do zarządzania zależnościami, zamiast pip-a użyłem poetry, które działaniem przypomina node package manager (npm).
@@ -445,5 +455,129 @@ const API_URL = "http://localhost:8080/api/v1";
 
     Metody *get_rentals_for_this_car* i *get_reservations_for_this_car* przyjmują opcjonalnie identyfikatory obiektów, dla których sprawdzana jest dostępność. 
     Jeżeli identyfikatory te są przekazane do wywołania metod, to rekordy o podanych identyfikatorach są odfiltrowywane przed zwróceniem listy obiektów.
-    
+
     Jest to używane przy walidacji aktualizacji obiektów, np. aktualizując rezerwację *xyz*, sprawdzamy kolizje ze wszystkimi obiektami rezerwacji poza samą rezerwacją *xyz*.
+
+### Frontend
+
+- ### App (src/App.js)
+    ```javascript
+    const App = () => {
+    const routing = useRoutes(routes);
+    const [accessToken, setAccessTokenState] = useState(
+        localStorage.getItem("access_token")
+    );
+
+    const setAccessToken = (data) => {
+        if (!data) {
+            localStorage.removeItem("access_token");
+            setAccessTokenState(null);
+        } else {
+            localStorage.setItem("access_token", data);
+            setAccessTokenState(data);
+        }
+    };
+
+    useEffect(() => {
+        // check if JWT is correct and not expired
+        (async () => {
+            if (accessToken) {
+                try {
+                    await getMe(accessToken);
+                } catch (e) {
+                    setAccessToken(null);
+                }
+            }
+            })();
+    }, [accessToken]);
+
+    return (
+        <AuthContext.Provider value={{ accessToken, setAccessToken }}>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+                <ThemeProvider theme={theme}>
+                <GlobalStyles />
+                {routing}
+                </ThemeProvider>
+            </MuiPickersUtilsProvider>
+        </AuthContext.Provider>
+        );
+    };
+    ```
+    W głównym komponencie aplikacji znajduje się logika ustawiania stanu globalnego kontekstu uwierzytelniania, który przechowuje aktualnie używany token JWT.
+
+    Dodatkowo, w hooku useEffect, przy każdej zmianie wartości *accessToken* sprawdzamy czy token jest poprawny i nadal ważny, dlatego np. przy wejściu użytkownika na stronę po jakimś czasie, token przechowywany w *localStorage* jest już nieważny, a użytkownik jest przekierowywany na stronę logowania.
+
+    Token JWT jest zawsze przechowywany w localStorage, co umożliwia użycie tego samego tokenu pomiędzy sesjami użytkownika - użytkownik jest "zapamiętywany" nawet po zamknięciu karty z aplikacją. Stanowi to podatność, ponieważ token przechowywany jest w plain texcie, ale na potrzeby projektu uznaję to za wystarczająco bezpieczne.
+
+- ### Axios service (src/service/axios.js)
+    ```javascript
+    const axiosService = () => {
+        let instance = axios.create();
+
+        // Set the Authorization token for any request
+        instance.interceptors.request.use(function (config) {
+            const token = localStorage.getItem("access_token");
+            config.headers.Authorization = token ? `Bearer ${token}` : "";
+            return config;
+        });
+
+        return instance;
+    };
+    ```
+    Powyższa funkcja zwraca instancję usługi axios, która umożliwia wykonywanie żądań http do backendu. 
+
+    Domyślnie każde żądanie jest opatrzone nagłówkiem Authorization, którego wartość to ("Bearer " + aktualna wartość tokenu JWT)przechowywanego w *localStorage*.
+
+- ### Routes (src/routes.js)
+    ```javascript
+    const routes = [
+        {
+            path: "app",
+            element: <DashboardLayout />,
+            children: [
+                { path: "dashboard", element: <DashboardView /> },
+
+                { path: "cars", element: <CarsListView /> },
+                { path: "cars/new", element: <CreateCarView /> },
+                { path: "cars/:carId", element: <CarDetailsView /> },
+
+                { path: "customers", element: <CustomersListView /> },
+                { path: "customers/new", element: <CreateCustomerView /> },
+                { path: "customers/:customerId", element: <CustomerDetailsView /> },
+
+                { path: "reservations", element: <ReservationsListView /> },
+                { path: "reservations/new", element: <CreateReservationView /> },
+                {
+                    path: "reservations/:reservationId",
+                    element: <ReservationDetailsView />,
+                },
+
+                { path: "rentals", element: <RentalsListView /> },
+                { path: "rentals/new", element: <CreateRentalView /> },
+                { path: "rentals/overtime", element: <OvertimeRentalsListView /> },
+                { path: "rentals/:rentalId", element: <RentalDetailsView /> },
+
+                { path: "*", element: <Navigate to="/404" /> },
+            ],
+        },
+        {
+            path: "/",
+            element: <MainLayout />,
+            children: [
+                { path: "login", element: <LoginView /> },
+                { path: "404", element: <NotFoundView /> },
+                { path: "/", element: <Navigate to="/app/dashboard" /> },
+                { path: "*", element: <Navigate to="/404" /> },
+            ],
+        },
+    ];
+    ```
+    Powyższy plik zawiera konfiguracją react-routera. Jest to lista mappingów ścieżki w aplikacji (URL) na komponent, który powinien zostać wyświetlony. 
+
+    Ścieżki są podzielone na 2 kategorie, Dashboard (faktyczna aplikacja) i Main (ekran logowania).
+
+    &nbsp;
+
+    Za ważne elementy można również uznać komponenty z formularzami, np. CreateUpdateCarForm, ale ze względu na ich rozmiar nie zawieram ich w tej dokumentacji.
+
+## Wdrożenie
