@@ -96,4 +96,30 @@ Aby aplikacja mogła skomunikować się z serwerem należy ustawić URL serwera 
 const API_URL = "http://localhost:8080/api/v1";
 ```
 
+## Użyte technologie
+
+### Backend
+- FastAPI - framework do tworzenia RESTowych API
+- Pydantic - biblioteka do walidacji danych
+- SQLAlchemy - biblioteka do mapowania obiektowo-relacyjnego
+- Alembic - narzędzie do generowania i wykonywania migracji SQL
+- PostgreSQL - silnik baz danych SQL
+- Pytest - biblioteka do wykonywania testów jednostkowych
+- Uvicorn - serwer ASGI (Asynchronous Server Gateway Interface) służący do uruchamiania kodu FastAPI
+
+### Frontend
+- React.js - biblioteka/framework do budowania dynamicznych aplikacji webowych
+- Material-ui - biblioteka zawierająca ostylowane komponenty Reacta, służąca do budowania responsywnych interfejsów użytkownika
+- Axios - biblioteka do wykonywania żądań HTTP
+- Moment.js - biblioteka do zaawansowanej obsługi i formatowania dat
+- React Router - biblioteka do obsługi routingu w aplikacjach napisanych w React.js
+
+DOPISAĆ RESZTE?
+
 ## Podział kodu
+
+### Backend
+
+### Frontend
+
+## Przykłady kodu (ważniejsze)
