@@ -10,9 +10,15 @@ from app.services.base import BaseService
 
 class UserService(BaseService[User, UserCreateDto, UserUpdateDto]):
     def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
+        """
+        Returns user by email
+        """
         return db.query(User).filter(User.email == email).first()
 
     def create(self, db: Session, *, obj_in: UserCreateDto) -> User:
+        """
+        Creates new user
+        """
         db_obj = User(
             email=obj_in.email,
             hashed_password=get_password_hash(obj_in.password),
@@ -25,6 +31,9 @@ class UserService(BaseService[User, UserCreateDto, UserUpdateDto]):
         return db_obj
 
     def update(self, db: Session, *, db_obj: User, obj_in: UserUpdateDto) -> User:
+        """
+        Updates given user
+        """
         update_data = obj_in.dict(exclude_unset=True)
         if update_data["password"]:
             hashed_password = get_password_hash(update_data["password"])
@@ -34,6 +43,9 @@ class UserService(BaseService[User, UserCreateDto, UserUpdateDto]):
         return super().update(db, db_obj=db_obj, obj_in=obj_in)
 
     def authenticate(self, db: Session, *, email: str, password: str) -> Optional[User]:
+        """
+        Returns user if user exists and password is correct, returns None otherwise
+        """
         _user = self.get_by_email(db, email=email)
         if not _user:
             return None
@@ -42,6 +54,9 @@ class UserService(BaseService[User, UserCreateDto, UserUpdateDto]):
         return _user
 
     def is_admin(self, _user: User) -> bool:
+        """
+        Returns True if user is an admin, False otherwise
+        """
         return _user.is_admin
 
 

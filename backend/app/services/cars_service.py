@@ -14,6 +14,9 @@ class CarService(BaseService[Car, CarCreateDto, CarUpdateDto]):
     def get_by_criteria(
         self, db: Session, cars_search_query: CarsSearchQuery
     ) -> List[Car]:
+        """
+        Returns cars matching criteria given in CarsSearchQuery
+        """
         conditions = cars_search_query.to_conditions()
         found_cars = db.query(Car).filter(and_(*conditions)).all()
 
@@ -30,6 +33,9 @@ class CarService(BaseService[Car, CarCreateDto, CarUpdateDto]):
         cars: List[Car],
         availability_dates: Optional[AvailabilityDatesRange],
     ) -> List[Car]:
+        """
+        Given list of cars, returns filtered list of cars that excludes cars that are not available in given dates
+        """
         if availability_dates:
             cars = [
                 _car

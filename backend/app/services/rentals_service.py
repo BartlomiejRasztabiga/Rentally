@@ -53,6 +53,9 @@ class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
     def validate_availability_on_create(
         self, db: Session, _rental: RentalCreateDto
     ) -> None:
+        """
+        Validates that new rental doesn't collide with other reservation or rental
+        """
         rental_timeframe = Interval(_rental.start_date, _rental.end_date)
 
         if is_colliding_with_other_reservations(
@@ -66,6 +69,9 @@ class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
     def validate_availability_on_update(
         self, db: Session, _rental: RentalUpdateDto, current_rental_id: int = None,
     ) -> None:
+        """
+        Validates that updated rental doesn't collide with other reservation or rental (apart from itself)
+        """
         rental_timeframe = Interval(_rental.start_date, _rental.end_date)
 
         if is_colliding_with_other_reservations(
@@ -86,6 +92,9 @@ class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
             raise UpdatingCompletedRentalException()
 
     def create(self, db: Session, *, obj_in: RentalCreateDto) -> Rental:
+        """
+        Creates new rental
+        """
         validate_start_date_before_end_date(obj_in.start_date, obj_in.end_date)
         self.validate_availability_on_create(db, obj_in)
         self.validate_start_date_in_future(obj_in.start_date)
@@ -101,6 +110,9 @@ class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
         return super().create(db=db, obj_in=obj_in)
 
     def update(self, db: Session, *, db_obj: Rental, obj_in: RentalUpdateDto) -> Rental:
+        """
+        Updates given rental
+        """
         self.validate_old_status_on_update(db_obj.status)  # type: ignore
         validate_start_date_before_end_date(obj_in.start_date, obj_in.end_date)
         self.validate_availability_on_update(db, obj_in, db_obj.id)
@@ -109,6 +121,9 @@ class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
         return super().update(db=db, db_obj=db_obj, obj_in=obj_in)
 
     def get_active_by_car_id(self, db: Session, car_id: int) -> List[Rental]:
+        """
+        Returns all active rentals by car id
+        """
         return (
             db.query(Rental)
             .filter(Rental.car_id == car_id, Rental.status == RentalStatus.IN_PROGRESS)
@@ -116,9 +131,15 @@ class RentalService(BaseService[Rental, RentalCreateDto, RentalUpdateDto]):
         )
 
     def get_active(self, db: Session) -> List[Rental]:
+        """
+        Returns all active rentals
+        """
         return db.query(Rental).filter(Rental.status == RentalStatus.IN_PROGRESS).all()
 
     def get_overtime(self, db: Session) -> List[Rental]:
+        """
+        Returns all overtime (end_date < now) rentals
+        """
         now = datetime.now()
         return (
             db.query(Rental)
