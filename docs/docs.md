@@ -107,6 +107,14 @@ Aby aplikacja mogła skomunikować się z serwerem, należy ustawić URL serwera
 const API_URL = "http://localhost:8080/api/v1";
 ```
 
+Login i hasło pierwszego użytkownika są ustawiane w pliku .env.
+
+Domyślne wartości to:
+```properties
+email=admin@rentally.com
+password=5d87bf6ee052598c
+```
+
 ## Użyte technologie
 
 ### Backend
@@ -581,3 +589,15 @@ const API_URL = "http://localhost:8080/api/v1";
     Za ważne elementy można również uznać komponenty z formularzami, np. CreateUpdateCarForm, ale ze względu na ich rozmiar nie zawieram ich w tej dokumentacji.
 
 ## Wdrożenie
+
+Backend jest wdrożony na Heroku i odpowiada pod następującym adresem:
+[](https://rentally-pipr-backend.herokuapp.com/)
+
+Frontend (webapp) jest również wdrożony na Heroku i odpowiada pod następującym adresem:
+[](https://rentally-pipr-webapp.herokuapp.com/)
+
+Login i hasło użytkownika to:
+```properties
+email=admin@rentally.com
+password=5d87bf6ee052598c
+```
