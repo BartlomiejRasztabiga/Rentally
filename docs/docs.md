@@ -1,5 +1,6 @@
 # Dokumentacja Projektu PIPR
 ### (System do obsługi wypożyczalni pojazdów)
+### Autor: Bartłomiej Rasztabiga
 
 &nbsp;
 
@@ -603,3 +604,7 @@ password=5d87bf6ee052598c
 ```
 
 Używam darmowych instancji, które usypiają, jeżeli nie ma na nich ruchu przez 30 minut, dlatego pierwsze żądanie do aplikacji webowej, jak i do rest api może być obarczone kilkunastosekundowym opóźnieniem.
+
+### Oświadczam, że zarówno powyższa dokumentacja, jak i cały kod źródłowy projektu zostały przeze mnie wykonane samodzielnie.
+
+### Bartłomiej Rasztabiga, 304117
