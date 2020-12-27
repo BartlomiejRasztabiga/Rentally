@@ -54,7 +54,20 @@ Można też uruchomić testy w standardowy sposób, jednak wymaga to działając
 Aktualne pokrycie testami backendu wynosi około 96%.
 
 ### Backend (aplikacja)
-Aby uruchomić aplikację należy najpierw zainstalować jej zależności oraz zainicjalizować środowisko wirtualne. Do zarządzania zależnościami, zamiast pip-a użyłem poetry, które działaniem przypomina node package manager (npm).
+Aplikację można uruchomić na 2 sposoby. Używając docker-compose lub standardowo.
+
+Aby uruchomić aplikację używając docker-compose należy wykonać następujące komendy:
+```bash
+docker-compose up -d
+docker-compose exec -T backend bash ./prestart.sh
+docker-compose exec -T backend bash ./start.sh
+```
+
+Domyślnie backend wystartuje na porcie 8080.
+
+&nbsp;
+
+Aby uruchomić aplikację standardowo należy najpierw zainstalować jej zależności oraz zainicjalizować środowisko wirtualne. Do zarządzania zależnościami, zamiast pip-a użyłem poetry, które działaniem przypomina node package manager (npm).
 
 Narzędzie to należy zainstalować zgodnie z instrukcją na stronie producenta [](https://python-poetry.org/docs/)
 
