@@ -24,7 +24,8 @@ Model bazy danych jest zgodny z poniższym schematem relacji encji:
 
 
 &nbsp;
-
+&nbsp;
+&nbsp;
 ### Frontend
 Aplikacja webowa zbudowana przy użyciu biblioteki React.js oraz bibliotek pomocnicznych (material-ui, axios).
 
@@ -126,7 +127,32 @@ const API_URL = "http://localhost:8080/api/v1";
 ## Podział kodu
 
 ### Backend
+- alembic/ (migracje SQL)
+- app/ (główny folder aplikacji):
+    - api/ (definicje kontrolerów RESTowych)
+    - core/ (konfiguracja zmiennych środowiskowych i JWT)
+    - db/ (konfiguracja połączenia z bazą danych)
+    - exceptions/ (definicje wyjątków)
+    - models/ (definicje modeli bazodanowych)
+    - schemas/ (definicje obiektów - Pydantic)
+    - services/ (definicje serwisów implementujących logikę biznesową)
+    - tests/ (definicje testów):
+        - api/ (testy endpointów)
+        - services/ (testy serwisów)
+        - utils/ (metody pomocniczne, używane w testach)
+    - utils/ (definicje metod pomocnicznych)
+    - validators/ (definicje szeroko pojętych walidatorów - np. walidator dostępności samochodu w podanych datach)
+- scripts/ (skrypty pomocnicze)
 
 ### Frontend
+- public (definicja index.html, stałych zasobów, loga, ikon itd.)
+- src: (główny folder aplikacji)
+    - components (definicje reużywalnych komponentów)
+    - context (definicja kontekstów Reacta, aktualnie jedynie AuthContext)
+    - layouts (definicje dwóch układów kompozycyjnych, Main i DashboardLayout oraz sekcji nawigacyjnej)
+    - service (definicje serwisów odpowiadających za pobieranie i wysyłanie danych do backendu przez HTTP)
+    - theme (definicja motywu material-ui aplikacji)
+    - utils (definicje metod pomocnicznych)
+    - views (definicje widoków, każdy widok odpowiada za jedną ścieżkę np. /app/cars => CarsListView.js)
 
 ## Przykłady kodu (ważniejsze)
