@@ -14,7 +14,6 @@ requests = "^2.23.0"
 passlib = {extras = ["bcrypt"], version = "^1.7.2"}
 tenacity = "^6.1.0"
 pydantic = "^1.4"
-raven = "^6.10.0"
 gunicorn = "^20.0.4"
 jinja2 = "^2.11.2"
 psycopg2-binary = "^2.8.5"

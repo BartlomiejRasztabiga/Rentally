@@ -106,6 +106,13 @@ const API_URL = "http://localhost:8080/api/v1";
 - PostgreSQL - silnik baz danych SQL
 - Pytest - biblioteka do wykonywania testów jednostkowych
 - Uvicorn - serwer ASGI (Asynchronous Server Gateway Interface) służący do uruchamiania kodu FastAPI
+- Tenacity - biblioteka do "powtarzania" czynności okresowo i ponawiania po błedzie
+- Passlib - biblioteka do hashowania i weryfikacji m.in. haseł
+- psycopg2 - biblioteka do komunikacji z bazą PostgreSQL
+- python-jose - biblioteka do obsługi m.in. tokenów JWT
+- python-dotenv - biblioteka do ładowania zmiennych środowiskowych z plików .env
+- pytz - biblioteka do obsługi stref czasowych
+- fastapi-utils - biblioteka zawierająca usprawnienia do frameworka FastAPI, używana do wykonywania zadań cyklicznie
 
 ### Frontend
 - React.js - biblioteka/framework do budowania dynamicznych aplikacji webowych
@@ -113,8 +120,8 @@ const API_URL = "http://localhost:8080/api/v1";
 - Axios - biblioteka do wykonywania żądań HTTP
 - Moment.js - biblioteka do zaawansowanej obsługi i formatowania dat
 - React Router - biblioteka do obsługi routingu w aplikacjach napisanych w React.js
-
-DOPISAĆ RESZTE?
+- react-json-view - biblioteka dodająca komponent służący do wyświetlania prostego edytora JSON, służąca w projekcie do wyświetlania błędów zwracanych przez API
+- history - biblioteka umożliwiająca korzystanie z historii odwiedzionych URLi w aplikacji, umożliwia np. cofanie się
 
 ## Podział kodu
 
