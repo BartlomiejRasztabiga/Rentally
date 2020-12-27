@@ -37,7 +37,7 @@ Aplikacja webowa zbudowana przy użyciu biblioteki React.js oraz bibliotek pomoc
 - Node + npm
 - Poetry
 - Baza PostgreSQL (tylko jeżeli chcemy uruchomić backend bez Dockera)
-- Przeglądarka internetowa oparta o Chromium, np. Google Chrome, Opera, Microsoft Edge (z powodów mi jeszcze nie znanych aplikacja webowa nie działa w przeglądarce Firefox)
+- Przeglądarka internetowa oparta o Chromium, np. Google Chrome, Opera, Microsoft Edge (z powodów mi jeszcze nieznanych aplikacja webowa nie działa w przeglądarce Firefox)
 
 ### Backend (testy)
 Aby uruchomić testy, najlepiej uruchomić skrypt scripts/test-docker.sh, który tworzy 2 kontenery Dockera przy pomocy docker-compose (backend + baza danych PostgreSQL) na podstawie zmiennych środowiskowych zawartych w pliku .env
@@ -125,7 +125,7 @@ password=5d87bf6ee052598c
 - PostgreSQL - silnik baz danych SQL
 - Pytest - biblioteka do wykonywania testów jednostkowych
 - Uvicorn - serwer ASGI (Asynchronous Server Gateway Interface) służący do uruchamiania kodu FastAPI
-- Tenacity - biblioteka do "powtarzania" czynności okresowo i ponawiania po błedzie
+- Tenacity - biblioteka do "powtarzania" czynności okresowo i ponawiania po błędzie
 - Passlib - biblioteka do hashowania i weryfikacji m.in. haseł
 - psycopg2 - biblioteka do komunikacji z bazą PostgreSQL
 - python-jose - biblioteka do obsługi m.in. tokenów JWT
@@ -322,7 +322,7 @@ password=5d87bf6ee052598c
     - CreateSchemaType (typ schema tworzącego obiekt - CreateDto)
     - UpdateSchemaType (typ schema aktualizującego obiekt - UpdateDto)
     
-    Klasa ta jest wykorzystywana w każdy serwisie, a w sczególności w CustomersService, który to serwis nie wymaga żadnych funkcjonalności, poza oferowanymi przez klasę BaseService, przez co znacząco zmniejszyłem duplikację kodu:
+    Klasa ta jest wykorzystywana w każdy serwisie, a w szczególności w CustomersService, który to serwis nie wymaga żadnych funkcjonalności, poza oferowanymi przez klasę BaseService, przez co znacząco zmniejszyłem duplikację kodu:
 
     ```python
     from app.models.customer import Customer
@@ -513,9 +513,9 @@ password=5d87bf6ee052598c
     ```
     W głównym komponencie aplikacji znajduje się logika ustawiania stanu globalnego kontekstu uwierzytelniania, który przechowuje aktualnie używany token JWT.
 
-    Dodatkowo, w hooku useEffect, przy każdej zmianie wartości *accessToken* sprawdzamy czy token jest poprawny i nadal ważny, dlatego np. przy wejściu użytkownika na stronę po jakimś czasie, token przechowywany w *localStorage* jest już nieważny, a użytkownik jest przekierowywany na stronę logowania.
+    Dodatkowo w hooku useEffect, przy każdej zmianie wartości *accessToken* sprawdzamy, czy token jest poprawny i nadal ważny, dlatego np. przy wejściu użytkownika na stronę po jakimś czasie, token przechowywany w *localStorage* jest już nieważny, a użytkownik jest przekierowywany na stronę logowania.
 
-    Token JWT jest zawsze przechowywany w localStorage, co umożliwia użycie tego samego tokenu pomiędzy sesjami użytkownika - użytkownik jest "zapamiętywany" nawet po zamknięciu karty z aplikacją. Stanowi to podatność, ponieważ token przechowywany jest w plain texcie, ale na potrzeby projektu uznaję to za wystarczająco bezpieczne.
+    Token JWT jest zawsze przechowywany w localStorage, co umożliwia użycie tego samego tokenu pomiędzy sesjami użytkownika -- użytkownik jest "zapamiętywany" nawet po zamknięciu karty z aplikacją. Stanowi to podatność, ponieważ token przechowywany jest w plain text, ale na potrzeby projektu uznaję to za wystarczająco bezpieczne.
 
 - ### Axios service (src/service/axios.js)
     ```javascript
@@ -601,3 +601,5 @@ Login i hasło użytkownika to:
 email=admin@rentally.com
 password=5d87bf6ee052598c
 ```
+
+Używam darmowych instancji, które usypiają, jeżeli nie ma na nich ruchu przez 30 minut, dlatego pierwsze żądanie do aplikacji webowej, jak i do rest api może być obarczone kilkunastosekundowym opóźnieniem.
