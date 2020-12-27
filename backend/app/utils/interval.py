@@ -23,6 +23,9 @@ class Interval:
         self._end = end
 
     def is_intersecting(self, other) -> bool:
+        """
+        Returns True if two intervals are intersecting or if they're "touching" (same start date as end date)
+        """
         if (
             self.start.date() == other.end.date()
             or self.end.date() == other.start.date()

@@ -14,6 +14,9 @@ def is_car_available_in_dates(
     rental_id: int = None,
     reservation_id: int = None,
 ) -> bool:
+    """
+    Returns True if car with given dates is available, False otherwise
+    """
     available = True
     timeframe = Interval(start_date, end_date)
 
@@ -29,6 +32,9 @@ def is_car_available_in_dates(
 def is_colliding_with_other_rentals(
     db: Session, car_id: int, timeframe: Interval, rental_id: int = None
 ):
+    """
+    Returns True if car has other rentals in given timeframe
+    """
     available = True
 
     rentals_for_this_car = get_rentals_for_this_car(db, car_id, rental_id)
@@ -46,6 +52,9 @@ def is_colliding_with_other_rentals(
 def is_colliding_with_other_reservations(
     db: Session, car_id: int, timeframe: Interval, reservation_id: int = None
 ):
+    """
+    Returns True if car has other reservations in given timeframe
+    """
     available = True
 
     reservations_for_this_car = get_reservations_for_this_car(
@@ -63,6 +72,9 @@ def is_colliding_with_other_reservations(
 
 
 def get_rentals_for_this_car(db: Session, car_id: int, rental_id: int = None):
+    """
+    Returns list of rentals for given car_id, omits rental with rental_id if given
+    """
     rentals_for_this_car = services.rental.get_active_by_car_id(db, car_id)
     if rental_id:
         rentals_for_this_car = [
@@ -72,6 +84,9 @@ def get_rentals_for_this_car(db: Session, car_id: int, rental_id: int = None):
 
 
 def get_reservations_for_this_car(db: Session, car_id: int, reservation_id: int = None):
+    """
+    Returns list of reservations for given car_id, omits reservation with reservation_id if given
+    """
     reservations_for_this_car = services.reservation.get_active_by_car_id(db, car_id)
     if reservation_id:
         reservations_for_this_car = [

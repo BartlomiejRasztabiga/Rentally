@@ -15,12 +15,18 @@ from app.utils.datetime_utils import datetime_without_seconds
 
 
 def validate_car_with_id_exists(db: Session, car_id: int) -> None:
+    """
+    Raises CarNotFoundException if car by given id doesn't exist
+    """
     car = services.car.get(db=db, _id=car_id)
     if not car:
         raise CarNotFoundException()
 
 
 def validate_customer_with_id_exists(db: Session, customer_id: int) -> None:
+    """
+    Raises CustomerNotFoundException if customer by given id doesn't exist
+    """
     customer = services.customer.get(db=db, _id=customer_id)
     if not customer:
         raise CustomerNotFoundException()
@@ -29,6 +35,9 @@ def validate_customer_with_id_exists(db: Session, customer_id: int) -> None:
 def validate_reservation_with_id_exists(
     db: Session, reservation_id: Optional[int] = None
 ) -> None:
+    """
+    Raises ReservationNotFoundException if reservation by given id doesn't exist
+    """
     if reservation_id:
         reservation = services.reservation.get(db=db, _id=reservation_id)
         if not reservation:
@@ -38,12 +47,18 @@ def validate_reservation_with_id_exists(
 def validate_start_date_before_end_date(
     start_date: datetime, end_date: datetime
 ) -> None:
+    """
+    Raises StartDateNotBeforeEndDateException if start_date is after end_date
+    """
     delta = end_date - start_date
     if delta.total_seconds() <= 0:
         raise StartDateNotBeforeEndDateException()
 
 
 def is_date_in_the_past(date: datetime) -> bool:
+    """
+    Returns True if date is in the past, False otherwise
+    """
     now = datetime.now(tz=pytz.UTC)
     now_without_seconds = datetime_without_seconds(now)
     start_date_without_seconds = datetime_without_seconds(date)
