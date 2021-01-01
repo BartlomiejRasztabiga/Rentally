@@ -78,7 +78,7 @@ const LoginView = () => {
       className={classes.root}
     >
       <Container maxWidth="sm">
-        <form onSubmit={handleSubmit}>
+        <form>
           <Box mb={3}>
             <Typography color="textPrimary" variant="h2">
               Sign in
