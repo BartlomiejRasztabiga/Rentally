@@ -22,8 +22,6 @@ API jest zgodne z poniższym arkuszem:
 Model bazy danych jest zgodny z poniższym schematem relacji encji:
 ![](docs/ERD.png)
 
-
-
 &nbsp;
 &nbsp;
 &nbsp;
