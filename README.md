@@ -17,12 +17,10 @@ Baza danych użyta do zapisywania danych używanych w aplikacji to PostgreSQL.
 API jest zgodne z poniższym arkuszem:
 [](https://docs.google.com/spreadsheets/d/1ewicTL3VWaDlt85r7Q2gd7PxisjfbTwCgodmpcGsaMI/edit?usp=sharing)
 
-![](api-design.png)
+![](docs/api-design.png)
 
 Model bazy danych jest zgodny z poniższym schematem relacji encji:
-![](ERD.png)
-
-
+![](docs/ERD.png)
 
 &nbsp;
 &nbsp;
