@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:13.1
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/pgdata
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_SERVER=localhost:5432
+      - POSTGRES_USER=rentally
+      - POSTGRES_PASSWORD=rentally
+      - POSTGRES_DB=rentally
+
+  backend:
+    image: "navareth/rentally-backend:latest"
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_SERVER=db:5432
+      - BACKEND_CORS_ORIGINS=["http://localhost:3000", "http://localhost:5000"]
+      - SECRET_KEY=ca9c1d4509ec6c9b9550fecfab3817a9b87e5e06bcbfe94298b12ce14ca8e428
+      - FIRST_SUPERUSER=admin@rentally.com
+      - FIRST_SUPERUSER_PASSWORD=5d87bf6ee052598c
+    ports:
+      - "8080:8080"
+
+  webapp:
+    image: "navareth/rentally-webapp:latest"
+    depends_on:
+      - backend
+    environment:
+      - REACT_APP_API_URL=http://localhost:8080/api/v1
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres-data: 

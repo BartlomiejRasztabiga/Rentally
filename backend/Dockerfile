@@ -12,3 +12,5 @@ COPY . /app
 RUN bash -c "poetry install --no-root"
 
 ENV PYTHONPATH=/app
+
+CMD ["bash", "./start.sh"]
