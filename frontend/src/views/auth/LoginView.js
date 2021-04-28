@@ -84,6 +84,11 @@ const LoginView = () => {
               Sign in
             </Typography>
           </Box>
+          <Box mb={3}>
+            <Typography color="textPrimary" variant="h6">
+              admin@rentally.com:5d87bf6ee052598c
+            </Typography>
+          </Box>
           <TextField
             fullWidth
             label="Email Address"
